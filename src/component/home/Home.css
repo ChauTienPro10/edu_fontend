@@ -1,0 +1,411 @@
+
+
+
+.header{
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100vw;
+    height: 60px;
+    position: fixed;
+    border-bottom: 1px solid rgba(220, 220, 220, 1.0);
+    z-index: 100;
+}
+.navbar{
+  
+    width: 40%;
+    height: 100%;
+    position: relative;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+   
+}
+.left-bar{
+    padding-left: 40px;
+}
+.imagelogo{
+    width: 100px;
+    height: 120px;
+    background-image: url("../assets/images/slide-4.png");
+    justify-content: center;
+    background-size: cover;
+}
+.smaller{
+    width: 100px;
+    height: 50px;
+    transition: all 0.3s ease;
+}
+.left-bar .search-box {
+    display:  flex;
+    justify-content: center;
+    align-items: center;
+    width: 300px;
+    margin-left: 30px;
+    height: 50px;
+    padding: 5px;
+    position: relative;
+}
+.left-bar .search-box input{
+    width: 100%;
+    height: 100%;
+    border-radius: 5px;
+    border-color: transparent;
+    background: rgb(236, 226, 226);
+    outline: none;
+    padding: 10px 30px 10px 30px;
+}
+.left-bar .search-box .icon{
+    position: absolute;
+    right:15px;
+    top: 50%;
+    color: rgb(68, 68, 243);
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+
+
+.right-bar{
+    display: flex;
+    justify-content: right;
+}
+.contactphone{
+    width: 140px;
+   font-size: 14px;
+   font-weight: 800;
+    height: 100%;
+    background: yellow;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-left: 1px solid rgba(220, 220, 220, 1.0);
+    border-right: 1px solid rgba(220, 220, 220, 1.0);
+    color: #FF9800;
+    background: white;
+}
+.contactphone .icon{
+    margin-right: 10px;
+}
+.loginbox{
+    height: 100%;
+    padding: 0px 50px 0px 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.loginbox button{
+    height:  70%;
+    width: 120px;
+    margin: 0 10px 0 0px;
+    border-radius: 5px;
+    border: transparent;
+    cursor: pointer;
+}
+
+.loginbox .signbox{
+    background: #FF9800;
+    color: white;
+    position: relative;
+    overflow: hidden;
+}
+.loginbox .signbox::before{
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 100%;
+    background-color: rgba(252, 249, 249, 0.3);
+    
+}
+.loginbox .signbox:hover::before{
+    animation: expand-width 0.4s ease forwards ;
+}
+@keyframes expand-width {
+    0% {
+      width: 0;
+    }
+    100% {
+      width: 100%;
+    }
+  }
+
+
+  /* end ========================================================================================= */
+
+.adverstion .content{
+    display: flex;
+    justify-content: left;
+    align-items: center;
+}
+.adverstion .content{
+    padding-left:150px ;
+    font-size: 14px;
+    color: #ffffff;
+    position: relative;
+    animation: slideUp 10s ease-in-out;
+    animation-iteration-count: infinite;
+
+
+}
+@keyframes slideUp {
+    0% {
+      transform: translateY(100%);
+      opacity: 0;
+    }
+    20% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    30% {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    40% {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    50% {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    60% {
+        transform: translateY(0);
+        opacity: 1;
+      }
+      70% {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    100% {
+        transform: translateY(-100%);
+        opacity: 0;
+      }
+  }
+
+.adverstion .content .icon-adverst{
+    color: red;
+    font-size: large;
+    margin-right: 5px;
+}
+ 
+.container-home{
+    display: flex;
+    flex-direction: column;
+}
+.body{
+    padding-top: 60px;
+}
+.menubar{
+    
+    height: 30px;
+
+  }
+.menubar ul{
+    display: flex;
+    justify-content: left;
+    margin-left: 200px;
+    align-items: center;
+    height: 100%;
+  }
+.menubar ul li{
+    list-style: none;
+    padding:0 10px 0 10px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.menubar ul a{
+    text-decoration: none;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #888888;
+    font-weight: 700;
+    font-size: 13px;
+}
+
+
+
+
+.container-content{
+    width: 100vw;
+    height: 1000px;
+   
+    position: relative;
+    
+}
+.container-content .adverstion{
+    width: 100%;
+    height: 50px;
+    background: #888888;
+    top: 0px;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.container-content  .list-course{
+    position: absolute;
+    width: 300px;
+    background: #ffffff;
+    display: flex;
+    justify-content: left;
+    align-items: flex-start;
+    top: 10px;
+    left: 40px;
+    flex-direction: column;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 5px 5px 10px 2px rgba(0, 0, 0, 0.5);
+   
+}
+
+.container-content .list-course ul{
+ width: 100%;
+ display: flex;
+ flex-direction: column;
+ 
+
+}
+.container-content .list-course ul li{
+    list-style: none;
+    padding: 10px;
+    cursor: pointer;
+    width: 100%;
+    padding-left: 25px;
+    position: relative;
+}
+.container-content .list-course ul li:hover::before {
+    position: absolute;
+    content: "";
+    display: block;
+    border-top: 10px solid transparent;
+    border-right: 10px solid #1a2ff0;
+    border-bottom: 10px solid transparent;
+    border-left: 10px solid transparent;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 0;
+  
+}
+.container-content .list-course ul li:hover p{
+    color: rgb(36, 36, 173);
+}
+.container-content .list-course ul li:hover{
+    background-color: rgba(184, 174, 174,0.6);
+}
+.container-content .list-course ul li p{
+    margin-left: 10px;
+    font-size: 15px;
+}
+.iconmenu-listcource{
+    margin: 0 10px 0 10px;
+}
+
+.container-content .show-detail{
+    position: absolute;
+    width: 700px;
+    min-height: 500px;
+    background: #ffffff;
+    display: flex;
+    justify-content: left;
+    align-items: flex-start;
+    top: 10px;
+    left: 345px;
+    flex-direction: column;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 5px 5px 10px 2px rgba(0, 0, 0, 0.5);
+}
+.container-content .show-detail .show-detail-header{
+    width: 100%;
+    height: 60px;
+    
+    border-bottom: 1px solid gray;
+}
+.container-content .show-detail .show-detail-header ul{
+    display: flex;
+    padding-left: 10px;
+    height: 100%;
+    justify-content: left;
+    align-items: end;
+    list-style: none;
+}
+.container-content .show-detail .show-detail-header ul li{
+    padding: 5px 10px 15px 10px;
+    background:#ffffff;
+    border-radius: 5px;
+    margin-right: 10px;
+    color: black;
+    position: relative;
+    cursor: pointer;
+}
+.container-content .show-detail .show-detail-header ul li:hover{
+    background: #2428f7;
+    color: #ffffff;
+}
+.container-content .show-detail .show-detail-header ul li::before{
+    content: "";
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: #6a6ce4;
+    bottom: -5px;
+    left: 50%;
+    transform: translateX(-50%) rotate(45deg);
+    display: none;
+}
+
+.show-detail.hiden{
+    display: none;
+}
+
+/* ========================================================================== */
+
+.select-level-bar{
+    width: 50px;
+    z-index: 100;
+    position: fixed;
+    right: 2px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 5px;
+    overflow: hidden;
+    box-shadow: 1px 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+.select-level-bar ul{
+    list-style: none;
+    border-top: 4px solid blue;
+    width: 100%;
+    
+}
+.select-level-bar ul li{
+    writing-mode: vertical-rl;
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 15px 0px 15px 0px;
+    cursor: pointer;
+    
+}
+.select-level-bar ul li:hover{
+    
+}
+.thpt:hover{
+    color: #1a2ff0;
+}
+.thcs:hover{
+    color: green;
+}
+.th:hover{
+    color: orangered;
+}

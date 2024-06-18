@@ -1,10 +1,21 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
 .App {
   text-align: center;
 }
-
+body{
+  font-family: "Nunito", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
 .App-logo {
   height: 40vmin;
   pointer-events: none;
+}
+*{
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -12,27 +23,92 @@
     animation: App-logo-spin infinite 20s linear;
   }
 }
+.nav-left{
+  list-style-type: none; /* Loại bỏ dấu chấm đầu dòng */
+  padding: 0; /* Loại bỏ khoảng cách padding */
+  margin: 0; /* Loại bỏ khoảng cách margin */
+  display: flex; 
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+  height: 100%;
+  width: 50%;
+
+}
+.nav-right{
+  list-style-type: none; /* Loại bỏ dấu chấm đầu dòng */
+  padding: 0; /* Loại bỏ khoảng cách padding */
+  margin: 0; /* Loại bỏ khoảng cách margin */
+  display: flex; /* Sử dụng Flexbox để hiển thị theo chiều ngang */
   align-items: center;
+  justify-content: flex-end;
+  height: 100%;
+  width: 50%;
+}
+.header .nav ul li {
+  margin-right: 2px; 
+  width: 100px;
+  height: 100%;
+  display: flex;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  align-items: center;
+}
+.header .nav ul li:hover {
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+}
+.header .nav ul li.active {
+  border-bottom: 2px solid #000; 
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3);
+
+}
+.header .nav ul li a {
+  text-decoration: none; /* Loại bỏ gạch chân */
+  color: #000; /* Màu chữ */
+  font-weight: 700;
+}
+.nav{
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom:1px solid #000 ;
+  width: 100%;
+}
+.header{
+  width: 100vw;
+  height: 50px;
+ 
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.App-link {
-  color: #61dafb;
+.mobile-screen{
+  display: none;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+
+
+@media (max-width: 767px) {
+  /* CSS rules for small screens */
+  body{
+    width: 100%;
   }
-  to {
-    transform: rotate(360deg);
+  .nav-left{
+    display: none;
   }
+  .mobile-screen{
+    display: flex;
+    flex-direction: column;
+  }
+
+}
+
+/* For medium screens */
+@media (min-width: 768px) and (max-width: 991px) {
+  /* CSS rules for medium screens */
+}
+
+/* For large screens */
+@media (min-width: 992px) {
+  /* CSS rules for large screens */
 }
