@@ -10,6 +10,7 @@ import  { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes, Link,useLocation  } from 'react-router-dom';
 import { FaFire } from "react-icons/fa6";
 import Login from '../login/login';
+import "./rzus2lc6.png"
 function Home() {
   
   return (
@@ -173,6 +174,7 @@ function Mybody(){
               <ShowDetailHeaderlist index={indexID}/>
             </div>
           </div>
+          <AdverstBoard />
         </div>
         
       </div>
@@ -273,4 +275,46 @@ function ShowDetailHeaderlist({ index }){
   );
 }
 
+function AdverstBoard(){
+  const [links, setLinks] = useState(['https://github.com/ChauTienPro10/Core-Infrastructure-Fundamentals-/blob/main/unnamed.png?raw=true'
+    ,'https://github.com/ChauTienPro10/Core-Infrastructure-Fundamentals-/blob/main/rzus2lc6.png?raw=true',
+    'https://github.com/ChauTienPro10/Core-Infrastructure-Fundamentals-/blob/main/ScrumAxon.PNG?raw=true'
+  ]);
+  const addLink = (url) => {
+    setLinks([...links, url]);
+  };
+  const removeLink = (index) => {
+    const newItems = [...links];
+    newItems.splice(index, 1);
+    setLinks(newItems);
+  };
+  const [focus,setFocus]=useState(0);
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setFocus((prevFocus) => {
+        if (prevFocus === links.length - 1) {
+          return 0;
+        } else {
+          return prevFocus + 1;
+        }
+      });
+    }, 15000);
+  
+    return () => clearInterval(intervalId);
+  }, [links.length]);
+  return(
+      <div className='adverst-board'>
+        
+        {links.map((link,index)=>(
+            <><img src={link} className={` ${index===focus ? 'show-ad' : 'hiden'}`}/></>
+          ))}
+        <ul>
+          {links.map((link,index)=>(
+            <><li key={index}><input type='radio' value={index} name='pageIndex' 
+            style={{backgroundColor: index===focus?'blue': 'transparent'}}/></li></>
+          ))}
+        </ul>
+      </div>
+  );
+}
 export default Home;
