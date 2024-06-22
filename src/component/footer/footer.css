@@ -1,0 +1,69 @@
+.container-footer{
+    margin-top: 100px;
+    width: 100%;
+    height: 500px;
+    border-top: 1px solid rgba(0, 0, 0, 0.514);
+    
+}
+.container-footer .foot-top{
+    width: 100%;
+    height: 60%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 40px;
+}
+.container-footer .foot-top div{
+    margin: auto;
+   height: 100%;
+
+}
+.container-footer .foot-top div h4{
+    color: rgba(128, 128, 128, 0.87);
+}
+.container-footer .foot-top div ul{
+    list-style: none;
+}
+.container-footer .foot-top div ul li{
+    padding: 5px 0 5px 0;
+    font-size: 12px;
+    font-family: "Fira Sans", sans-serif;
+    color: rgba(0, 0 , 0, 0.5);
+    font-weight: 700;
+    width: 200px;
+    cursor: pointer;
+}
+.container-footer .foot-top div ul li .chplay{
+    width: 120px;
+    height: 30px;
+    background-image: url('../assets/images/826p3zl8.png');
+    background-position: center;
+    background-size: cover;
+    border-radius: 5px;
+    border: transparent;
+    overflow: hidden;
+    cursor: pointer;
+}
+.container-footer .foot-top div ul li .appstore{
+    background-image: url('../assets/images/qeqmo695.png');
+}
+.container-footer .foot-top div ul li .registed{
+    background-image: url('../assets/images/1j9txyuh.png');
+}
+.container-footer .foot-top div ul li:hover{
+    color: rgb(38, 38, 168);
+}
+.container-footer .foot-bottom{
+    border-top: 1px solid rgba(15, 2, 2, 0.479);
+    width: 100%;
+    height: 40%;
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    padding: 30px 150px 0 150px;
+
+}
+.container-footer .foot-bottom p{
+    font-size: 12px;
+    width: 40%;
+}

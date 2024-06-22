@@ -7,28 +7,44 @@ import { FaPhoneAlt } from "react-icons/fa";
 import { MdOutlineMenu } from "react-icons/md";
 import { RiGraduationCapFill } from "react-icons/ri";
 import  { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Route, Routes, Link,useLocation  } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Link,useLocation,useNavigate,Switch   } from 'react-router-dom';
 import { FaFire } from "react-icons/fa6";
 import Login from '../login/login';
 import "./rzus2lc6.png"
+import { FaUserGraduate } from "react-icons/fa";
+import { GiMedal } from "react-icons/gi";
+import Signup from '../login/signup';
+import Alert from '../alert/alert';
 function Home() {
   
+  
   return (
+    
     <div className='container-home'> 
     <Router>
-    <Myheader />
-    <Mybody />
-    <main>
-          <Routes>
-           <Route path="/login" element={<Login />} /> 
-          </Routes>
-        </main>
-      </Router>
-    </div>
+      <Routes>
+        <Route path="/login" element={<Login />} /> 
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/" element={
+          <>
+            <Alert />
+            <Myheader />
+            <Mybody />
+          </>
+        } />
+      </Routes>
+    </Router>
+  </div>
   );
 }
 
 function Myheader(){
+  const navigate = useNavigate();
+
+  const ToNavigate = (path) => {
+    navigate(path);
+  };
+ 
   const [isSmaller, setIsSmaller] = useState(false);
   useEffect(() => {
     const handleScroll = () => {
@@ -59,8 +75,8 @@ function Myheader(){
         <div className='right-bar navbar'>
           <div className='contactphone'><FaPhoneAlt className='icon'/><p>0812788212</p></div>
           <div className='loginbox'>
-            <button className='loginbut'>Dang Nhap</button>
-            <button className='signbox'>Dang Ky</button>
+            <button onClick={() => ToNavigate('/login')} className='loginbut'>Dang Nhap</button>
+            <button onClick={() => ToNavigate('/signup')} className='signbox'>Dang Ky</button>
           </div>
         </div>
       </div>
@@ -111,13 +127,13 @@ function Mybody(){
         </div>
         <div className='menubar'>
           <ul>
-            <li><Link to="/login">Gioi thieu</Link></li>
-            <li><Link to="/login">Giao vien</Link></li>
-            <li><Link to="/login">Tu luyen</Link></li>
-            <li><Link to="/login">Huong nghiep</Link></li>
-            <li><Link to="/login">Thu vien</Link></li>
-            <li><Link to="/login">Huong dan dang ky</Link></li>
-            <li><Link to="/login">Ho tro</Link></li>
+            <li><Link to="/login">Giới thiệu</Link></li>
+            <li><Link to="/login">Giáo viên</Link></li>
+            <li><Link to="/login">Tự luyện</Link></li>
+            <li><Link to="/login">Hướng nghiệp</Link></li>
+            <li><Link to="/login">Thư viện</Link></li>
+            <li><Link to="/login">Hướng dẫn đăng ký</Link></li>
+            <li><Link to="/login">Hỗ trợ</Link></li>
           </ul>
         </div>
         <div className='container-content'>
@@ -175,6 +191,27 @@ function Mybody(){
             </div>
           </div>
           <AdverstBoard />
+          <Certificate />
+          <div className='information-plus'>
+            <div className='years infor '>
+              <h2>17 Năm</h2>
+              <h3>Giáo dục trực tuyến</h3>
+            </div>
+            <div className='members infor'>
+              <FaUserGraduate style={{color:"white", fontSize:'50px',marginRight:'15px'}}/>
+              <div className='member-text'>
+                <h2>6.909.535</h2>
+                <h3>Thành viên</h3>
+              </div>
+            </div>
+            <div className='forward infor'>
+              <GiMedal  style={{color:"white", fontSize:'50px',marginRight:'15px'}}/>
+              <div className='forward-text'>
+                <h3>Nền tảng học trực tuyến</h3>
+                <h2>Số 1 tại VIỆT NAM</h2>
+              </div>
+            </div>
+          </div>
         </div>
         
       </div>
@@ -276,9 +313,8 @@ function ShowDetailHeaderlist({ index }){
 }
 
 function AdverstBoard(){
-  const [links, setLinks] = useState(['https://github.com/ChauTienPro10/Core-Infrastructure-Fundamentals-/blob/main/unnamed.png?raw=true'
-    ,'https://github.com/ChauTienPro10/Core-Infrastructure-Fundamentals-/blob/main/rzus2lc6.png?raw=true',
-    'https://github.com/ChauTienPro10/Core-Infrastructure-Fundamentals-/blob/main/ScrumAxon.PNG?raw=true'
+  const [links, setLinks] = useState(['https://github.com/ChauTienPro10/Core-Infrastructure-Fundamentals-/blob/main/rzus2lc6.png?raw=true'
+    ,'https://github.com/ChauTienPro10/Core-Infrastructure-Fundamentals-/blob/main/46banner-webphuongpa-715x400-1.png?raw=true'
   ]);
   const addLink = (url) => {
     setLinks([...links, url]);
@@ -315,6 +351,20 @@ function AdverstBoard(){
           ))}
         </ul>
       </div>
+  );
+}
+
+
+function Certificate(){
+  return(
+    <div className='certificate-board'>
+      <div className='certificate-img'></div>
+      <button onClick={()=>{
+        const userJSON = sessionStorage.getItem('user');
+        const user_ = userJSON ? JSON.parse(userJSON) : null;
+        alert(user_._jwt);
+      }}>TẢI ỨNG DỤNG HỌC MÃI</button>
+    </div>
   );
 }
 export default Home;

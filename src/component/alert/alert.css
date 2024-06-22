@@ -1,0 +1,48 @@
+.alert-body{
+    width:100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.4);
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    position: fixed;
+    z-index: 10000;
+    padding-top: 50px;
+    
+}
+.alert-body .content{
+    width: 500px;
+    height: 500px;
+    position: relative;
+    animation: mydisplay 3s  ;
+    
+}
+.alert-body .content img{
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+.alert-body .content button{
+    position: absolute;
+    top: 7px;
+    right: 7px;
+    width: 30px;
+    height: 30px;
+    background: transparent;
+    border: transparent;
+    cursor: pointer;
+}
+
+@keyframes mydisplay {
+    0% {
+      top: -100%;
+      
+    }
+    100% {
+      top: 0;
+    }
+  }
+
+  .hiden{
+    display: none;
+  }

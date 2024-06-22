@@ -1,0 +1,89 @@
+.loading-container{
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+
+}
+.loading-container .content{
+    width: 100px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+}
+.loading-container .content .parent{
+    position: relative;
+    display: flex;
+    width: 10px;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+}
+.loading-container .content .pr1{
+    height: 15px;
+}
+.loading-container .content .pr2{
+    height: 10px;
+}
+.loading-container .content .pr3{
+    height: 5px;
+}
+.loading-container .content .pr4{
+    height: 10px;
+}
+.loading-container .content .pr5{
+    height: 15px;
+}
+.loading-container .content .parent .node{
+    width: 10px;
+    height: 10px;
+    background: white;
+    margin: auto;
+    border-radius: 50%;
+    border: transparent;
+    position: absolute;
+    
+}
+.loading-container .content .node-1{
+    animation: load 0.4s ease  infinite ;
+}
+.loading-container .content .node-2{
+    animation: load 0.5s ease  infinite ;
+}
+.loading-container .content .node-3{
+    animation: load 0.6s ease  infinite ;
+}
+.loading-container .content .node-4{
+    animation: load 0.5s ease  infinite ;
+}
+.loading-container .content .node-5{
+    animation: load 0.4s ease  infinite ;
+}
+@keyframes load {
+    0% {
+      top: 0;
+      
+    }
+    15%{
+        top: 50%;
+    }
+    50% {
+      top: 100%;
+     
+    }
+    75%{
+        top: 50%;
+    }
+    100% {
+        top: 0;
+        
+      }
+  }

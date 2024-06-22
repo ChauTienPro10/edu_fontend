@@ -4,7 +4,7 @@ import './index.css';
 import App from './App';
 import Home from './component/home/Home';
 import reportWebVitals from './reportWebVitals';
-import Signup from './component/login/signup';
+import MyLoading from './component/alert/loading';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>

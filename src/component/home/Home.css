@@ -234,9 +234,9 @@
 
 .container-content{
     width: 100vw;
-    height: 1000px;
-   
+    height: 75vh;
     position: relative;
+    background: rgba(119, 194, 255, 0.3);
     
 }
 .container-content .adverstion{
@@ -386,6 +386,7 @@
     list-style: none;
     border-top: 4px solid blue;
     width: 100%;
+    background: #ffffff;
     
 }
 .select-level-bar ul li{
@@ -511,6 +512,79 @@
   
 }
 
+
+/*  certificate board */
+.container-content .certificate-board{
+    position: absolute;
+    width: 220px;
+    height: 410px;
+    display: flex;
+    justify-content: left;
+    align-items: flex-start;
+    top: 60px;
+    right: 80px;
+    flex-direction: column;
+    background: #ffffff;
+    border-radius: 5px;
+    overflow: hidden;
+    /* box-shadow: 1px 1px 1px 2px rgba(0, 0, 0, 0.5); */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+}
+.container-content .certificate-board .certificate-img{
+    width: 100%;
+    height: 100%;
+    background-image: url('../assets/images/chungnhan-04.png');
+    background-size: cover;
+    justify-content: center;
+    background-position: center;
+    margin-bottom: 20px;
+}
+.container-content .certificate-board button{
+    width: 100%;
+    height: 50px;
+    background: #1a2ff0;
+    color: #ffffff;
+    border: transparent;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+
+
+/*information plus    */
+.container-content .information-plus{
+    position: absolute;
+    width: 80%;
+    height: 120px;
+    display: flex;
+    justify-content: left;
+    align-items: flex-start;
+    background: #2e75fa;
+    bottom: 0px;
+    left: 50%;
+    transform: translate(-50%,50%);
+    border-radius: 5px;
+    overflow: hidden;
+    /* box-shadow: 1px 1px 1px 2px rgba(0, 0, 0, 0.5); */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+}
+.container-content .information-plus .infor{
+    margin: auto;
+}
+.container-content .information-plus .infor h2,h3{
+    color: #ffffff;
+}
+.container-content .information-plus .members,.forward{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
 .hiden{
     display: none;
