@@ -4,7 +4,7 @@ import './index.css';
 import App from './App';
 import Home from './component/home/Home';
 import reportWebVitals from './reportWebVitals';
-import MyLoading from './component/alert/loading';
+import Thpt from './component/thpt/thpt';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>

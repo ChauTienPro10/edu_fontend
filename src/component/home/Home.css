@@ -132,6 +132,149 @@
     }
   }
 
+  .container-infor{
+    height: 100%;
+    width: 400px;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .container-infor .to-course{
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    
+  }
+  .container-infor .to-course a{
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 800;
+    color: gray;
+  }
+  .container-infor .to-course a:hover{
+    color: #2e75fa;
+  }
+  .container-infor div{
+    margin: auto;
+    cursor: pointer;
+  }
+.container-infor .yours{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+} 
+.container-infor .yours .avatar{
+    width: 45px;
+    height: 45px;
+    background: #FF9800;
+    border-radius: 50%;
+    border: transparent;
+    margin-right: 5px;
+}
+.container-infor .yours .detail{
+    position: absolute;
+    width: 300px;
+    height: 190px;
+    top: 100%;
+    right: 0px;
+    border-radius: 10px;
+    border:transparent;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: white;
+    box-shadow: 1px 1px 1px 1px;
+}
+
+.container-infor .yours .detail div{
+    display: flex;
+    width: 100%;
+    justify-content: left;
+    align-items: center;
+    height: 20%;
+    padding: 5px 0 5px 20px;
+}
+.container-infor .yours .detail div .name-email{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.container-infor .yours .detail div .avatar{
+    width: 35px;
+    height: 35px;
+    padding: 0;
+    margin: 0;
+}
+.container-infor .yours .detail div:hover{
+    background: #88888813;
+}
+
+.container-infor .notify {
+    position: relative;
+}
+.container-infor .notify .dt-notify{
+    width: 250px;
+    height: 400px;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    transform: translateX(20%);
+    z-index: 1000;
+    border-radius: 10px;
+    background: white;
+    border: 1px solid rgba(128, 128, 128, 0.322);
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+}
+.container-infor .notify .dt-notify .content-notify{
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+}
+.container-infor .notify .dt-notify .content-notify ul{
+    list-style: none;
+    
+}
+.container-infor .notify .dt-notify .content-notify ul li a{
+    text-decoration: none;
+    color: gray;
+}
+.container-infor .cart{
+    position: relative;
+}
+.container-infor .cart .dt-cart{
+    width: 300px;
+    height: 200px;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    transform: translateX(20%);
+    z-index: 1000;
+    border-radius: 10px;
+    background: white;
+    border: 1px solid rgba(128, 128, 128, 0.322);
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+}
+.container-infor .cart .dt-cart ul{
+    list-style: none;
+    padding: 20px 10px 20px 10px;
+
+}
+.container-infor .cart .dt-cart ul li a{
+    text-decoration: none;
+    color: grey;
+    font-size: 14px;
+}
 
   /* end ========================================================================================= */
 
@@ -389,6 +532,10 @@
     background: #ffffff;
     
 }
+a{
+    text-decoration: none;
+
+}
 .select-level-bar ul li{
     writing-mode: vertical-rl;
     margin: auto;
@@ -399,16 +546,21 @@
     cursor: pointer;
     
 }
+.select-level-bar ul li a{
+    text-decoration: none;
+    color: gray;
+
+}
 .select-level-bar ul li:hover{
     
 }
-.thpt:hover{
+.thpt:hover a{
     color: #1a2ff0;
 }
-.thcs:hover{
+.thcs:hover a{
     color: green;
 }
-.th:hover{
+.th:hover a{
     color: orangered;
 }
 /*   bang quang cao */
@@ -588,4 +740,24 @@
 
 .hiden{
     display: none;
+}
+
+
+
+
+/* xu ly cac khoa hoc hot vs new */
+
+.courses-container{
+    
+    margin-top: 100px;
+}
+.courses-container .thpt-thcs-th{
+    width: 100%;
+    height: 100vh;
+    margin-top: 50px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
