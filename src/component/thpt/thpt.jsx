@@ -1,10 +1,12 @@
-import React,{ useState } from "react";
+import React,{ useState ,useEffect} from "react";
 import './thpt.css';
 import Slider from "react-slick";
 import { FaYoutube } from "react-icons/fa6";
 import { FaQuestionCircle } from "react-icons/fa";
 import { FaChevronLeft } from "react-icons/fa";
 import { FaChevronRight } from "react-icons/fa";
+import axios from 'axios';
+import { SERVER_URL } from "../../config";
 
 function Thpt(){
     const [countTHPT,setCountTHPT]=useState(5);
@@ -42,6 +44,23 @@ function Thpt(){
         document.addEventListener('mousemove', handleMouseMove);
         document.addEventListener('mouseup', handleMouseUp);
       };
+
+    //   lay danh sach khoa hoc
+    const [courses,setCourses]=useState([]);
+    useEffect(() => {
+        // Lấy danh sách khóa học từ API hoặc backend
+        fetchCourses();
+      }, []);
+    const fetchCourses = async () => {
+        try {
+        const response = await axios.get(`${SERVER_URL}/course/getCourse`);
+        await setCourses(response.data);
+        
+        
+        } catch (error) {
+        console.error('Error fetching courses:', error);
+        }
+    };
     
     return(
         <div className="thpt-container">
@@ -92,7 +111,7 @@ function Thpt(){
                                     ,padding:'4px',background:'blue',color:'white',fontSize:'10px'
                                 }}>NEW</p>
                                 <img src='https://github.com/ChauTienPro10/Core-Infrastructure-Fundamentals-/blob/main/46banner-webphuongpa-715x400-1.png?raw=true'/>
-                                <h4>PEN-C TIẾNG ANH</h4>
+                                <h4>{courses[0].name}</h4>
                                 <p>Giáo viên:<a href="#">thầy Châu Dương Phát Tiến</a></p>
                                 <div className="baigiang" >
                                     <FaYoutube style={{color:'red'}}/>

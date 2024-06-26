@@ -89,7 +89,7 @@
     width: 250px;
     height: 100%;
     background: transparent;
-    padding: 2px;
+    
     position: relative;
     -webkit-user-select: none;
   -moz-user-select: none;
@@ -118,7 +118,9 @@
     /* border: 1px solid grey; */
     left: 0;
     top: 0;
-    padding: 4px;
+    padding: 10px;
+  box-shadow: inset 1px 1px 1px rgba(0, 0, 0, 0.5);
+
 
 }
 .course .course-dt img{

@@ -1,0 +1,88 @@
+ header{
+    width: 100%;
+    height: 50px;
+    background: rgb(0, 162, 255);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+/* xu ly phan header ben trai */
+ header .search-part{
+    width: 600px;
+    height: 100%;
+    display: flex;
+    justify-content: right;
+    align-items: center;
+}
+ header .search-part .list-course-part{
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+ header .search-part .list-course-part .icon{
+    color: white;
+    font-size: 30px;
+    margin-right: 15px;
+}
+ header .search-part .list-course-part p{
+    color: white;
+    font-size: 14px;
+    font-weight: 700;
+}
+ header .search-part .search-box-part{ 
+    width: 400px;
+    height: 65%;
+    background: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    border: transparent;
+    margin-left: 30px;
+}
+ header .search-part .search-box-part input{
+    width: 90%;
+    height: 100%;
+    border-radius: 5px;
+    border: transparent;
+    padding: 0 10px 0 10px;
+    outline: none;
+}
+ header .search-part .search-box-part .icon{
+    font-weight: 700;
+    font-size: 22px;
+    color: gray;
+    cursor: pointer;
+}
+
+
+/* xu lyy phan header ben phai */
+ header .button-part{
+    width: 400px;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+ header .button-part button{
+    margin: 0 10px 0 10px;
+    padding: 5px 10px 5px 10px;
+    width: 100px;
+    height: 35px;
+    border-radius: 5px;
+    border: transparent;
+    cursor: pointer;
+}
+ header .button-part .login-but{
+    background: transparent;
+    font-size: 14px;
+    color: white;
+    font-weight: 700;
+}
+ header .button-part .sign-but{
+    background: #FF9800;
+    color: white;
+    font-size: 14px;
+    font-weight: 700;
+}
