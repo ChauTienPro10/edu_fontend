@@ -3,6 +3,7 @@ import { FaUser } from "react-icons/fa";
 import { IoKey } from "react-icons/io5";
 import { useState } from "react";
 import { SERVER_URL } from "../../config";
+import { SERVER_GATEWAY_URL } from "../../config";
 import { BrowserRouter as Router, Route, Routes, Link,useLocation,useNavigate,Switch   } from 'react-router-dom';
 
 import axios from "axios";
@@ -69,26 +70,30 @@ function Body(){
       event.preventDefault();
       setIsLoading(true)
       try {
-        const response = await axios.post(`${SERVER_URL}/user/login`, {
+        const response = await axios.post(`${SERVER_GATEWAY_URL}/api/identity/auth/token`, {
           username,
           password
         });
         const user = new LoginResponse(
-          response.data.jwt,
-          response.data.role,
-          response.data.username,
-          response.data.id
+          response.data.result.token,
+          // response.data.role,
+          response.data.result.username,
+          // response.data.id
         );
         sessionStorage.setItem('user', JSON.stringify(user));
         const userJSON = sessionStorage.getItem('user');
         const user_ = userJSON ? JSON.parse(userJSON) : null;
         console.log(user_._jwt);
-        setIsLoading(false);
+        
         if(user._jwt!==undefined){
+          setIsLoading(false);
           setLoginState(1);
-
+          
         }
-        else setLoginState(2);
+        else{
+          setIsLoading(false);
+          setLoginState(2);
+        } 
       } catch (error) {
         alert('error');
         console.log(error);

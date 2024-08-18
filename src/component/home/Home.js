@@ -25,6 +25,7 @@ import { FaKey } from "react-icons/fa6";
 import { IoMdExit } from "react-icons/io";
 import Footer from '../footer/footer';
 import Thpt from '../thpt/thpt';
+import Supporter from '../supporter/supporter';
 function Home() {
   
   
@@ -35,6 +36,7 @@ function Home() {
       <Routes>
         <Route path="/login" element={<Login />} /> 
         <Route path="/signup" element={<Signup />} />
+        <Route path="/supporter" element={<Supporter />} />
         <Route path="/" element={
           <>
             <Alert />
@@ -226,7 +228,7 @@ function Mybody(){
             <li><Link to="/login">Hướng nghiệp</Link></li>
             <li><Link to="/login">Thư viện</Link></li>
             <li><Link to="/login">Hướng dẫn đăng ký</Link></li>
-            <li><Link to="/login">Hỗ trợ</Link></li>
+            <li><Link to="/supporter" >Hỗ trợ</Link></li>
           </ul>
         </div>
         <div className='container-content'>

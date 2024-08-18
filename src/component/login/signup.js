@@ -13,7 +13,9 @@ import { FaYahoo } from "react-icons/fa";
 import { FaApple } from "react-icons/fa";
 import Footer from "../footer/footer";
 import { SERVER_URL } from "../../config";
-
+import MyLoading from "../alert/loading";
+import LoginSucces from "../alert/LoginSucces";
+import LoginFailue from "../alert/loginFailue";
 import "./login.css"
 import Login from "./login";
 function Signup(){
@@ -61,11 +63,14 @@ function Body(){
   const [phone, setPhone] = useState('');
   const [password,setPassword]=useState('');
   const [validpass,setValidpass]=useState(false);
+  const [isLoading,setIsLoading]=useState(false); // quan ly loading 
+  const [loginState,setLoginState]=useState(0); // quan ly dang ky thanh cong hoac that bai copy tu login.js k doi ten
   const handleSignup = async (event) => {
-    event.preventDefault();
+    setIsLoading(true); // hien loading
+    event.preventDefault(); 
 
     try {
-      const response = await axios.post(`${SERVER_URL}/user/newStudent`, {
+      const response = await axios.post(`${SERVER_URL}/student/profile/new`, {
         name,
         email,
         phone,
@@ -80,14 +85,30 @@ function Body(){
       setEmail('');
       setPhone('');
       setPassword('');
+      if(response.data.code===1000){
+        setIsLoading(false); // an loading
+        setLoginState(1); // dang ky tai khoang moi thanh cong
+      }
+      else{
+        setIsLoading(false);
+        setLoginState(2);
+      }
   
     } catch (error) {
       // Xử lý lỗi
-      alert('error');
+      setIsLoading(false);
+       // dang ky tai khoan moi that bai
     }
   };
   return(
     <div className="body-container">
+      <div style={{display:`${isLoading?'':'none'}`}}><MyLoading/></div>
+      <div onClick={()=>{setLoginState(0);}} style={{display:`${loginState!==2?'none':''}`}}>
+        <LoginFailue message={'Đăng ký thất bại'} />
+      </div>
+      <div onClick={async ()=>{await setLoginState(0);}} style={{display:`${loginState!==1?'none':''}`}}>
+        <LoginSucces message={'Đăng ký thành công'} />
+      </div>
       <div className="title">
         <h2>Tạo tài khoản của bạn</h2>
         <p>Học tập và giao lưu với hàng triệu học </p>

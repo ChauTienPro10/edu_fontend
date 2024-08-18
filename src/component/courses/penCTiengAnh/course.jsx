@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import './course.css';
 import Header from "../../header/Header";
 import { IoIosHome } from "react-icons/io";
 import { FaQuestionCircle } from "react-icons/fa";
+import YoutubePlayer from "../../videos/youtube";
 function Course(){
     return(
         <div className="course-container">
@@ -29,9 +30,10 @@ function Body(){
                     <p><a style={{color:'blue'}} href="#">Luyện thi đại học môn Tiếng Anh</a>{' hiệu quả và dễ dàng hơn cùng thầy Phạm Trọng Hiếu. Với phương pháp tiếp cận thú vị, khóa học này sẽ giúp các em bớt sợ Tiếng Anh và cảm thấy gần gũi như tiếng Việt, từ đó đạt điểm cao trong bài thi tốt nghiệp THPT.'}</p>
                     <p>{'Giáo viên '}<a href="#" style={{color:'blue'}} >Thầy Phạm Trọng Hiếu</a></p>
                     <div className="video-container">
-                        <iframe width="650" height="350" src="https://www.youtube.com/embed/VIDEO_ID" 
+                        {/* <iframe width="650" height="350" src="https://www.youtube.com/watch?v=1nA33oSe0Qc&pp=ygUCZjg%3D" 
                         frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
-                        allowfullscreen></iframe>
+                        allowfullscreen></iframe> */}
+                        <YoutubePlayer videoId="7KDRqBpT8NA" />
                         <p style={{color:'red'}}>Vui lòng không chia sẻ tài khoản cho người khác. Tài khoản vi phạm sẽ bị khóa vĩnh viễn.HOCMAI chúc bạn học tập hiệu quả!</p>
                     </div>
                     <ul className="more-list"> 
@@ -139,7 +141,9 @@ function ContentCourse(){
                 </div>
                 <ListVideo />
             </div>
-            <div className="course-body-right"></div>
+            <div className="course-body-right">
+                <RelaxtiveVideo />
+            </div>
         </div>
 
 
@@ -161,5 +165,59 @@ function ListVideo(){
             </div>
         </div>
     )
+}
+function RelaxtiveVideo(){
+    const [isMore, setIsMore]=useState(false);
+   
+    return (
+        <div className="relative-container" style={{height:`${isMore?'200vh':'100vh'}`,
+            overflowY:`${isMore?'auto':''}`
+        }}>
+            <h4 style={{color:'rgba(0,0,0,0.8)',marginBottom:'20px'}}>Khóa học liên quan</h4>
+            <ul>
+                <li><div className="div-container-relate">
+                    <div className="img-div"></div>
+                    <a href="#">PEN-C VẬT LÝ</a>    
+                </div></li>
+                <li><div className="div-container-relate">
+                    <div className="img-div"></div>
+                    <a href="#">PEN-C VẬT LÝ</a>    
+                </div></li>
+                <li><div className="div-container-relate">
+                    <div className="img-div"></div>
+                    <a href="#">PEN-C VẬT LÝ</a>    
+                </div></li>
+                <li><div className="div-container-relate">
+                    <div className="img-div"></div>
+                    <a href="#">PEN-C VẬT LÝ</a>    
+                </div></li>
+                <li><div className="div-container-relate">
+                    <div className="img-div"></div>
+                    <a href="#">PEN-C VẬT LÝ</a>    
+                </div></li>
+                <li><div className="div-container-relate">
+                    <div className="img-div"></div>
+                    <a href="#">PEN-C VẬT LÝ</a>    
+                </div></li>
+                <li><div className="div-container-relate">
+                    <div className="img-div"></div>
+                    <a href="#">PEN-C VẬT LÝ</a>    
+                </div></li>
+                <li><div className="div-container-relate">
+                    <div className="img-div"></div>
+                    <a href="#">PEN-C VẬT LÝ</a>    
+                </div></li>
+                <li><div className="div-container-relate">
+                    <div className="img-div"></div>
+                    <a href="#">PEN-C VẬT LÝ</a>    
+                </div></li>
+                <li><div className="div-container-relate">
+                    <div className="img-div"></div>
+                    <a href="#">PEN-C VẬT LÝ</a>    
+                </div></li>
+            </ul>
+            <button onClick={()=>{setIsMore(true)}} style={{display:`${isMore?'none':''}`}}>XEM THÊM</button>
+        </div>
+    );
 }
 export default Course

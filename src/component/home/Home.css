@@ -715,7 +715,7 @@ a{
     justify-content: left;
     align-items: flex-start;
     background: #2e75fa;
-    bottom: 0px;
+    bottom: -50px;
     left: 50%;
     transform: translate(-50%,50%);
     border-radius: 5px;

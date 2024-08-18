@@ -111,7 +111,8 @@ function Thpt(){
                                     ,padding:'4px',background:'blue',color:'white',fontSize:'10px'
                                 }}>NEW</p>
                                 <img src='https://github.com/ChauTienPro10/Core-Infrastructure-Fundamentals-/blob/main/46banner-webphuongpa-715x400-1.png?raw=true'/>
-                                <h4>{courses[0].name}</h4>
+                                {/* <h4>{courses[0].name}</h4> */}
+                                <h4>Tieng Anh Co Ban</h4>
                                 <p>Giáo viên:<a href="#">thầy Châu Dương Phát Tiến</a></p>
                                 <div className="baigiang" >
                                     <FaYoutube style={{color:'red'}}/>

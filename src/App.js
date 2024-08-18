@@ -6,6 +6,7 @@ import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes, Link,useLocation  } from 'react-router-dom';
 import { FaUser } from "react-icons/fa";
 import Login from './component/login/login';
+import Supporter from './component/supporter/supporter';
 function App() {
   return (
     <div className="App">
@@ -22,6 +23,7 @@ function App() {
           <Routes>
            <Route path="/login" element={<Login />} />
            <Route path="/home" element={<Home />} />
+           <Route path='/supporter' element={<Supporter />}/>
           </Routes>
         </main>
       </Router>

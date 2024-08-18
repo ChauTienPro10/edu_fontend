@@ -1,0 +1,78 @@
+
+.support-page{
+    width: 100vw;
+   
+    height:100vh; 
+}
+
+.wrapper{
+    width: 100%;
+    height: 150px;
+    background: #2e20f1;
+}
+
+
+/* content */
+.container-content{
+    width: 100%;
+    height: 500px;
+    background: white;
+}
+
+.container-content .left{
+    width: 30%;
+    background: rgb(243, 236, 236);
+    height: 100%;
+    overflow-y: scroll;
+    padding-left: 100px;
+}
+.container-content .left .ul-parent{
+    list-style: none;
+    padding-left: 20px;
+    width: 100%;
+    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.container-content .left .ul-parent .li-big{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+.container-content .left .ul-parent .li-big h5{
+    width: 100%;
+    height: 40px;
+    padding: 10px;
+    font-size: 15px;
+    position: relative;
+
+    align-items: center;
+    justify-content: center;
+}
+.container-content .left .ul-parent .li-big h5:hover{
+    background: #2e20f1;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.container-content .left .ul-parent .li-big .ul-child{
+    list-style: none;
+    width: 100%;
+
+    
+    
+}
+.container-content .left .ul-parent .li-big .ul-child li{
+    font-size: 12px;
+
+}
+.container-content .left .ul-parent .li-big .ul-child li:hover{
+    color: #2e20f1;
+    cursor: pointer;
+}
+
+.hide{
+    display: none;
+}

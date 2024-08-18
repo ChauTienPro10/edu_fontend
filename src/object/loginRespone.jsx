@@ -1,18 +1,18 @@
 class LoginResponse {
-    constructor(jwt, role, username, id) {
+    constructor(jwt,  username) {
       this._jwt = jwt;
-      this._role = role;
+      // this._role = role;
       this._username = username;
-      this._id = id;
+      // this._id = id;
     }
   
-    get id() {
-      return this._id;
-    }
+    // get id() {
+    //   return this._id;
+    // }
   
-    set id(value) {
-      this._id = value;
-    }
+    // set id(value) {
+    //   this._id = value;
+    // }
   
     get username() {
       return this._username;
@@ -22,13 +22,13 @@ class LoginResponse {
       this._username = value;
     }
   
-    get role() {
-      return this._role;
-    }
+    // get role() {
+    //   return this._role;
+    // }
   
-    set role(value) {
-      this._role = value;
-    }
+    // set role(value) {
+    //   this._role = value;
+    // }
   
     get jwt() {
       return this._jwt;

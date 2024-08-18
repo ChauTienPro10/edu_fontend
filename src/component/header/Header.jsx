@@ -22,13 +22,15 @@ import LoginSucces from "../alert/LoginSucces";
 import LoginFailue from "../alert/loginFailue";
 import MyLoading from "../alert/loading";
 import ReactDOM from 'react-dom';
+import Login from "../login/login";
+
 
 function Header(){
-    // const navigate = useNavigate();
-  
-    //   const ToSignup = (path) => {
-    //   navigate(path);
-    // };
+      // const navigate = useNavigate();
+
+      // const toOtherSite = (path) => {
+      //   navigate(path);
+      // };
       return(
           <header>
               <div className="search-part">
@@ -42,7 +44,7 @@ function Header(){
                 </div>
               </div>
               <div className="button-part">
-                <button className="login-but">Đăng nhập</button>
+                <button className="login-but" /*onClick={()=>toOtherSite('/login')}*/>Đăng nhập</button>
                 <button  className="sign-but">Đăng ký</button>
               </div>
             </header>

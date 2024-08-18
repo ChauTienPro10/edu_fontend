@@ -121,6 +121,8 @@
     width: 100%;
     height: 100vh;
     padding: 0 10% 0 10%; 
+    display: flex;
+    
 }
 .content-course-body .course-body-left{
     width: 65%;
@@ -130,6 +132,8 @@
 
 
 /* list video body */
+
+
 .list-video-body{
     width: 100%;
     height: 100vh;
@@ -141,4 +145,78 @@
     background: transparent;
     border-bottom: 1px solid rgb(5, 40, 116);
     padding-bottom: 0;
+}
+
+
+
+
+
+/* video lien quan */
+.course-body-right{
+    width: 35%;
+    padding: 20px 10px 20px 10px;
+}
+.relative-container{
+    width: 100%;
+    height: 100vh;
+    position: relative;
+    overflow: hidden;
+    scrollbar-width: none;
+
+}
+
+.div-container-relate{
+    display: flex;
+    width: 80%;
+    height: 100%;
+    
+
+}
+.div-container-relate .img-div{
+    background-image: url('../../assets/images/cimg2.png');
+    background-position: center;
+    background-size: cover;
+    width: 50%;
+    height: 100%;
+}
+
+.relative-container ul{
+    list-style: none;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 50px;
+    left: 10px;
+    
+}
+.relative-container ul li{
+    width: 100%;
+    height: 150px;
+    padding: 5px 5px 50px 5px;
+    box-shadow: -1px 0 3px rgba(0, 0, 0, 0.2);
+    margin-bottom: 10px;
+
+}
+
+.div-container-relate a{
+    text-decoration: none;
+    width: 50%;
+    font-size: 14px;
+    font-weight: 700;
+    color: gray;
+    padding-left: 10px;
+}
+.relative-container button{
+    width: 100%;
+    height: 40px;
+    position: absolute;
+    bottom: 0;
+    left: 10px;
+    border-radius: 5px;
+    border: transparent;
+    font-size: 12px;
+    color: gray;
+    font-weight: 700;
+    box-shadow: -1px 0 3px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
 }
