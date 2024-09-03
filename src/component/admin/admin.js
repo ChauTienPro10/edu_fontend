@@ -11,6 +11,7 @@ import { CiSearch } from "react-icons/ci";
 import { GiArchiveRegister } from "react-icons/gi";
 import { Pie } from 'react-chartjs-2';
 import { IoSettings } from "react-icons/io5";
+import Course from "./course";
 import { Chart as ChartJS, Title, Tooltip, Legend, ArcElement } from 'chart.js';
 ChartJS.register(Title, Tooltip, Legend, ArcElement);
 function Admin(){
@@ -66,7 +67,7 @@ function Content(){
                 }}/></div>
             </div>
             <div className="content-side-board">
-                <Homecomponent/>
+                <Course/>
             </div>
         </div>
     )

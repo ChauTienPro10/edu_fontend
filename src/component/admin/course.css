@@ -1,0 +1,17 @@
+.course-body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+}
+.course-body-filter{
+    width: 90%;
+    height: 50px;
+    display: flex;
+    align-items: center;
+}
+.course-body-filter-container{
+    margin: auto;
+}
