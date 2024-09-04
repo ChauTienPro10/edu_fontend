@@ -113,6 +113,11 @@
     margin-top: 20px;
     box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
 }
+.content-side .content-side-board .content-side-board-child{
+    width: 100%;
+    height: 600px;
+   
+}
 
 .content-side .content-side-board .dash-board-home{
     display: flex;
@@ -166,4 +171,9 @@
 }
 .board-registration{
     background: rgb(99, 184, 99);
+}
+
+
+.hiden{
+    display: none;
 }

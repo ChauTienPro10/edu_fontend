@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState} from "react";
 import './admin.css';
 import { RiAdminFill } from "react-icons/ri";
 import { IoHome } from "react-icons/io5";
@@ -12,19 +12,26 @@ import { GiArchiveRegister } from "react-icons/gi";
 import { Pie } from 'react-chartjs-2';
 import { IoSettings } from "react-icons/io5";
 import Course from "./course";
+import Statistic from "./statistic";
 import { Chart as ChartJS, Title, Tooltip, Legend, ArcElement } from 'chart.js';
 ChartJS.register(Title, Tooltip, Legend, ArcElement);
 function Admin(){
+  const [indextask,setIndextask]=useState(0);
     return(
         <div className="main-body">
-            <Taskbar/>
-            <Content/>
+            <Taskbar indextask={indextask} setIndextask={setIndextask}/>
+            <Content indextask={indextask} setIndextask={setIndextask}/>
         </div>
     );
 }
 
 
-function Taskbar(){
+function Taskbar({ indextask,setIndextask }){
+    const activeStyle = {
+        backgroundColor: 'rgb(77, 121, 214)',
+        color: 'white',
+    };
+    
     return(
         <div className="task-bar">
           
@@ -33,17 +40,17 @@ function Taskbar(){
                 </div>
                 <div className="list-task">
                     <ul className="list-task-ul">
-                        <li><IoHome style={{fontSize:'20px',marginRight:'5px'}}/><p style={{fontSize:'14px',width:'100px'}}>Trang chủ</p>
+                        <li style={indextask===1?activeStyle:{}} onClick={()=>{setIndextask(1)}}><IoHome style={{fontSize:'20px',marginRight:'5px'}}/><p style={{fontSize:'14px',width:'100px'}}>Trang chủ</p>
                            <IoMdArrowDropright style={{marginLeft:'90px'}}/>
                         </li>
-                        <li><FaBookMedical style={{fontSize:'20px',marginRight:'5px'}}/><p style={{fontSize:'14px',width:'100px'}}>Khóa học</p>
+                        <li style={indextask===2?activeStyle:{}} onClick={()=>{setIndextask(2)}}><FaBookMedical style={{fontSize:'20px',marginRight:'5px'}}/><p style={{fontSize:'14px',width:'100px'}}>Khóa học</p>
                            <IoMdArrowDropright style={{marginLeft:'90px'}}/>
                         </li>
-                        <li><FaChalkboardTeacher style={{fontSize:'20px',marginRight:'5px'}}/><p style={{fontSize:'14px',width:'100px'}}>Giáo viên</p>
+                        <li style={indextask===3?activeStyle:{}} onClick={()=>{setIndextask(3)}}><FaChalkboardTeacher style={{fontSize:'20px',marginRight:'5px'}}/><p style={{fontSize:'14px',width:'100px'}}>Giáo viên</p>
                         <IoMdArrowDropright style={{marginLeft:'90px'}}/></li>
-                        <li><PiStudentFill style={{fontSize:'20px',marginRight:'5px'}}/><p style={{fontSize:'14px',width:'100px'}}>Học viên</p>
+                        <li style={indextask===4?activeStyle:{}} onClick={()=>{setIndextask(4)}}><PiStudentFill style={{fontSize:'20px',marginRight:'5px'}}/><p style={{fontSize:'14px',width:'100px'}}>Học viên</p>
                         <IoMdArrowDropright style={{marginLeft:'90px'}}/></li>
-                        <li><FcStatistics style={{fontSize:'20px',marginRight:'5px'}}/><p style={{fontSize:'14px',width:'100px'}}>Doanh số</p>
+                        <li style={indextask===5?activeStyle:{}} onClick={()=>{setIndextask(5)}}><FcStatistics style={{fontSize:'20px',marginRight:'5px'}}/><p style={{fontSize:'14px',width:'100px'}}>Doanh số</p>
                         <IoMdArrowDropright style={{marginLeft:'90px'}}/></li>
                     </ul>
               
@@ -53,7 +60,9 @@ function Taskbar(){
     );
     
 }
-function Content(){
+function Content({ indextask,setIndextask }){
+   
+
     return(
         <div className="content-side">
             <div className="top-side">
@@ -67,10 +76,14 @@ function Content(){
                 }}/></div>
             </div>
             <div className="content-side-board">
-                <Course/>
+              <div className={`content-side-board-child  ${indextask!==1?'hiden':''} `} ><Homecomponent /></div>
+              <div className={ `content-side-board-child  ${indextask!==2?'hiden':''}`} ><Course /></div>
+              <div className={`content-side-board-child  ${indextask!==3?'hiden':''}`} ><Statistic /></div>
+              <div className={`content-side-board-child  ${indextask!==4?'hiden':''}`} ><Statistic /></div>
+              <div className={`content-side-board-child  ${indextask!==5?'hiden':''}`} ><Statistic /></div>
             </div>
         </div>
-    )
+    ) 
 }
 
 function Homecomponent(){

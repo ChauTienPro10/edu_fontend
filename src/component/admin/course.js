@@ -3,7 +3,11 @@ import  './course.css';
 import { color } from "chart.js/helpers";
 import { IoEyeSharp } from "react-icons/io5";
 import { width } from "@fortawesome/free-solid-svg-icons/fa0";
+import { FaPencil } from "react-icons/fa6";
+import { IoCheckmarkDoneCircle } from "react-icons/io5";
+import { FaTrashCan } from "react-icons/fa6";
 function Course(){
+    const [openPanel,setOpenPanel]=useState(false); // quan ly dong mo bang dieu chinh khoa hoc
     //  khu vuc su ly lua chon cap bac -start
     const [selectedValueLevel, setSelectedValuelevel] = useState(''); //khai bao biên quan lý lựa chọn cấp bậc
 
@@ -68,13 +72,16 @@ function Course(){
 
                 
             </div>
-            <DataTable />
+            <DataTable openPanel={openPanel} setOpenPanel={setOpenPanel}/>
+            <PanelControl openPanel={openPanel} setOpenPanel={setOpenPanel}/>
+            
         </div>
+        
     )
 }
 
 
-const DataTable = () => {
+const DataTable = ({openPanel,setOpenPanel}) => {
     const dataList = [
         { id: 1, name: 'Toán', teacher: "Châu Dương Phát Tiến", level: 'ĐH' },
         { id: 2, name: 'English', teacher: "Châu Dương Phát Tiến", level: 'ĐH' },
@@ -149,7 +156,7 @@ const DataTable = () => {
                         <td style={tdStyle}>{item.name}</td>
                         <td style={tdStyle}>{item.teacher}</td>
                         <td style={tdStyle}>{item.level}</td>
-                        <td style={tdStyle}><button style={{background:'transparent',border:'transparent',cursor:'pointer'}}><IoEyeSharp /></button></td>
+                        <td style={tdStyle}><button onClick={()=>{setOpenPanel(!openPanel)}} style={{background:'transparent',border:'transparent',cursor:'pointer'}}><IoEyeSharp /></button></td>
                     </tr>
                 ))}
             </tbody>
@@ -157,4 +164,49 @@ const DataTable = () => {
     </div>
     );
 };
+
+function PanelControl({openPanel,setOpenPanel}){
+    const [nameCourse,setNameCourse]=useState("PEN C-Tiếng anh");// quan ly ten khoa hoc
+    const [nameMod , setNameMod]=useState(false); // quan ly bat tat sua ten khoa hoc
+    const [price,setPrice]=useState(1000) //quan ly gia
+    const [priceMod,setPriceMod]=useState(false); // quan ly che do chinh sua gia
+    return (
+        <div className={`control-body ${openPanel ?'':'hiden'}`}>
+            <div className="control-body-container">
+                <div onClick={()=>{setOpenPanel(false)}} className="close">x</div>
+                <div className="control-body-container-both control-body-container-left">
+                    <img src='https://github.com/ChauTienPro10/Core-Infrastructure-Fundamentals-/blob/main/46banner-webphuongpa-715x400-1.png?raw=true'/>
+                    <div className="input-name input-container">
+                        <input  style={{ display: !nameMod ? 'none' : '' ,background:'rgba(255, 255, 255, 0.8)'}} type="text" placeholder={nameCourse}
+                        value={nameCourse} onChange={(e)=>setNameCourse(e.target.value)}/>
+                        <h4 style={{ display: nameMod ? 'none' : '' }}>{nameCourse}</h4>
+                        <button  onClick={()=>{setNameMod(!nameMod)}} style={{marginLeft:'10px',border:'transparent',
+                            background:'transparent', color:'grey',cursor:'pointer'
+                        }}>{nameMod ? <IoCheckmarkDoneCircle /> : <FaPencil />}</button>
+                    </div>
+
+                    <div className="input-price input-container">
+                        <input  style={{ display: !priceMod ? 'none' : '',background:'rgba(255, 255, 255, 0.8)' }} type="number" placeholder={price}
+                        value={price} onChange={(e)=>setPrice(e.target.value)}/>
+                        <p style={{ display: priceMod ? 'none' : '' ,color:'grey'}}>Giá :{price} đ</p>
+                        <button  onClick={()=>{setPriceMod(!priceMod)}} style={{marginLeft:'10px',border:'transparent',
+                            background:'transparent', color:'grey',cursor:'pointer'
+                        }}>{priceMod ? <IoCheckmarkDoneCircle /> : <FaPencil />}</button>
+                    </div>
+                    <div className="submit-options">
+                        <button style={{background:'  rgb(77, 121, 214)'}}>Xác nhận</button>
+                        <button style={{background:'rgb(248, 140, 52)'}}>Hủy bỏ</button>
+                    </div>
+                    
+                </div>
+                <div className="control-body-container-both control-body-container-right">
+                    <div className="avt-container"></div>
+                    <h4 style={{color:'grey', marginTop:'20px'}}>Giáo viên : {' Châu Dương Phát Tiến'}</h4>
+                    <h4 style={{color:'grey', marginTop:'20px'}}>Cấp bậc đào tạo : {' ĐH'}</h4>
+                    <FaTrashCan style={{color:'red',width:'50px',height:'50px', cursor:'pointer',marginTop:'50px'}}/>
+                </div>
+            </div>
+        </div>
+    )
+}
 export default Course
