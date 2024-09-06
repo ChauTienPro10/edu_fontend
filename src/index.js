@@ -10,7 +10,7 @@ import Admin from './component/admin/admin';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <Admin />
+    <Home />
   </React.StrictMode>
 );
 reportWebVitals();

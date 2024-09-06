@@ -6,11 +6,47 @@ import { FaQuestionCircle } from "react-icons/fa";
 import { FaChevronLeft } from "react-icons/fa";
 import { FaChevronRight } from "react-icons/fa";
 import axios from 'axios';
-import { SERVER_URL } from "../../config";
+import { SERVER_URL,SERVER_ELASTICSEARCH } from "../../config";
+import { BrowserRouter as Router, Route, Routes, Link,useLocation,useNavigate,Switch   } from 'react-router-dom';
 
-function Thpt(){
-    const [countTHPT,setCountTHPT]=useState(5);
+
+function Thpt({_course,_setCourse}){
+    
+    
+
+    //   lay danh sach khoa hoc
+    const [courses,setCourses]=useState([]);
+    useEffect(() => {
+        // Lấy danh sách khóa học từ API hoặc backend
+        fetchCourses();
+      }, []);
+    const fetchCourses = async () => {
+        try {
+        const response = await axios.get(`${SERVER_ELASTICSEARCH}/elasticSearch/course/getLevel?level=3`);
+        await setCourses(response.data);
+        console.log(courses.length);
+        
+        } catch (error) {
+        console.error('Error fetching courses:', error);
+        }
+    };
+    useEffect(() => {
+        console.log('Number of courses:', courses.length);
+        setCountTHPT(courses.length);
+        setCountTHPTHot(courses.length);
+    }, [courses]); // Runs every time 'courses' state changes
+   
+    const navigate = useNavigate();
+     useEffect(() => {
+        if (_course !== null) {
+          navigate('/course');
+        }
+      }, [_course, navigate]);
+    const [countTHPT,setCountTHPT]=useState(courses.length); // quan ly new
+    const [countTHPTHot,setCountTHPTHot]=useState(courses.length); // quan ly hot
     const [position, setPosition] = useState({ x: 0, y: 0 });
+    const [positionHot, setPositionHot] = useState({ x: 0, y: 0 });
+
     const handleMouseDown = (event) => {
         const initialX = event.clientX - position.x;
         const handleMouseMove = (event) => {
@@ -45,23 +81,43 @@ function Thpt(){
         document.addEventListener('mouseup', handleMouseUp);
       };
 
-    //   lay danh sach khoa hoc
-    const [courses,setCourses]=useState([]);
-    useEffect(() => {
-        // Lấy danh sách khóa học từ API hoặc backend
-        fetchCourses();
-      }, []);
-    const fetchCourses = async () => {
-        try {
-        const response = await axios.get(`${SERVER_URL}/course/getCourse`);
-        await setCourses(response.data);
-        
-        
-        } catch (error) {
-        console.error('Error fetching courses:', error);
-        }
-    };
+      const handleMouseDownHot = (event) => {
+        const initialX = event.clientX - positionHot.x;
+        const handleMouseMove = (event) => {
+            if(event.clientX - initialX<=0 && event.clientX - initialX>=(-250*(countTHPTHot-5))){
+                setPositionHot({
+                    x: event.clientX - initialX,
+                    y: positionHot.y
+                  });
+            }
+            else{
+                if(event.clientX - initialX>0)
+                setPositionHot({
+                    x: 0,
+                    y: positionHot.y
+                  });
+                if(event.clientX - initialX<(-250*(countTHPTHot-5)))
+                    setPositionHot({
+                        x: (-250*(countTHPTHot-5)),
+                        y: positionHot.y
+                      });
+            }
+          
+        };
     
+        const handleMouseUp = () => {
+          document.removeEventListener('mousemove', handleMouseMove);
+          document.removeEventListener('mouseup', handleMouseUp);
+          
+        };
+    
+        document.addEventListener('mousemove', handleMouseMove);
+        document.addEventListener('mouseup', handleMouseUp);
+      };
+
+      const toCourseMore=()=>{
+
+      }
     return(
         <div className="thpt-container">
             <div className="hot-content new-content">
@@ -105,113 +161,77 @@ function Thpt(){
                         <div className="circle-right"><FaChevronRight  style={{color:'gray'}}/></div>
                     </div>
                     <div className="slider" onMouseDown={handleMouseDown} style={{ left: `${position.x}px`,top: `${position.y}px`}}>
-                        <div className="course">
-                            <div className="course-dt">
+                        {courses.map((course, index) => (
+                            <div className="course" key={index}>
+                                <div className="course-dt">
                                 <p style={{position:'absolute',top:'0',left:'0'
                                     ,padding:'4px',background:'blue',color:'white',fontSize:'10px'
                                 }}>NEW</p>
                                 <img src='https://github.com/ChauTienPro10/Core-Infrastructure-Fundamentals-/blob/main/46banner-webphuongpa-715x400-1.png?raw=true'/>
-                                {/* <h4>{courses[0].name}</h4> */}
-                                <h4>Tieng Anh Co Ban</h4>
-                                <p>Giáo viên:<a href="#">thầy Châu Dương Phát Tiến</a></p>
+                                <h4>{course.title}</h4>
+                                <p>Giáo viên:<a href="#">{course.teacher}</a></p>
                                 <div className="baigiang" >
                                     <FaYoutube style={{color:'red'}}/>
                                     <a href="#">61 bài giảng</a></div>
                                 <div className="baigiang" >
                                     <FaQuestionCircle style={{color:'rgb(0, 119, 255)'}}/>
                                     <a  href="#">1000 câu hỏi</a></div>
-                                <button onClick={()=>{alert('l')}} className="but-moreinfor">TÌM HIỂU THÊM</button>
+                                <button onClick={async ()=>{await _setCourse(course);navigate('/course');}} className="but-moreinfor">TÌM HIỂU THÊM</button>
                             </div>
-                        </div>
-                        <div className="course">
-                            <div className="course-dt">
-                                <p style={{position:'absolute',top:'0',left:'0'
-                                        ,padding:'4px',background:'blue',color:'white',fontSize:'10px'
-                                }}>NEW</p>
-                                <img src='https://github.com/ChauTienPro10/Core-Infrastructure-Fundamentals-/blob/main/46banner-webphuongpa-715x400-1.png?raw=true'/>
-                                <h4>PEN-C TIẾNG ANH</h4>
-                                <p>Giáo viên:<a href="#">thầy Châu Dương Phát Tiến</a></p>
-                                <div className="baigiang" >
-                                    <FaYoutube style={{color:'red'}}/>
-                                    <a href="#">61 bài giảng</a></div>
-                                <div className="baigiang" >
-                                    <FaQuestionCircle style={{color:'rgb(0, 119, 255)'}}/>
-                                    <a  href="#">1000 câu hỏi</a></div>
-                                <button onClick={()=>{alert('l')}} className="but-moreinfor">TÌM HIỂU THÊM</button>
                             </div>
-                        </div>
-                        <div className="course">
-                            <div className="course-dt">
-                                <p style={{position:'absolute',top:'0',left:'0'
-                                        ,padding:'4px',background:'blue',color:'white',fontSize:'10px'
-                                }}>NEW</p>
-                                <img src='https://github.com/ChauTienPro10/Core-Infrastructure-Fundamentals-/blob/main/46banner-webphuongpa-715x400-1.png?raw=true'/>
-                                <h4>PEN-C TIẾNG ANH</h4>
-                                <p>Giáo viên:<a href="#">thầy Châu Dương Phát Tiến</a></p>
-                                <div className="baigiang" >
-                                    <FaYoutube style={{color:'red'}}/>
-                                    <a href="#">61 bài giảng</a></div>
-                                <div className="baigiang" >
-                                    <FaQuestionCircle style={{color:'rgb(0, 119, 255)'}}/>
-                                    <a  href="#">1000 câu hỏi</a></div>
-                                <button className="but-moreinfor">TÌM HIỂU THÊM</button>
-                            </div>
-                        </div>
-                        <div className="course">
-                            <div className="course-dt">
-                                <p style={{position:'absolute',top:'0',left:'0'
-                                        ,padding:'4px',background:'blue',color:'white',fontSize:'10px'
-                                }}>NEW</p>
-                                <img src='https://github.com/ChauTienPro10/Core-Infrastructure-Fundamentals-/blob/main/46banner-webphuongpa-715x400-1.png?raw=true'/>
-                                <h4>PEN-C TIẾNG ANH</h4>
-                                <p>Giáo viên:<a href="#">thầy Châu Dương Phát Tiến</a></p>
-                                <div className="baigiang" >
-                                    <FaYoutube style={{color:'red'}}/>
-                                    <a href="#">61 bài giảng</a></div>
-                                <div className="baigiang" >
-                                    <FaQuestionCircle style={{color:'rgb(0, 119, 255)'}}/>
-                                    <a  href="#">1000 câu hỏi</a></div>
-                                <button className="but-moreinfor">TÌM HIỂU THÊM</button>
-                            </div>
-                        </div>
-                        <div className="course">
-                            <div className="course-dt">
-                                <p style={{position:'absolute',top:'0',left:'0'
-                                        ,padding:'4px',background:'blue',color:'white',fontSize:'10px'
-                                }}>NEW</p>
-                                <img src='https://github.com/ChauTienPro10/Core-Infrastructure-Fundamentals-/blob/main/46banner-webphuongpa-715x400-1.png?raw=true'/>
-                                <h4>PEN-C TIẾNG ANH</h4>
-                                <p>Giáo viên:<a href="#">thầy Châu Dương Phát Tiến</a></p>
-                                <div className="baigiang" >
-                                    <FaYoutube style={{color:'red'}}/>
-                                    <a href="#">61 bài giảng</a></div>
-                                <div className="baigiang" >
-                                    <FaQuestionCircle style={{color:'rgb(0, 119, 255)'}}/>
-                                    <a  href="#">1000 câu hỏi</a></div>
-                                <button className="but-moreinfor">TÌM HIỂU THÊM</button>
-                            </div>
-                        </div>
+                        ))}
                         
                     </div>
                 </div>
             </div>
             <div className="hot-content">
             <div className="slider-container">
-                    <div className="but-tran prevous">
+            <div className="but-tran prevous" onClick={()=>{
+                            if(positionHot.x + 250<=0 && positionHot.x+250>=(-250*(countTHPTHot-5))){
+                                setPositionHot({
+                                    x: positionHot.x+250,
+                                    y: positionHot.y
+                                  });
+                            }
+                            else{
+                                if(position.x +250>0)
+                                setPositionHot({
+                                    x: 0,
+                                    y: positionHot.y
+                                  });
+                                
+                            }
+                        }}>
                         <div className="circle"><FaChevronLeft style={{color:'gray'}}/></div>
                     </div>
-                    <div className="but-tran next">
+                    <div className="but-tran next" onClick={()=>{
+                            if(positionHot.x - 250<=0 && positionHot.x-250>=(-250*(countTHPTHot-5))){
+                                setPositionHot({
+                                    x: positionHot.x-250,
+                                    y: positionHot.y
+                                  });
+                            }
+                            else{
+                                
+                                if(positionHot.x-250<(-250*(countTHPTHot-5)))
+                                    setPositionHot({
+                                        x: (-250*(countTHPTHot-5)),
+                                        y: positionHot.y
+                                      });
+                            }
+                        }}>
                         <div className="circle-right"><FaChevronRight  style={{color:'gray'}}/></div>
                     </div>
-                    <div className="slider">
-                        <div className="course">
-                            <div className="course-dt">
+                    <div className="slider" onMouseDown={handleMouseDownHot} style={{ left: `${positionHot.x}px`,top: `${positionHot.y}px`}}>
+                    {courses.map((course, index) => (
+                            <div className="course" key={index}>
+                                <div className="course-dt">
                                 <p style={{position:'absolute',top:'0',left:'0'
                                     ,padding:'4px',background:'red',color:'white',fontSize:'10px'
                                 }}>HOT</p>
                                 <img src='https://github.com/ChauTienPro10/Core-Infrastructure-Fundamentals-/blob/main/46banner-webphuongpa-715x400-1.png?raw=true'/>
-                                <h4>PEN-C TIẾNG ANH</h4>
-                                <p>Giáo viên:<a href="#">thầy Châu Dương Phát Tiến</a></p>
+                                <h4>{course.title}</h4>
+                                <p>Giáo viên:<a href="#">{course.teacher}</a></p>
                                 <div className="baigiang" >
                                     <FaYoutube style={{color:'red'}}/>
                                     <a href="#">61 bài giảng</a></div>
@@ -220,75 +240,8 @@ function Thpt(){
                                     <a  href="#">1000 câu hỏi</a></div>
                                 <button className="but-moreinfor">TÌM HIỂU THÊM</button>
                             </div>
-                        </div>
-                        <div className="course">
-                            <div className="course-dt">
-                                <p style={{position:'absolute',top:'0',left:'0'
-                                        ,padding:'4px',background:'red',color:'white',fontSize:'10px'
-                                }}>HOT</p>
-                                <img src='https://github.com/ChauTienPro10/Core-Infrastructure-Fundamentals-/blob/main/46banner-webphuongpa-715x400-1.png?raw=true'/>
-                                <h4>PEN-C TIẾNG ANH</h4>
-                                <p>Giáo viên:<a href="#">thầy Châu Dương Phát Tiến</a></p>
-                                <div className="baigiang" >
-                                    <FaYoutube style={{color:'red'}}/>
-                                    <a href="#">61 bài giảng</a></div>
-                                <div className="baigiang" >
-                                    <FaQuestionCircle style={{color:'rgb(0, 119, 255)'}}/>
-                                    <a  href="#">1000 câu hỏi</a></div>
-                                <button className="but-moreinfor">TÌM HIỂU THÊM</button>
                             </div>
-                        </div>
-                        <div className="course">
-                            <div className="course-dt">
-                                <p style={{position:'absolute',top:'0',left:'0'
-                                        ,padding:'4px',background:'red',color:'white',fontSize:'10px'
-                                }}>HOT</p>
-                                <img src='https://github.com/ChauTienPro10/Core-Infrastructure-Fundamentals-/blob/main/46banner-webphuongpa-715x400-1.png?raw=true'/>
-                                <h4>PEN-C TIẾNG ANH</h4>
-                                <p>Giáo viên:<a href="#">thầy Châu Dương Phát Tiến</a></p>
-                                <div className="baigiang" >
-                                    <FaYoutube style={{color:'red'}}/>
-                                    <a href="#">61 bài giảng</a></div>
-                                <div className="baigiang" >
-                                    <FaQuestionCircle style={{color:'rgb(0, 119, 255)'}}/>
-                                    <a  href="#">1000 câu hỏi</a></div>
-                                <button className="but-moreinfor">TÌM HIỂU THÊM</button>
-                            </div>
-                        </div>
-                        <div className="course">
-                            <div className="course-dt">
-                                <p style={{position:'absolute',top:'0',left:'0'
-                                        ,padding:'4px',background:'red',color:'white',fontSize:'10px'
-                                }}>HOT</p>
-                                <img src='https://github.com/ChauTienPro10/Core-Infrastructure-Fundamentals-/blob/main/46banner-webphuongpa-715x400-1.png?raw=true'/>
-                                <h4>PEN-C TIẾNG ANH</h4>
-                                <p>Giáo viên:<a href="#">thầy Châu Dương Phát Tiến</a></p>
-                                <div className="baigiang" >
-                                    <FaYoutube style={{color:'red'}}/>
-                                    <a href="#">61 bài giảng</a></div>
-                                <div className="baigiang" >
-                                    <FaQuestionCircle style={{color:'rgb(0, 119, 255)'}}/>
-                                    <a  href="#">1000 câu hỏi</a></div>
-                                <button className="but-moreinfor">TÌM HIỂU THÊM</button>
-                            </div>
-                        </div>
-                        <div className="course">
-                            <div className="course-dt">
-                                <p style={{position:'absolute',top:'0',left:'0'
-                                        ,padding:'4px',background:'red',color:'white',fontSize:'10px'
-                                }}>HOT</p>
-                                <img src='https://github.com/ChauTienPro10/Core-Infrastructure-Fundamentals-/blob/main/46banner-webphuongpa-715x400-1.png?raw=true'/>
-                                <h4>PEN-C TIẾNG ANH</h4>
-                                <p>Giáo viên:<a href="#">thầy Châu Dương Phát Tiến</a></p>
-                                <div className="baigiang" >
-                                    <FaYoutube style={{color:'red'}}/>
-                                    <a href="#">61 bài giảng</a></div>
-                                <div className="baigiang" >
-                                    <FaQuestionCircle style={{color:'rgb(0, 119, 255)'}}/>
-                                    <a  href="#">1000 câu hỏi</a></div>
-                                <button className="but-moreinfor">TÌM HIỂU THÊM</button>
-                            </div>
-                        </div>
+                        ))}
                         
                     </div>
                 </div>

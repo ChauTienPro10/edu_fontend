@@ -4,16 +4,22 @@ import Header from "../../header/Header";
 import { IoIosHome } from "react-icons/io";
 import { FaQuestionCircle } from "react-icons/fa";
 import YoutubePlayer from "../../videos/youtube";
-function Course(){
+import { FaPencil } from "react-icons/fa6";
+import { IoCheckmarkDoneCircle } from "react-icons/io5";
+function Course({_course,_setCourse}){
     return(
         <div className="course-container">
             <Header />
-            <Body />
-            <ContentCourse />
+            <Body _course={_course} _setCourse={_setCourse}/>
+            <ContentCourse _course={_course}/>
         </div>
     );
 }
-function Body(){
+function Body({_course,_setCourse}){
+    const [desMod,setDesmod]=useState(false) // quan ly bat tat mode phan mo ta
+    const [description,setDescription]= // quan ly thong tin mo ta 
+    useState('hiệu quả và dễ dàng hơn cùng thầy Phạm Trọng Hiếu. Với phương pháp tiếp cận thú vị, khóa học này sẽ giúp các em bớt sợ Tiếng Anh và cảm thấy gần gũi như tiếng Việt, từ đó đạt điểm cao trong bài thi tốt nghiệp THPT.')
+    console.log(_course)
     return (
         <div className="course-body">
            <nav className="Breadcrumb-container" aria-label="Breadcrumb">
@@ -26,9 +32,21 @@ function Body(){
             <div className="ad-board"></div>
             <div className="more-infor">
                 <div className="infor-left">
-                    <h4 style={{color:'gray'}}>{'PEN-C TIENG ANH- THẦY PHẠM TRỌNG HIẾU'}</h4>
-                    <p><a style={{color:'blue'}} href="#">Luyện thi đại học môn Tiếng Anh</a>{' hiệu quả và dễ dàng hơn cùng thầy Phạm Trọng Hiếu. Với phương pháp tiếp cận thú vị, khóa học này sẽ giúp các em bớt sợ Tiếng Anh và cảm thấy gần gũi như tiếng Việt, từ đó đạt điểm cao trong bài thi tốt nghiệp THPT.'}</p>
-                    <p>{'Giáo viên '}<a href="#" style={{color:'blue'}} >Thầy Phạm Trọng Hiếu</a></p>
+                    <h4 style={{color:'gray'}}>{_course.title}</h4> 
+                    <p><a style={{color:'blue'}} href="#">{_course.description}</a><p style={{ display: desMod ? 'none' : '' }}>{description} </p> 
+                        <textarea
+                            value={description}
+                            onChange={(e)=>setDescription(e.target.value)}
+                            rows="5"  // Number of rows visible
+                            cols="40" // Number of columns visible
+                            placeholder="Enter your text here"
+                            style={{ display: !desMod ? 'none' : '' ,background:'rgba(255, 255, 255, 0.8)'}}
+                        />
+                         <FaPencil style={{ display: desMod ? 'none' : '',cursor:'pointer'}} onClick={()=>{setDesmod(!desMod)}} />
+                         <IoCheckmarkDoneCircle style={{ display: !desMod ? 'none' : '',cursor:'pointer'}} onClick={()=>{setDesmod(!desMod)}} />
+                    </p>
+                    {/* ket thuc phan thay doi noi dung mo ta */}
+                    <p>{'Giáo viên '}<a href="#" style={{color:'blue'}} >{_course.teacher}</a></p>
                     <div className="video-container">
                         {/* <iframe width="650" height="350" src="https://www.youtube.com/watch?v=1nA33oSe0Qc&pp=ygUCZjg%3D" 
                         frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
@@ -81,7 +99,15 @@ function Body(){
     )
 }
 
-function ContentCourse(){
+function ContentCourse({_course}){
+    const [methods,setMethods]=useState(["phương thức 1","phương thức 2"]) // phuong thuc hoc tap
+    const [methodMod,setMethodMod]=useState(false);// dieu kihen bac tat mode
+    const [newMethod,setNewMethod]=useState('');// luu tru phuong thuc ,moi
+    async function  handleAddmethod(data){
+        if(methodMod===true){ // ham xu ly them phuong thuc hoc tap moi
+            setMethods((prevMethods) => [...prevMethods, data]);
+        }
+    }
     return (
         <div className="content-course-body">
             <div className="course-body-left">
@@ -89,12 +115,19 @@ function ContentCourse(){
                     <div className="descrip-title">
                         <h4 style={{color:'rgba(0,0,0,0.7)',marginTop:"20px"}}>Mô tả khóa học</h4>
                         <p style={{fontSize:'14px',marginTop:'40px',color:'gray'}}>
-                        Trong khóa Luyện thi PEN-C - tổng ôn toàn diện, Thầy Phạm Trọng Hiếu sẽ giúp học sinh có lộ trình ôn thi môn Tiếng Anh bằng phương pháp của riêng thầy, bao gồm:</p>
+                        {`Trong khóa ${_course.title} , Thầy ${_course.teacher} sẽ giúp học sinh có lộ trình ôn thi môn học bằng phương pháp của riêng thầy, bao gồm:`}</p>
                         <ul style={{paddingLeft:'50px',fontSize:'14px',color:'gray'}}>
-                            <li>Phương pháp phân tích tổng quát một câu chuẩn.</li>
-                            <li>Ứng dụng của việc xác định thành phần câu vào kĩ năng đọc và cải thiện từ vựng.</li>
-                            <li>Phân tích chi tiết các thành phần câu trong Tiếng Anh.</li>
-                            <li>Tăng cường vốn từ vựng qua các chủ đề thân thuộc với học sinh.</li>
+                            {methods.map((method, index)=>(
+                                <li>{method}</li>
+                            ))}
+                            <input  style={{ display: !methodMod ? 'none' : '',background:'rgba(255, 255, 255, 0.8)' }} type="text" placeholder={'phương thức mới'}
+                        value={newMethod} onChange={(e)=>setNewMethod(e.target.value)}/>
+                            <button style={{background:'grey', border:'traparent',padding:'1px 3px 1px 3px', borderRadius:'50%'
+                                ,cursor:'pointer', color:'white'
+                            }} onClick={async(e)=>{
+                               await handleAddmethod(newMethod);
+                               setMethodMod(!methodMod);
+                            }}>+</button>
                         </ul>
                         <p style={{fontSize:'14px',marginTop:'0',color:'gray'}}>
                             Với lộ trình ôn thi bài bản cùng phong cách giảng dạy độc đáo, sáng tạo, quá trình luyện thi của học sinh sẽ đạt được hiệu quả cao và đạt được điểm số tốt nhất trong kỳ thi tốt nghiệp THPT 2023.</p>

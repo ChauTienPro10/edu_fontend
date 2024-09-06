@@ -26,9 +26,10 @@ import { IoMdExit } from "react-icons/io";
 import Footer from '../footer/footer';
 import Thpt from '../thpt/thpt';
 import Supporter from '../supporter/supporter';
+import Course from '../courses/penCTiengAnh/course';
 function Home() {
   
-  
+  const [_course,_setCourse]=useState(null)
   return (
     
     <div className='container-home'> 
@@ -37,12 +38,13 @@ function Home() {
         <Route path="/login" element={<Login />} /> 
         <Route path="/signup" element={<Signup />} />
         <Route path="/supporter" element={<Supporter />} />
+        <Route path="/course" element={<Course _course={_course} _setCourse={_setCourse}/>} />
         <Route path="/" element={
           <>
             <Alert />
             <Myheader />
             <Mybody />
-            <Courses />
+            <Courses _course={_course} _setCourse={_setCourse}/>
             <Footer/>
           </>
         } />
@@ -181,7 +183,7 @@ function Logined({isLogin,email,onLogout}){
   );
 }
 
-function Mybody(){
+function Mybody({_course,_setCourse}){
   // ==========================================================================
   const [indexID, setIndexId]=useState(0);
   const [isHovered, setIsHovered] = useState(false);// xu ly hien thi show-detail  
@@ -210,6 +212,7 @@ function Mybody(){
     };
   }, []);
 
+  
  
   return (
     <div className='body'>
@@ -465,18 +468,18 @@ function Certificate(){
 
 
 
-function Courses(){
+function Courses({_course,_setCourse}){
   return(
     <div className='courses-container'>
       <div className='thpt-thcs-th thpt-content' id='thpt'>
         <h4 style={{color:'gray',padding:'10px'}}>TRUNG HỌC PHỔ THÔNG</h4>
-        <Thpt /></div>
+        <Thpt _course={_course} _setCourse={_setCourse}/></div>
       <div className='thpt-thcs-th thcs-content' id='thcs'>
       <h4 style={{color:'gray',padding:'10px'}}>TRUNG HỌC CƠ SỞ</h4>
-        <Thpt /></div>
+        <Thpt _course={_course} _setCourse={_setCourse}/></div>
       <div className='thpt-thcs-th th-content' id='th'>
       <h4 style={{color:'gray',padding:'10px'}}>TIỂU HỌC</h4>
-        <Thpt /></div>
+        <Thpt _course={_course} _setCourse={_setCourse}/></div>
       
     </div>
   );
