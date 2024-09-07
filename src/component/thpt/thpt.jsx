@@ -115,8 +115,9 @@ function Thpt({_course,_setCourse}){
         document.addEventListener('mouseup', handleMouseUp);
       };
 
-      const toCourseMore=()=>{
-
+       const toCourseMore=async(course)=>{
+        await _setCourse(course);
+        navigate('/course', { state: { course } });
       }
     return(
         <div className="thpt-container">
@@ -176,7 +177,7 @@ function Thpt({_course,_setCourse}){
                                 <div className="baigiang" >
                                     <FaQuestionCircle style={{color:'rgb(0, 119, 255)'}}/>
                                     <a  href="#">1000 câu hỏi</a></div>
-                                <button onClick={async ()=>{await _setCourse(course);navigate('/course');}} className="but-moreinfor">TÌM HIỂU THÊM</button>
+                                <button onClick={async ()=>{toCourseMore(course)}} className="but-moreinfor">TÌM HIỂU THÊM</button>
                             </div>
                             </div>
                         ))}

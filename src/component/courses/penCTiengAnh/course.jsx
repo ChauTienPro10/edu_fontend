@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState ,useEffect} from "react";
 import './course.css';
 import Header from "../../header/Header";
 import { IoIosHome } from "react-icons/io";
@@ -6,20 +6,26 @@ import { FaQuestionCircle } from "react-icons/fa";
 import YoutubePlayer from "../../videos/youtube";
 import { FaPencil } from "react-icons/fa6";
 import { IoCheckmarkDoneCircle } from "react-icons/io5";
+import { SERVER_ELASTICSEARCH } from "../../../config";
+import { useLocation } from "react-router-dom";
+import axios from 'axios';
+
 function Course({_course,_setCourse}){
+    const location = useLocation();
+    const { course } = location.state || {};
+    const [desContent,setDesContent]=useState('');
+
     return(
         <div className="course-container">
             <Header />
-            <Body _course={_course} _setCourse={_setCourse}/>
-            <ContentCourse _course={_course}/>
+            <Body _course={course} _setCourse={_setCourse} desContent={desContent} setDesContent={setDesContent} />
+            <ContentCourse _course={course} desContent={desContent} setDesContent={setDesContent}/>
         </div>
     );
 }
-function Body({_course,_setCourse}){
+function Body({_course,_setCourse,desContent,setDesContent}){
     const [desMod,setDesmod]=useState(false) // quan ly bat tat mode phan mo ta
-    const [description,setDescription]= // quan ly thong tin mo ta 
-    useState('hiệu quả và dễ dàng hơn cùng thầy Phạm Trọng Hiếu. Với phương pháp tiếp cận thú vị, khóa học này sẽ giúp các em bớt sợ Tiếng Anh và cảm thấy gần gũi như tiếng Việt, từ đó đạt điểm cao trong bài thi tốt nghiệp THPT.')
-    console.log(_course)
+    
     return (
         <div className="course-body">
            <nav className="Breadcrumb-container" aria-label="Breadcrumb">
@@ -33,10 +39,10 @@ function Body({_course,_setCourse}){
             <div className="more-infor">
                 <div className="infor-left">
                     <h4 style={{color:'gray'}}>{_course.title}</h4> 
-                    <p><a style={{color:'blue'}} href="#">{_course.description}</a><p style={{ display: desMod ? 'none' : '' }}>{description} </p> 
+                    <p><a style={{color:'blue'}} href="#">{_course.description}</a><p style={{ display: desMod ? 'none' : '' }}>{desContent} </p> 
                         <textarea
-                            value={description}
-                            onChange={(e)=>setDescription(e.target.value)}
+                            value={desContent}
+                            onChange={(e)=>setDesContent(e.target.value)}
                             rows="5"  // Number of rows visible
                             cols="40" // Number of columns visible
                             placeholder="Enter your text here"
@@ -99,15 +105,87 @@ function Body({_course,_setCourse}){
     )
 }
 
-function ContentCourse({_course}){
-    const [methods,setMethods]=useState(["phương thức 1","phương thức 2"]) // phuong thuc hoc tap
+function ContentCourse({_course,desContent, setDesContent}){
+   const [isTeacher,setIsTeacher]=useState(false);
+    const [inforCourse,setInforCourse]=useState(null); // quan ly thong khoa hoc
+    const [methods,setMethods]=useState(['']) // phuong thuc hoc tap
     const [methodMod,setMethodMod]=useState(false);// dieu kihen bac tat mode
+    const [reqMod,setReqMod]=useState(false);
+    const [newReq,setNewReq]=useState('')
     const [newMethod,setNewMethod]=useState('');// luu tru phuong thuc ,moi
+    const [requires,setRequires]=useState(['']) // quan ly yeu cau khoa hoc
+    const getInforOfCourse = async () => {
+        try {
+           
+        const response = await axios.get(`${SERVER_ELASTICSEARCH}/elasticSearch/course/getInforCourse?id=${_course.id}`);
+        console.log(_course.id);
+        await setInforCourse(response.data);
+        
+        
+        } catch (error) {
+        console.error('Error fetching courses:', error);
+        }
+    };
+
+    
+    useEffect(() => {
+        const fetchCourseInfo = async () => {
+          // Fetch information of the course by course id
+          await getInforOfCourse();
+        };
+      
+        fetchCourseInfo();
+      }, []); // Empty dependency array to ensure this runs only once on mount
+
+
+      useEffect(() => {
+        console.log('infor:', inforCourse);
+        if(inforCourse!=null){
+
+            setMethods(inforCourse.methods); // Use optional chaining in case inforCourse is null initially
+            setRequires(inforCourse.requires); 
+            setDesContent(inforCourse.descripContent);
+        }
+        
+    }, [inforCourse]);
+    
     async function  handleAddmethod(data){
-        if(methodMod===true){ // ham xu ly them phuong thuc hoc tap moi
-            setMethods((prevMethods) => [...prevMethods, data]);
+          if(methodMod===true && data !=='' && data!==null){ // ham xu ly them phuong thuc hoc tap moi
+            
+              setMethods((prevMethods) => [...prevMethods, data]);
+          }
+      }
+
+    async function  handleAddRequire(data){
+        if(reqMod===true && data !=='' && data!==null){ // ham xu ly them yeu cau  moi
+            setRequires((prev) => [...prev, data]);
         }
     }
+    const modifyCourseInfor = async () => {
+        const newInfor=
+            {   id:inforCourse.id,
+                methods: methods,
+                requires: requires,
+                course:  inforCourse.course,
+                descripContent: desContent,
+            }
+            console.log(newInfor);
+        
+        try {
+            const response = await axios.post(`${SERVER_ELASTICSEARCH}/elasticSearch/course/modifyInforCourse`, newInfor);
+            const { code, message, result } = response.data;
+
+            if (code === 1000) {
+                console.log('Modified Course:', result);
+            } else {
+                alert("that bai!")
+            }
+        } catch (error) {
+          
+            console.error('Error:', error);
+        }
+    };
+
     return (
         <div className="content-course-body">
             <div className="course-body-left">
@@ -117,12 +195,14 @@ function ContentCourse({_course}){
                         <p style={{fontSize:'14px',marginTop:'40px',color:'gray'}}>
                         {`Trong khóa ${_course.title} , Thầy ${_course.teacher} sẽ giúp học sinh có lộ trình ôn thi môn học bằng phương pháp của riêng thầy, bao gồm:`}</p>
                         <ul style={{paddingLeft:'50px',fontSize:'14px',color:'gray'}}>
-                            {methods.map((method, index)=>(
-                                <li>{method}</li>
-                            ))}
+                            {methods !==null  && 
+                                methods.map((method, index) => (
+                                    <li key={index}>{method}</li>
+                                ))
+                            }
                             <input  style={{ display: !methodMod ? 'none' : '',background:'rgba(255, 255, 255, 0.8)' }} type="text" placeholder={'phương thức mới'}
                         value={newMethod} onChange={(e)=>setNewMethod(e.target.value)}/>
-                            <button style={{background:'grey', border:'traparent',padding:'1px 3px 1px 3px', borderRadius:'50%'
+                            <button style={{display:!isTeacher?'none':'',background:'grey', border:'traparent',padding:'1px 3px 1px 3px', borderRadius:'50%'
                                 ,cursor:'pointer', color:'white'
                             }} onClick={async(e)=>{
                                await handleAddmethod(newMethod);
@@ -149,10 +229,19 @@ function ContentCourse({_course}){
                         <h4 style={{color:'rgba(0,0,0,0.7)',marginTop:"20px"}}>Yêu cầu khóa học</h4>
                         <p style={{fontStyle:'italic',fontSize:'14px',fontWeight:'bold',marginTop:'20px'}}>Yêu cầu đầu vào của khóa học</p>
                         <ul style={{color:"gray",fontSize:'14px',paddingLeft:'50px'}}>
-                            <li>Học sinh hiểu về cấu trúc câu, kết cấu câu trong tiếng Việt. Từ đó học sinh mới có sự đối chiếu sang Tiếng Anh.</li>
-                            <li>
-                            Trong quá trình luyện thi, cần chăm chỉ, nghiêm túc thực hành, đối chiếu và học theo thầy trong từng bài để rèn luyện.
-                            </li>
+                            {requires !==null && 
+                                    requires.map((rq, index) => (
+                                        <li key={index}>{rq}</li>
+                                    ))
+                                }
+                            <input  style={{ display: !reqMod ? 'none' : '',background:'rgba(255, 255, 255, 0.8)' }} type="text" placeholder={'phương thức mới'}
+                        value={newReq} onChange={(e)=>setNewReq(e.target.value)}/>
+                            <button style={{display:!isTeacher?'none':'',background:'grey', border:'traparent',padding:'1px 3px 1px 3px', borderRadius:'50%'
+                                ,cursor:'pointer', color:'white'
+                            }} onClick={async(e)=>{
+                               await handleAddRequire(newReq);
+                               setReqMod(!reqMod);
+                            }}>+</button>
                         </ul>
 
                         <p style={{fontStyle:'italic',fontSize:'14px',fontWeight:'bold',marginTop:'20px'}}>Kết quả học tập</p>
@@ -171,6 +260,14 @@ function ContentCourse({_course}){
                         <h4 style={{color:'rgba(0,0,0,0.7)',marginTop:"20px"}}>Đối tượng</h4>
                         <p style={{color:'gray',fontSize:'14px'}}>Khóa học phù hợp hơn với những học sinh học chưa tốt Tiếng Anh, học mãi không hiểu, muốn thử những phương pháp học mới</p>
                     </div>
+                </div>
+                <div style={{display:'flex', marginTop:'20px'}}>
+                        <button style={{display:!isTeacher?'none':'',background:'rgb(77, 121, 214)', padding:'3px 5px 3px 5px',
+                             border:'none',color:'white', boxShadow:'4px 4px 10px rgba(0, 0, 0, 0.2)'
+                             ,cursor:'pointer'}}
+                             onClick={()=>{modifyCourseInfor()}}
+                             >Cập nhật</button>
+                        
                 </div>
                 <ListVideo />
             </div>
