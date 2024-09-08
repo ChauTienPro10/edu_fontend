@@ -9,7 +9,8 @@ import { IoCheckmarkDoneCircle } from "react-icons/io5";
 import { SERVER_ELASTICSEARCH } from "../../../config";
 import { useLocation } from "react-router-dom";
 import axios from 'axios';
-
+import Videoslist from "./videosContainer";
+import Footer from "../../footer/footer";
 function Course({_course,_setCourse}){
     const location = useLocation();
     const { course } = location.state || {};
@@ -20,6 +21,7 @@ function Course({_course,_setCourse}){
             <Header />
             <Body _course={course} _setCourse={_setCourse} desContent={desContent} setDesContent={setDesContent} />
             <ContentCourse _course={course} desContent={desContent} setDesContent={setDesContent}/>
+            
         </div>
     );
 }
@@ -30,9 +32,9 @@ function Body({_course,_setCourse,desContent,setDesContent}){
         <div className="course-body">
            <nav className="Breadcrumb-container" aria-label="Breadcrumb">
                 <ol id="breadcrumb">
-                    <IoIosHome />
+                    {/* <IoIosHome />
                     <li><a href="/">Home</a><p>{' > '}</p></li>
-                    <li><a href="/khoa-hoc">khoa hoc</a></li>
+                    <li><a href="/khoa-hoc">khoa hoc</a></li> */}
                 </ol>
             </nav>
             <div className="ad-board"></div>
@@ -57,7 +59,7 @@ function Body({_course,_setCourse,desContent,setDesContent}){
                         {/* <iframe width="650" height="350" src="https://www.youtube.com/watch?v=1nA33oSe0Qc&pp=ygUCZjg%3D" 
                         frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
                         allowfullscreen></iframe> */}
-                        <YoutubePlayer videoId="7KDRqBpT8NA" />
+                        <YoutubePlayer videoId="7KDRqBpT8NA" _height={'390'} _width={'640'}/>
                         <p style={{color:'red'}}>Vui lòng không chia sẻ tài khoản cho người khác. Tài khoản vi phạm sẽ bị khóa vĩnh viễn.HOCMAI chúc bạn học tập hiệu quả!</p>
                     </div>
                     <ul className="more-list"> 
@@ -187,96 +189,97 @@ function ContentCourse({_course,desContent, setDesContent}){
     };
 
     return (
-        <div className="content-course-body">
-            <div className="course-body-left">
-                <div className="descrip-cource">
-                    <div className="descrip-title">
-                        <h4 style={{color:'rgba(0,0,0,0.7)',marginTop:"20px"}}>Mô tả khóa học</h4>
-                        <p style={{fontSize:'14px',marginTop:'40px',color:'gray'}}>
-                        {`Trong khóa ${_course.title} , Thầy ${_course.teacher} sẽ giúp học sinh có lộ trình ôn thi môn học bằng phương pháp của riêng thầy, bao gồm:`}</p>
-                        <ul style={{paddingLeft:'50px',fontSize:'14px',color:'gray'}}>
-                            {methods !==null  && 
-                                methods.map((method, index) => (
-                                    <li key={index}>{method}</li>
-                                ))
-                            }
-                            <input  style={{ display: !methodMod ? 'none' : '',background:'rgba(255, 255, 255, 0.8)' }} type="text" placeholder={'phương thức mới'}
-                        value={newMethod} onChange={(e)=>setNewMethod(e.target.value)}/>
-                            <button style={{display:!isTeacher?'none':'',background:'grey', border:'traparent',padding:'1px 3px 1px 3px', borderRadius:'50%'
-                                ,cursor:'pointer', color:'white'
-                            }} onClick={async(e)=>{
-                               await handleAddmethod(newMethod);
-                               setMethodMod(!methodMod);
-                            }}>+</button>
-                        </ul>
-                        <p style={{fontSize:'14px',marginTop:'0',color:'gray'}}>
-                            Với lộ trình ôn thi bài bản cùng phong cách giảng dạy độc đáo, sáng tạo, quá trình luyện thi của học sinh sẽ đạt được hiệu quả cao và đạt được điểm số tốt nhất trong kỳ thi tốt nghiệp THPT 2023.</p>
-
-                        <p style={{color:'blue',fontSize:'14px',marginTop:'20px'}}>Đặc biệt, cuối mỗi chuyên đề đều có đề kiểm tra năng lực được chia thành 4 level để học sinh thử 
-                            thách và đánh giá mức độ nắm vững kiến thức ở từng chuyên đề của mình. Đề thi 4 level được xây dựng theo 4 cấp độ câu hỏi Nhận biết, Thông hiểu, Vận dụng, Vận dụng cao.
-                             Để vượt qua level ở mỗi cấp độ, các em cần đạt điểm số như sau:</p>
-                        <ul style={{marginTop:'30px',paddingLeft:'50px'}}>
-                            <li style={{display:'flex',justifyContent:'left',alignItems:'center',fontSize:'12px'
-                                ,height:'20px',fontStyle:'italic'
-                            }}>{" "}<p style={{color:'red',fontSize:'12px'}}>{"Cấp độ Khởi động, Vượt rào, Tăng tốc: "}</p> Học sinh cần đạt trên 8 điểm</li>
-                            <li style={{display:'flex',justifyContent:'left',alignItems:'center',fontSize:'12px'
-                                ,height:'20px',fontStyle:'italic'
-                            }}>{" "}<p style={{color:'red'}}>{"Cấp độ Về đích: "}</p> Học sinh cần đạt điểm tuyệt đối là 10 điểm</li>
-                        </ul>
-                        <p style={{fontSize:'14px',color:'gray',fontStyle:'italic',marginTop:'20px'}}>Vượt qua level thấp mới được thi tiếp level cao hơn. Học sinh vượt qua cả 4 level đồng nghĩa với việc đã nắm vững kiến thức trong chuyên đề đó và có thể học thẳng sang chuyên đề tiếp theo.</p>
-                    </div>
-                    <div className="require-title">
-                        <h4 style={{color:'rgba(0,0,0,0.7)',marginTop:"20px"}}>Yêu cầu khóa học</h4>
-                        <p style={{fontStyle:'italic',fontSize:'14px',fontWeight:'bold',marginTop:'20px'}}>Yêu cầu đầu vào của khóa học</p>
-                        <ul style={{color:"gray",fontSize:'14px',paddingLeft:'50px'}}>
-                            {requires !==null && 
-                                    requires.map((rq, index) => (
-                                        <li key={index}>{rq}</li>
+        
+            <div className="content-course-body">
+                <div className="course-body-left">
+                    <div className="descrip-cource">
+                        <div className="descrip-title">
+                            <h4 style={{color:'rgba(0,0,0,0.7)',marginTop:"20px"}}>Mô tả khóa học</h4>
+                            <p style={{fontSize:'14px',marginTop:'40px',color:'gray'}}>
+                            {`Trong khóa ${_course.title} , Thầy ${_course.teacher} sẽ giúp học sinh có lộ trình ôn thi môn học bằng phương pháp của riêng thầy, bao gồm:`}</p>
+                            <ul style={{paddingLeft:'50px',fontSize:'14px',color:'gray'}}>
+                                {methods !==null  && 
+                                    methods.map((method, index) => (
+                                        <li key={index}>{method}</li>
                                     ))
                                 }
-                            <input  style={{ display: !reqMod ? 'none' : '',background:'rgba(255, 255, 255, 0.8)' }} type="text" placeholder={'phương thức mới'}
-                        value={newReq} onChange={(e)=>setNewReq(e.target.value)}/>
-                            <button style={{display:!isTeacher?'none':'',background:'grey', border:'traparent',padding:'1px 3px 1px 3px', borderRadius:'50%'
-                                ,cursor:'pointer', color:'white'
-                            }} onClick={async(e)=>{
-                               await handleAddRequire(newReq);
-                               setReqMod(!reqMod);
-                            }}>+</button>
-                        </ul>
+                                <input  style={{ display: !methodMod ? 'none' : '',background:'rgba(255, 255, 255, 0.8)' }} type="text" placeholder={'phương thức mới'}
+                            value={newMethod} onChange={(e)=>setNewMethod(e.target.value)}/>
+                                <button style={{display:!isTeacher?'none':'',background:'grey', border:'traparent',padding:'1px 3px 1px 3px', borderRadius:'50%'
+                                    ,cursor:'pointer', color:'white'
+                                }} onClick={async(e)=>{
+                                await handleAddmethod(newMethod);
+                                setMethodMod(!methodMod);
+                                }}>+</button>
+                            </ul>
+                            <p style={{fontSize:'14px',marginTop:'0',color:'gray'}}>
+                                Với lộ trình ôn thi bài bản cùng phong cách giảng dạy độc đáo, sáng tạo, quá trình luyện thi của học sinh sẽ đạt được hiệu quả cao và đạt được điểm số tốt nhất trong kỳ thi tốt nghiệp THPT 2023.</p>
 
-                        <p style={{fontStyle:'italic',fontSize:'14px',fontWeight:'bold',marginTop:'20px'}}>Kết quả học tập</p>
-                        <p style={{color:'gray',fontSize:'14px'}}>Sau khi hoàn thành khóa học, học sinh sẽ nhận được:</p>
-                        <ul style={{color:"gray",fontSize:'14px',paddingLeft:'50px'}}>
+                            <p style={{color:'blue',fontSize:'14px',marginTop:'20px'}}>Đặc biệt, cuối mỗi chuyên đề đều có đề kiểm tra năng lực được chia thành 4 level để học sinh thử 
+                                thách và đánh giá mức độ nắm vững kiến thức ở từng chuyên đề của mình. Đề thi 4 level được xây dựng theo 4 cấp độ câu hỏi Nhận biết, Thông hiểu, Vận dụng, Vận dụng cao.
+                                Để vượt qua level ở mỗi cấp độ, các em cần đạt điểm số như sau:</p>
+                            <ul style={{marginTop:'30px',paddingLeft:'50px'}}>
+                                <li style={{display:'flex',justifyContent:'left',alignItems:'center',fontSize:'12px'
+                                    ,height:'20px',fontStyle:'italic'
+                                }}>{" "}<p style={{color:'red',fontSize:'12px'}}>{"Cấp độ Khởi động, Vượt rào, Tăng tốc: "}</p> Học sinh cần đạt trên 8 điểm</li>
+                                <li style={{display:'flex',justifyContent:'left',alignItems:'center',fontSize:'12px'
+                                    ,height:'20px',fontStyle:'italic'
+                                }}>{" "}<p style={{color:'red'}}>{"Cấp độ Về đích: "}</p> Học sinh cần đạt điểm tuyệt đối là 10 điểm</li>
+                            </ul>
+                            <p style={{fontSize:'14px',color:'gray',fontStyle:'italic',marginTop:'20px'}}>Vượt qua level thấp mới được thi tiếp level cao hơn. Học sinh vượt qua cả 4 level đồng nghĩa với việc đã nắm vững kiến thức trong chuyên đề đó và có thể học thẳng sang chuyên đề tiếp theo.</p>
+                        </div>
+                        <div className="require-title">
+                            <h4 style={{color:'rgba(0,0,0,0.7)',marginTop:"20px"}}>Yêu cầu khóa học</h4>
+                            <p style={{fontStyle:'italic',fontSize:'14px',fontWeight:'bold',marginTop:'20px'}}>Yêu cầu đầu vào của khóa học</p>
+                            <ul style={{color:"gray",fontSize:'14px',paddingLeft:'50px'}}>
+                                {requires !==null && 
+                                        requires.map((rq, index) => (
+                                            <li key={index}>{rq}</li>
+                                        ))
+                                    }
+                                <input  style={{ display: !reqMod ? 'none' : '',background:'rgba(255, 255, 255, 0.8)' }} type="text" placeholder={'phương thức mới'}
+                            value={newReq} onChange={(e)=>setNewReq(e.target.value)}/>
+                                <button style={{display:!isTeacher?'none':'',background:'grey', border:'traparent',padding:'1px 3px 1px 3px', borderRadius:'50%'
+                                    ,cursor:'pointer', color:'white'
+                                }} onClick={async(e)=>{
+                                await handleAddRequire(newReq);
+                                setReqMod(!reqMod);
+                                }}>+</button>
+                            </ul>
+
+                            <p style={{fontStyle:'italic',fontSize:'14px',fontWeight:'bold',marginTop:'20px'}}>Kết quả học tập</p>
+                            <p style={{color:'gray',fontSize:'14px'}}>Sau khi hoàn thành khóa học, học sinh sẽ nhận được:</p>
+                            <ul style={{color:"gray",fontSize:'14px',paddingLeft:'50px'}}>
+                                
+                                <li>Được cung cấp một lượng từ vựng nhất định thuộc các chủ đề quen thuộc của kì thi đại học.</li>
+                                <li>
+                                Nắm được các hiện tượng ngữ pháp phổ biến trong môn Tiếng Anh và cách xử lí khi gặp các câu hỏi về ngữ pháp quá trình luyện đề.
+                                </li>
+                                <li>Làm được một số câu chỉ dựa vào việc phân tích thành phần câu dù câu đó có nhiều từ mới.</li>
+
+                            </ul>
+                        </div>
+                        <div className="object-title">
+                            <h4 style={{color:'rgba(0,0,0,0.7)',marginTop:"20px"}}>Đối tượng</h4>
+                            <p style={{color:'gray',fontSize:'14px'}}>Khóa học phù hợp hơn với những học sinh học chưa tốt Tiếng Anh, học mãi không hiểu, muốn thử những phương pháp học mới</p>
+                        </div>
+                    </div>
+                    <div style={{display:'flex', marginTop:'20px'}}>
+                            <button style={{display:!isTeacher?'none':'',background:'rgb(77, 121, 214)', padding:'3px 5px 3px 5px',
+                                border:'none',color:'white', boxShadow:'4px 4px 10px rgba(0, 0, 0, 0.2)'
+                                ,cursor:'pointer'}}
+                                onClick={()=>{modifyCourseInfor()}}
+                                >Cập nhật</button>
                             
-                            <li>Được cung cấp một lượng từ vựng nhất định thuộc các chủ đề quen thuộc của kì thi đại học.</li>
-                            <li>
-                            Nắm được các hiện tượng ngữ pháp phổ biến trong môn Tiếng Anh và cách xử lí khi gặp các câu hỏi về ngữ pháp quá trình luyện đề.
-                            </li>
-                            <li>Làm được một số câu chỉ dựa vào việc phân tích thành phần câu dù câu đó có nhiều từ mới.</li>
-
-                        </ul>
                     </div>
-                    <div className="object-title">
-                        <h4 style={{color:'rgba(0,0,0,0.7)',marginTop:"20px"}}>Đối tượng</h4>
-                        <p style={{color:'gray',fontSize:'14px'}}>Khóa học phù hợp hơn với những học sinh học chưa tốt Tiếng Anh, học mãi không hiểu, muốn thử những phương pháp học mới</p>
-                    </div>
+                    <ListVideo  isTeacher={isTeacher}/>
                 </div>
-                <div style={{display:'flex', marginTop:'20px'}}>
-                        <button style={{display:!isTeacher?'none':'',background:'rgb(77, 121, 214)', padding:'3px 5px 3px 5px',
-                             border:'none',color:'white', boxShadow:'4px 4px 10px rgba(0, 0, 0, 0.2)'
-                             ,cursor:'pointer'}}
-                             onClick={()=>{modifyCourseInfor()}}
-                             >Cập nhật</button>
-                        
+                <div className="course-body-right">
+                    <RelaxtiveVideo/>
                 </div>
-                <ListVideo />
+                
             </div>
-            <div className="course-body-right">
-                <RelaxtiveVideo />
-            </div>
-        </div>
-
-
+        
     )
 
 
@@ -293,6 +296,7 @@ function ListVideo(){
                     width:'200px' ,borderRadius:'5px 5px 0 2px',border:'traparent',height:'100%'
                 }}>Đề cương khóa học</h4>
             </div>
+            <Videoslist />
         </div>
     )
 }
