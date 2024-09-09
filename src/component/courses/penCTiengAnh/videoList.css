@@ -47,7 +47,7 @@
 }
 .panel-body .panel-container{
     width: 500px;
-    height: 500px;
+    height: 600px;
     background: white;
     padding: 20px;
 }
@@ -60,5 +60,23 @@
 }
 .video-check{
     width: 100%;
-    height: 200px;
+    height: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.options-con{
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.options-con button{
+    margin: auto;
+    width: 40%;
+    height: 50px;
+    border: none;
+    color: white;
+    cursor: pointer;
 }

@@ -11,17 +11,20 @@ import { useLocation } from "react-router-dom";
 import axios from 'axios';
 import Videoslist from "./videosContainer";
 import Footer from "../../footer/footer";
+import MyLoading from "../../alert/loading";
 function Course({_course,_setCourse}){
     const location = useLocation();
     const { course } = location.state || {};
     const [desContent,setDesContent]=useState('');
+    const [isLoading,setIsLoading]=useState(false);
+
 
     return(
         <div className="course-container">
             <Header />
             <Body _course={course} _setCourse={_setCourse} desContent={desContent} setDesContent={setDesContent} />
-            <ContentCourse _course={course} desContent={desContent} setDesContent={setDesContent}/>
-            
+            <ContentCourse _course={course} desContent={desContent} setDesContent={setDesContent} setIsLoading={setIsLoading}/>
+            <div style={{display:`${isLoading?'':'none'}`}}><MyLoading/></div>
         </div>
     );
 }
@@ -107,7 +110,7 @@ function Body({_course,_setCourse,desContent,setDesContent}){
     )
 }
 
-function ContentCourse({_course,desContent, setDesContent}){
+function ContentCourse({_course,desContent, setDesContent,setIsLoading}){
    const [isTeacher,setIsTeacher]=useState(false);
     const [inforCourse,setInforCourse]=useState(null); // quan ly thong khoa hoc
     const [methods,setMethods]=useState(['']) // phuong thuc hoc tap
@@ -272,7 +275,7 @@ function ContentCourse({_course,desContent, setDesContent}){
                                 >Cập nhật</button>
                             
                     </div>
-                    <ListVideo  isTeacher={isTeacher}/>
+                    <ListVideo  isTeacher={isTeacher} setIsLoading={setIsLoading}/>
                 </div>
                 <div className="course-body-right">
                     <RelaxtiveVideo/>
@@ -288,7 +291,7 @@ function ContentCourse({_course,desContent, setDesContent}){
 
 
 
-function ListVideo(){
+function ListVideo({isTeacher, setIsLoading}){
     return(
         <div className="list-video-body">
             <div className="head-list">
@@ -296,7 +299,7 @@ function ListVideo(){
                     width:'200px' ,borderRadius:'5px 5px 0 2px',border:'traparent',height:'100%'
                 }}>Đề cương khóa học</h4>
             </div>
-            <Videoslist />
+            <Videoslist isTeacher={isTeacher} setIsLoading={setIsLoading}/>
         </div>
     )
 }
