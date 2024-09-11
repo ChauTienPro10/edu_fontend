@@ -3,21 +3,44 @@ import './videoList.css';
 import YoutubePlayer from "../../videos/youtube";
 import { SERVER_ELASTICSEARCH } from "../../../config";
 import axios from 'axios';
+import LoginSucces from "../../alert/LoginSucces";
+import LoginFailue from "../../alert/loginFailue";
 
 
-function Videoslist({isTeacher,setIsLoading}){
+function Videoslist({isTeacher,setIsLoading,_course}){
     const [modVideo,setModVideo]=useState(false);
+    const [videos,setVideos]=useState([]);
+    const getListVideo = async () => {
+        try {
+           
+        const response = await axios.get(`${SERVER_ELASTICSEARCH}/elasticSearch/video/getListVideo?idcourse=${_course.id}`);
+        console.log(_course.id);
+        await setVideos(response.data);
+        
+        
+        } catch (error) {
+        console.error('Error fetching courses:', error);
+        }
+    };
 
-    const [videos,setVideos]=useState(['video 1', 'video 2', 'video 3','video 1', 'video 2', 'video 3','video 1', 'video 2', 'video 3']);
+    useEffect(() => {
+        const fetchVideos = async () => {
+          // Fetch information of the course by course id
+          await getListVideo();
+        };
+      
+        fetchVideos();
+      }, []); // Empty dependency array to ensure this runs only once on mount
     
+     
     return(
         <div className="videos-body">
             { videos!==null && videos.map((video, index)=>(
                 <div className="video-element">
                 <div className="img-div"></div>
                 <div className="video-description">
-                    <h4 style={{color:'grey'}}>video 1</h4>
-                    <p style={{color:'grey',fontSize:'13px'}}>video giới thiệu về khóa học</p>
+                    <h4 style={{color:'grey'}}>{video.title}</h4>
+                    <p style={{color:'grey',fontSize:'13px'}}>{video.description}</p>
                 </div>
             </div>
             ) )}
@@ -27,13 +50,15 @@ function Videoslist({isTeacher,setIsLoading}){
                 ,color:'white', fontSize:'15px', padding:'10px', cursor:'pointer'
             }}>Thêm nội dung mới</button>
             <div className="panel-body" style={{display:!modVideo?'none':''}}>
-                <Addvideo modVideo={modVideo} setModVideo={setModVideo} setIsLoading={setIsLoading} />
+                <Addvideo modVideo={modVideo} setModVideo={setModVideo} setIsLoading={setIsLoading} _course={_course}/>
             </div>
         </div>
     );
 }
 
-function Addvideo({modVideo,setModVideo,setIsLoading}){
+function Addvideo({modVideo,setModVideo,setIsLoading ,_course}){
+    const [ isSuccess,setIsSuccess]=useState(false); // quan ly hien thi thong bao
+    const [isFailure,setIsFailure]=useState(false); // quan ly hien thi thong bao that bai
     const[videoId,setVideoId]=useState('');
     const [title,setTitle]=useState('');
     const [description,setDescription]=useState('');
@@ -43,7 +68,7 @@ function Addvideo({modVideo,setModVideo,setIsLoading}){
             const data={
                 title:title,
                 description:description,
-                course:"OgxexpEBSmp_U9Ac45Y8",
+                course:_course.id,
                 stt:stt,
                 linkId:videoId
                 
@@ -51,14 +76,18 @@ function Addvideo({modVideo,setModVideo,setIsLoading}){
             try {
                 const response = await axios.post(`${SERVER_ELASTICSEARCH}/elasticSearch/video/new`, data);
                 setIsLoading(false);
-                setModVideo(false);
+                
                 const { code, message, result } = response.data;
     
                 if (code === 1000) {
-                    console.log('success', result);
+                    setTitle('');
+                    setDescription('');
+                    setVideoId('');
+                    setIsSuccess(true);
                 } else {
-                    alert("failure")
+                    setIsFailure(true);
                 }
+                
             } catch (error) {
                 setIsLoading(false);
                 console.error('Error:', error);
@@ -71,6 +100,12 @@ function Addvideo({modVideo,setModVideo,setIsLoading}){
     return(
        
             <div className="panel-container">
+                <div onClick={()=>{setIsSuccess(false);setModVideo(false);}} style={{display:isSuccess?'':'none'}} className="inform-table">
+                    <LoginSucces message={'Đã thêm video'}/>
+                </div>
+                <div onClick={()=>{setIsFailure(false);}} style={{display:isFailure?'':'none'}} className="inform-table">
+                    <LoginFailue message={'Thêm video thất bại'}/>
+                </div>
                 <div className="title-video">
                     <label  style={{color:'grey',fontSize:'13px'}}  htmlFor="videoTitle">Tiêu đề:</label>
                     <input value={title} onChange={(e)=>{setTitle(e.target.value)}} style={{width:'400px',height:'80%', border:'none',outline:'none',background:'rgba(0, 0, 0, 0.274)'
@@ -112,6 +147,7 @@ function Addvideo({modVideo,setModVideo,setIsLoading}){
                     }} />
                 </div>
                 <div className="video-check">
+                    <p style={{color:'red', fontSize:'12px'}}>Vui lòng chắc chắn rằng bạn nhập đúng id của video!</p>
                     <YoutubePlayer videoId={videoId} _height={'200'} _width={'350'}/>
                 </div>
                 <div className="options-con">

@@ -7,10 +7,15 @@ import Supporter from './component/supporter/supporter';
 import reportWebVitals from './reportWebVitals';
 import Course from './component/courses/penCTiengAnh/course';
 import Admin from './component/admin/admin';
+import Botchat from './component/chatbot/botchat';
 const root = ReactDOM.createRoot(document.getElementById('root'));
+
+
 root.render(
   <React.StrictMode>
-    <Home />
+    <Admin />
+    <Botchat />
+
   </React.StrictMode>
 );
 reportWebVitals();

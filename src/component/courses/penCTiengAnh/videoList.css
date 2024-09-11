@@ -64,6 +64,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
 }
 .options-con{
     width: 100%;
@@ -79,4 +80,7 @@
     border: none;
     color: white;
     cursor: pointer;
+}
+.inform-table{
+    position: fixed;
 }
