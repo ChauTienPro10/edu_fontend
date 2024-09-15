@@ -1,7 +1,6 @@
 import React, { useState ,useEffect} from "react";
 import './course.css';
 import Header from "../../header/Header";
-import { IoIosHome } from "react-icons/io";
 import { FaQuestionCircle } from "react-icons/fa";
 import YoutubePlayer from "../../videos/youtube";
 import { FaPencil } from "react-icons/fa6";
@@ -10,9 +9,8 @@ import { SERVER_ELASTICSEARCH } from "../../../config";
 import { useLocation } from "react-router-dom";
 import axios from 'axios';
 import Videoslist from "./videosContainer";
-import Footer from "../../footer/footer";
-import MyLoading from "../../alert/loading";
-function Course({_course,_setCourse}){
+import MyLoading from "../../alert/loading"; 
+function Course(){
     const location = useLocation();
     const { course } = location.state || {};
     const [desContent,setDesContent]=useState('');
@@ -22,13 +20,13 @@ function Course({_course,_setCourse}){
     return(
         <div className="course-container">
             <Header />
-            <Body _course={course} _setCourse={_setCourse} desContent={desContent} setDesContent={setDesContent} />
+            <Body _course={course}  desContent={desContent} setDesContent={setDesContent} />
             <ContentCourse _course={course} desContent={desContent} setDesContent={setDesContent} setIsLoading={setIsLoading}/>
             <div style={{display:`${isLoading?'':'none'}`}}><MyLoading/></div>
         </div>
     );
 }
-function Body({_course,_setCourse,desContent,setDesContent}){
+function Body({_course,desContent,setDesContent}){
     const [desMod,setDesmod]=useState(false) // quan ly bat tat mode phan mo ta
     
     return (

@@ -9,11 +9,9 @@ import { RiGraduationCapFill } from "react-icons/ri";
 import  { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes, Link,useLocation,useNavigate,Switch   } from 'react-router-dom';
 import { FaFire } from "react-icons/fa6";
-import Login from '../login/login';
 import "./rzus2lc6.png"
 import { FaUserGraduate } from "react-icons/fa";
 import { GiMedal } from "react-icons/gi";
-import Signup from '../login/signup';
 import Alert from '../alert/alert';
 import { FaBook } from "react-icons/fa";
 import { FaShoppingCart } from "react-icons/fa";
@@ -25,32 +23,20 @@ import { FaKey } from "react-icons/fa6";
 import { IoMdExit } from "react-icons/io";
 import Footer from '../footer/footer';
 import Thpt from '../thpt/thpt';
-import Supporter from '../supporter/supporter';
-import Course from '../courses/penCTiengAnh/course';
 function Home() {
   
-  const [_course,_setCourse]=useState(null)
   return (
     
     <div className='container-home'> 
-    <Router>
-      <Routes>
-        <Route path="/login" element={<Login />} /> 
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/supporter" element={<Supporter />} />
-        <Route path="/course" element={<Course _course={_course} _setCourse={_setCourse}/>} />
-        <Route path="/" element={
-          <>
+   
             <Alert />
             <Myheader />
             <Mybody />
-            <Courses _course={_course} _setCourse={_setCourse}/>
+            <Courses />
             <Footer/>
-          </>
-        } />
-      </Routes>
-    </Router>
-  </div>
+        
+
+     </div>
   );
 }
 
@@ -183,7 +169,7 @@ function Logined({isLogin,email,onLogout}){
   );
 }
 
-function Mybody({_course,_setCourse}){
+function Mybody(){
   // ==========================================================================
   const [indexID, setIndexId]=useState(0);
   const [isHovered, setIsHovered] = useState(false);// xu ly hien thi show-detail  
@@ -468,18 +454,18 @@ function Certificate(){
 
 
 
-function Courses({_course,_setCourse}){
+function Courses(){
   return(
     <div className='courses-container'>
       <div className='thpt-thcs-th thpt-content' id='thpt'>
         <h4 style={{color:'gray',padding:'10px'}}>TRUNG HỌC PHỔ THÔNG</h4>
-        <Thpt _course={_course} _setCourse={_setCourse}/></div>
+        <Thpt /></div>
       <div className='thpt-thcs-th thcs-content' id='thcs'>
       <h4 style={{color:'gray',padding:'10px'}}>TRUNG HỌC CƠ SỞ</h4>
-        <Thpt _course={_course} _setCourse={_setCourse}/></div>
+        <Thpt /></div>
       <div className='thpt-thcs-th th-content' id='th'>
       <h4 style={{color:'gray',padding:'10px'}}>TIỂU HỌC</h4>
-        <Thpt _course={_course} _setCourse={_setCourse}/></div>
+        <Thpt /></div>
       
     </div>
   );

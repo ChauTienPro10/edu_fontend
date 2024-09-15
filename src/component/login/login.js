@@ -22,6 +22,7 @@ import LoginSucces from "../alert/LoginSucces";
 import LoginFailue from "../alert/loginFailue";
 import MyLoading from "../alert/loading";
 import ReactDOM from 'react-dom';
+import Header from "../header/Header";
 function Login(){
   
     return(
@@ -34,31 +35,31 @@ function Login(){
     
     );
 }
-function Header(){
-  const navigate = useNavigate();
+// function Header(){
+//   const navigate = useNavigate();
 
-    const ToSignup = (path) => {
-    navigate(path);
-  };
-    return(
-        <header>
-            <div className="search-part">
-              <div className="list-course-part">
-                <IoMdMenu className="icon"/>
-                <p>Các khóa học</p>
-              </div>
-              <div className="search-box-part">
-                <input type="text"  placeholder='Tim kiem khoa hoc'/>
-                <IoSearch className='icon' />
-              </div>
-            </div>
-            <div className="button-part">
-              <button className="login-but">Đăng nhập</button>
-              <button onClick={() => ToSignup('/signup')} className="sign-but">Đăng ký</button>
-            </div>
-          </header>
-    );
-}
+//     const ToSignup = (path) => {
+//     navigate(path);
+//   };
+//     return(
+//         <header>
+//             <div className="search-part">
+//               <div className="list-course-part">
+//                 <IoMdMenu className="icon"/>
+//                 <p>Các khóa học</p>
+//               </div>
+//               <div className="search-box-part">
+//                 <input type="text"  placeholder='Tim kiem khoa hoc'/>
+//                 <IoSearch className='icon' />
+//               </div>
+//             </div>
+//             <div className="button-part">
+//               <button className="login-but">Đăng nhập</button>
+//               <button onClick={() => ToSignup('/signup')} className="sign-but">Đăng ký</button>
+//             </div>
+//           </header>
+//     );
+// }
 function Body(){
   
   const [loginState,setLoginState]=useState(0);

@@ -10,9 +10,9 @@ import { SERVER_URL,SERVER_ELASTICSEARCH } from "../../config";
 import { BrowserRouter as Router, Route, Routes, Link,useLocation,useNavigate,Switch   } from 'react-router-dom';
 
 
-function Thpt({_course,_setCourse}){
+function Thpt(){
     
-    
+    const navigate = useNavigate(); 
 
     //   lay danh sach khoa hoc
     const [courses,setCourses]=useState([]);
@@ -36,12 +36,10 @@ function Thpt({_course,_setCourse}){
         setCountTHPTHot(courses.length);
     }, [courses]); // Runs every time 'courses' state changes
    
-    const navigate = useNavigate();
-     useEffect(() => {
-        if (_course !== null) {
-          navigate('/course');
-        }
-      }, [_course, navigate]);
+    function toCoursePage(course){
+        navigate('/course', { state: { course } });
+    }
+    
     const [countTHPT,setCountTHPT]=useState(courses.length); // quan ly new
     const [countTHPTHot,setCountTHPTHot]=useState(courses.length); // quan ly hot
     const [position, setPosition] = useState({ x: 0, y: 0 });
@@ -115,10 +113,10 @@ function Thpt({_course,_setCourse}){
         document.addEventListener('mouseup', handleMouseUp);
       };
 
-       const toCourseMore=async(course)=>{
-        await _setCourse(course);
-        navigate('/course', { state: { course } });
-      }
+    //    const toCourseMore=async(course)=>{
+        
+    //     navigate('/course', { state: { course } });
+    //   }
     return(
         <div className="thpt-container">
             <div className="hot-content new-content">
@@ -177,7 +175,7 @@ function Thpt({_course,_setCourse}){
                                 <div className="baigiang" >
                                     <FaQuestionCircle style={{color:'rgb(0, 119, 255)'}}/>
                                     <a  href="#">1000 câu hỏi</a></div>
-                                <button onClick={async ()=>{toCourseMore(course)}} className="but-moreinfor">TÌM HIỂU THÊM</button>
+                                <button onClick={async ()=>{toCoursePage(course)}} className="but-moreinfor">TÌM HIỂU THÊM</button>
                             </div>
                             </div>
                         ))}
