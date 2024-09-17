@@ -10,6 +10,7 @@ import { useLocation } from "react-router-dom";
 import axios from 'axios';
 import Videoslist from "./videosContainer";
 import MyLoading from "../../alert/loading"; 
+import Paypage from "./paypage";
 function Course(){
     const location = useLocation();
     const { course } = location.state || {};
@@ -188,6 +189,7 @@ function ContentCourse({_course,desContent, setDesContent,setIsLoading}){
             console.error('Error:', error);
         }
     };
+    const [showPay,setShowPay]=useState(false);
 
     return (
         
@@ -265,7 +267,16 @@ function ContentCourse({_course,desContent, setDesContent,setIsLoading}){
                             <p style={{color:'gray',fontSize:'14px'}}>Khóa học phù hợp hơn với những học sinh học chưa tốt Tiếng Anh, học mãi không hiểu, muốn thử những phương pháp học mới</p>
                         </div>
                     </div>
-                    <div style={{display:'flex', marginTop:'20px'}}>
+                    <div style={{display:'flex', marginTop:'20px'}}> {/* danhh cho hoc vien*/ }
+                            <button style={{display:!isTeacher?'':'none',background:'rgb(77, 121, 214)', padding:'15px 35px 15px 35px',
+                                border:'none',color:'white', boxShadow:'4px 4px 10px rgba(0, 0, 0, 0.2)'
+                                ,cursor:'pointer'}}
+                                onClick={()=>{setShowPay(true)}}
+                                >Mua khóa học</button>
+                            <Paypage show={showPay} setShow={setShowPay}/>
+                            
+                    </div>
+                    <div style={{display:'flex', marginTop:'20px'}}> {/* danhh cho giao  vien*/ }
                             <button style={{display:!isTeacher?'none':'',background:'rgb(77, 121, 214)', padding:'3px 5px 3px 5px',
                                 border:'none',color:'white', boxShadow:'4px 4px 10px rgba(0, 0, 0, 0.2)'
                                 ,cursor:'pointer'}}
