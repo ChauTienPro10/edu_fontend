@@ -155,7 +155,7 @@
   .container-infor .to-course a:hover{
     color: #2e75fa;
   }
-  .container-infor div{
+  .container-infor .div-class{
     margin: auto;
     cursor: pointer;
   }

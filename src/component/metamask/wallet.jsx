@@ -4,6 +4,9 @@ import { RiCopperCoinFill } from "react-icons/ri";
 import { GiBatMask } from "react-icons/gi";
 import { SERVER_STUDENT } from '../../config';
 import axios from 'axios';
+import { PiHandDeposit } from "react-icons/pi"; 
+import { PiHandWithdraw } from "react-icons/pi";
+import { AiOutlineTransaction } from "react-icons/ai";
 
 function Wallet({isShow,setIsShow}){
     const [isFocus,setIsFocus]=useState(false);
@@ -14,6 +17,7 @@ function Wallet({isShow,setIsShow}){
     const [accPay,setAccPay]=useState({
 
     })
+    const [loading,setLoading]=useState(false); // quan ly cho tai
     const handleClickOutside = (event) => {
         // Check if the clicked element is outside the referenced div
         if (divRef.current && !divRef.current.contains(event.target)) {
@@ -23,22 +27,35 @@ function Wallet({isShow,setIsShow}){
       };
       const fetchLinkAccount = async () => {
         try {
-        const response = await axios.post(`${SERVER_STUDENT}/student/pay/new`,{},
-            {
-                headers: {
-                    'Authorization': `Bearer ${"eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJjaGF1ZHVvbmdwaGF0dGllbi5jb20iLCJzdWIiOiJjaGF1ZHVvbmdwaGF0dGllbjIwMDNAZ21haWwuY29tIiwiZXhwIjoxNzI2NTYxNzQ1LCJpYXQiOjE3MjY1NTA5NDUsImp0aSI6IjhiMDY5ODI0LWUyNzYtNGRjNS1iMjFlLWI4ODFlN2FkN2I5YSIsInNjb3BlIjoiUk9MRV9VU0VSIn0.ePVD5_OuD1UxM7gd3gPNZRQUJDdEbRbPkvTqkkYOaDdd7Kvzky3KikA5jp_xQSFD6K1C0n_PqixR0pjXX6zK3A"}`, // Thêm JWT token vào header
-                    'Content-Type': 'application/json', // Đảm bảo header đúng loại dữ liệu bạn đang gửi
-                  },
-            },
-        );
-        console.log(response.data);
+            const userJSON = sessionStorage.getItem('user');
+            const user_ = userJSON ? JSON.parse(userJSON) : null;
+            
+            if(user_._jwt!==undefined){
+                const response = await axios.post(`${SERVER_STUDENT}/student/pay/new`,{},
+                    {
+                        headers: {
+                            'Authorization': `Bearer ${user_._jwt}`, // Thêm JWT token vào header
+                            'Content-Type': 'application/json', // Đảm bảo header đúng loại dữ liệu bạn đang gửi
+                          },
+                    },
+                );
+                if(response.data.code===2000){
+                    alert("bạn chỉ có thể kích hoạt một tài khoản thanh toán hệ thống")
+                }
+                setLoading(false);
+                setIsShowPolicy(false);
+            }
+        
         
         } catch (error) {
         console.error('Error fetching courses:', error);
+        setLoading(false);
+
         }
     };
     const handleLinkAccount=()=>{
         if(policyCheck===true){
+            setLoading(true);
             fetchLinkAccount();
         }
     }
@@ -64,10 +81,15 @@ function Wallet({isShow,setIsShow}){
                     
                 }}/>
                 </div>
+                <div className='account-name'>
+                    <p style={{color:'grey',fontSize:'16px'}}>Chau Duong</p>
+                    <p style={{color:'grey',fontSize:'12px'}}>0x1uhdnkds</p>
+                </div>
                 <GiBatMask style={{fontSize:'50px', marginRight:'20px', color:'rgb(156, 60, 4)'}} />
                 
             </div>
-            <div className='wallet-body'>
+            <Logined_wallet_body/>
+            <div style={{display:'none'}} className='wallet-body'>
                 <div className="body-welcome">
                     <div className='logo'>
                         <GiBatMask style={{fontSize:'150px', color:'rgb(156, 60, 4)'}}/>
@@ -91,7 +113,7 @@ function Wallet({isShow,setIsShow}){
                 </div>
             </div>
             <div style={{display:isShowPolicy?'':'none'}} className='wallet-footer'>
-                <div className='wallet-header'>
+                <div className='wallet-header-child'>
                     <div style={{display:'flex', alignItems:'center',padding:'5px 10px 5px 10px', borderRadius:'10px',
                         background:'rgb(10, 10, 10)',marginLeft:'10px',border:'1px solid '
                     }}>
@@ -113,9 +135,23 @@ function Wallet({isShow,setIsShow}){
                 <button style={{background:'rgb(53, 133, 219)',cursor:'pointer'
                     ,padding:'10px 20px 10px 20px',  border:'none'
                 }} onClick={()=>handleLinkAccount()}>Liên kết</button>
+                {loading && <GiBatMask className="bat-mask-icon" style={{fontSize:'20px', color:'rgb(156, 60, 4)',marginTop:'20px'}}/>}
                 <p style={{display:policyCheck?'none':'', color:'red', fontSize:'12px', marginTop:'20px'
                     ,padding:'20px'
                 }}>bạn cần đông ý với chính sách của chúng tôi trước khi thực hiện yêu cầu này!</p>
+            </div>
+        </div>
+    );
+}
+
+function Logined_wallet_body(){
+    return (
+        <div className='logined-wallet-body'>
+            <h3 style={{fontSize:'50px'}}>10 CDT</h3>
+            <div className='transaction'>
+                <button><PiHandDeposit/></button>
+                <button><PiHandWithdraw/></button>
+                <button><AiOutlineTransaction/></button>
             </div>
         </div>
     );

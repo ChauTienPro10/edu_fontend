@@ -23,6 +23,13 @@ import { FaKey } from "react-icons/fa6";
 import { IoMdExit } from "react-icons/io";
 import Footer from '../footer/footer';
 import Thpt from '../thpt/thpt';
+import Wallet from '../metamask/wallet';
+import { GiBatMask } from "react-icons/gi";
+import { SERVER_GATEWAY_URL } from "../../config";
+import MyLoading from '../alert/loading';
+import axios from "axios";
+
+
 function Home() {
   
   return (
@@ -42,23 +49,11 @@ function Home() {
 
 function Myheader(){
   const navigate = useNavigate();
-  const [isLogin,setIslogin]=useState(false);
-  const [email,setEmail]=useState('email@gmail.comm')
-  // xu ly xac thuc dang nhap
-  useEffect(() => {
-    const userJSON = sessionStorage.getItem('user');
-    const user_ = userJSON ? JSON.parse(userJSON) : null;
-    if (user_!==null) {
-      setEmail(user_._username);
-      setIslogin(true);
-    }
-  }, []);
+  const [isLogin,setIsLogin]=useState(false);
   const ToNavigate = (path) => {
     navigate(path);
   };
-  const handleLogout=()=>{
-    setIslogin(false);
-  }
+  
   const [isSmaller, setIsSmaller] = useState(false);
   useEffect(() => {
     const handleScroll = () => {
@@ -92,7 +87,7 @@ function Myheader(){
             <button onClick={() => ToNavigate('/login')} className='loginbut'>Dang Nhap</button>
             <button onClick={() => ToNavigate('/signup')} className='signbox'>Dang Ky</button>
           </div>
-          <Logined isLogin={isLogin} email={email} onLogout={handleLogout}/>
+          <Logined  isLogin={isLogin} setIsLogin={setIsLogin}/>
         </div>
       </div>
       
@@ -103,25 +98,68 @@ function Myheader(){
   );
 }
 
-function Logined({isLogin,email,onLogout}){
+export function Logined({isLogin,setIsLogin}){
+
   const [showDetail, setShowDetail]=useState(false);
   const [showNotify, setShowNotify]=useState(false);
-  const [showCart,setShowCart]=useState(false);
+  const [isShow,setIsShow]=useState(false);
+  const [isLoading,setIsLoading]=useState(false);
+
+  
+  const [email,setEmail]=useState('')
+  // xu ly xac thuc dang nhap
+  useEffect(() => {
+    const userJSON = sessionStorage.getItem('user');
+    const user_ = userJSON ? JSON.parse(userJSON) : null;
+    if (user_!==null) {
+      setEmail(user_._username);
+      setIsLogin(true);
+    }
+  }, []);
+  const handleLogout=async() =>{
+    
+    setIsLoading(true)
+    try {
+      const userJSON = sessionStorage.getItem('user');
+      const user_ = userJSON ? JSON.parse(userJSON) : null;
+      console.log(user_);
+      if(user_!==null){
+        const response = await axios.post(`${SERVER_GATEWAY_URL}/api/identity/auth/logout`, {
+          token:user_._jwt,
+        });
+        console.log(response.data)
+        if(response.data.code===1000){
+          setIsLogin(false);
+          sessionStorage.clear();
+
+        }
+      }
+      
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error);
+      setIsLoading(false);
+    }
+  }
   return (
     <div className={`container-infor ${isLogin!==true?'hiden':''}`}>
-      <div className='to-course'>
+      <div style={{display:`${isLoading?'':'none'}`}}><MyLoading/></div>
+      <Wallet isShow={isShow} setIsShow={setIsShow}/>
+      
+      
+      <div className='to-course div-class'>
         <FaBook style={{marginRight:'10px',fontSize:'22px',color:'gray'}}/>
         <a  href='#'>Khóa học của tôi</a>
       </div>
-      <div className='cart' onMouseEnter={()=>{setShowCart(true)}} onMouseLeave={()=>{setShowCart(false)}}>
-       <FaShoppingCart style={{fontSize:'22px',color:'gray'}}/>
-       <div className='dt-cart' style={{display:showCart?'':'none'}}>
-        <ul>
-          <li><a href='#'>Giỏ hàng trống</a></li>
-        </ul>
-       </div>
+      <div className='cart div-class' >
+      <GiBatMask onClick={()=>setIsShow(!isShow)} style={{
+                  fontSize:'30px',
+                  color:'rgb(156, 60, 4)',
+                  cursor:'pointer'
+                }}/>
+       
       </div>
-      <div className='notify' onMouseEnter={()=>{setShowNotify(true)}} onMouseLeave={()=>{setShowNotify(false)}}>
+      <div className='notify div-class' onMouseEnter={()=>{setShowNotify(true)}} onMouseLeave={()=>{setShowNotify(false)}}>
         <IoNotifications style={{fontSize:'22px',color:'gray'}}/>
         <div className='dt-notify' style={{display:showNotify?'':'none'}}>
           <h4 style={{padding:'5px 0 10px 0'}}>Thông báo</h4>
@@ -132,7 +170,7 @@ function Logined({isLogin,email,onLogout}){
           </div>
         </div>
       </div>
-      <div className='yours' onMouseEnter={()=>{setShowDetail(true)}} onMouseLeave={()=>{setShowDetail(false)}}>
+      <div className='yours div-class' onMouseEnter={()=>{setShowDetail(true)}} onMouseLeave={()=>{setShowDetail(false)}}>
         <div className='avatar'></div>
         <RiArrowDownSFill />
         <div onMouseEnter={()=>{setShowDetail(true)}} onMouseLeave={()=>{setShowDetail(false)}} 
@@ -159,7 +197,7 @@ function Logined({isLogin,email,onLogout}){
             <FaKey style={{color:'gray',marginRight:'10px'}}/>
             <p>Đổi mật khẩu</p>
           </div>
-          <div onClick={()=>{sessionStorage.clear(); onLogout()}}>
+          <div onClick={()=>{handleLogout();}}>
             <IoMdExit style={{color:'gray',fontSize:'20px',marginRight:'10px'}}/>
             <p>Đăng xuất</p>
           </div>

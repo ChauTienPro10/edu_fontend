@@ -8,6 +8,8 @@
     top: 50px;
     z-index: 101;
     overflow: hidden; 
+    margin: 0;
+
 }
 .wallet-header{
     height: 70px;
@@ -84,14 +86,14 @@
     height: 100%;
     background: rgb(43, 40, 40);
     position: absolute;
-    bottom:  0;
-    animation: moveUp 1s ease-out forwards;
+    bottom: 0;
+    animation: moveDown 1s ease-out forwards;
     display: flex;
     flex-direction: column;
     align-items: center;
     
 }
-@keyframes moveUp {
+@keyframes moveDown {
     0% {
         transform: translateY(100%); /* Bắt đầu từ dưới */
         opacity: 0; /* Phần tử bắt đầu không hiện */
@@ -99,7 +101,18 @@
     100% {
         transform: translateY(0); /* Kết thúc ở vị trí ban đầu */
         opacity: 1; /* Phần tử hiện ra */
+        
     }
+}
+.wallet-header-child{
+    height: 70px;
+    width: 100%;
+    background: rgb(43, 40, 40);
+    border-bottom: 3px solid  rgba(0, 0, 0, 0.507);
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 1);
+    display: flex;
+    align-items: center; 
+    justify-content: space-between;
 }
 
 .wallet-footer .policy-container{
@@ -112,3 +125,51 @@
     width: 100px;
     
 }
+
+.bat-mask-icon {
+    animation: rotateAnimation 2s linear infinite; /* Tạo hiệu ứng xoay liên tục */
+  }
+  
+  @keyframes rotateAnimation {
+    from {
+      transform: rotate(0deg); /* Bắt đầu từ 0 độ */
+    }
+    to {
+      transform: rotate(360deg); /* Xoay đến 360 độ */
+    }
+  }
+
+
+  /* xu ly khi wallet da duoc dang nhap */
+  .account-name{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .logined-wallet-body{
+    width: 100%;
+    height: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 50px;
+  }
+  .logined-wallet-body .transaction{
+    width: 100%;
+    height: 70px;
+    display: flex;
+    padding: 20px;
+  }
+  .logined-wallet-body .transaction button{
+    margin: auto;
+    width: 40px;
+    height: 40px;
+    background: rgb(50, 140, 243);
+    color: black;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+  }

@@ -26,9 +26,11 @@ root.render(
         <Route path="/course" element={<Course />} />
         <Route path="/" element={<Home />} />
         <Route path="/management" element={<Admin />} />
+        
       </Routes>
+      <Botchat />
     </Router>
-    <Botchat />
+    
     
     
 

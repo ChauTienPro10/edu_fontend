@@ -1,25 +1,15 @@
 
-import React,{useState} from "react";
-
-
-
-import { IoMdMenu } from "react-icons/io";
+import React,{useState,useEffect} from "react";
 import { IoSearch } from "react-icons/io5";
-
-import { GiBatMask } from "react-icons/gi";
 import { useNavigate } from 'react-router-dom';
 import "./header.css"
 import { IoMdHome } from "react-icons/io";
-import Wallet from "../metamask/wallet";
-
+import { Logined } from "../home/Home";
 function Header(){
   const navigate = useNavigate(); 
-    const [isShow,setIsShow]=useState(false);
-      // const navigate = useNavigate();
-
-      // const toOtherSite = (path) => {
-      //   navigate(path);
-      // };
+  const [isLogin,setIsLogin]=useState(false);
+    
+     
       return(
           <header>
               <div className="search-part">
@@ -32,16 +22,13 @@ function Header(){
                   <IoSearch className='icon' />
                 </div>
               </div>
-              <div className="button-part">
-                <GiBatMask onClick={()=>setIsShow(!isShow)} style={{
-                  fontSize:'20px',
-                  color:'rgb(156, 60, 4)',
-                  cursor:'pointer'
-                }}/>
+              {!isLogin && <div className="button-part">
+                
                 <button className="login-but" onClick={()=>navigate('/login')}>Đăng nhập</button>
                 <button  className="sign-but" onClick={()=>navigate('/signup')} >Đăng ký</button>
-              </div>
-              <Wallet isShow={isShow} setIsShow={setIsShow}/>
+              </div>}
+              <Logined isLogin={isLogin} setIsLogin={setIsLogin}/>
+
             </header>
       );
   }

@@ -96,9 +96,9 @@ function Body(){
           setLoginState(2);
         } 
       } catch (error) {
-        alert('error');
         console.log(error);
         setLoginState(2);
+        setIsLoading(false)
       }
     }
     return(

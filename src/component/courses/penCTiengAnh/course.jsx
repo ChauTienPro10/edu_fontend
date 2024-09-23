@@ -110,7 +110,7 @@ function Body({_course,desContent,setDesContent}){
 }
 
 function ContentCourse({_course,desContent, setDesContent,setIsLoading}){
-   const [isTeacher,setIsTeacher]=useState(false);
+   const [isTeacher,setIsTeacher]=useState(true);
     const [inforCourse,setInforCourse]=useState(null); // quan ly thong khoa hoc
     const [methods,setMethods]=useState(['']) // phuong thuc hoc tap
     const [methodMod,setMethodMod]=useState(false);// dieu kihen bac tat mode
