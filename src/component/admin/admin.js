@@ -13,6 +13,8 @@ import { Pie } from 'react-chartjs-2';
 import { IoSettings } from "react-icons/io5";
 import Course from "./course";
 import Statistic from "./statistic";
+import NewTeacher from "./newTeacher";
+import NewSubject from "./subject";
 import { Chart as ChartJS, Title, Tooltip, Legend, ArcElement } from 'chart.js';
 ChartJS.register(Title, Tooltip, Legend, ArcElement);
 function Admin(){
@@ -61,19 +63,32 @@ function Taskbar({ indextask,setIndextask }){
     
 }
 function Content({ indextask,setIndextask }){
-   
-
+   const[setting,setSettting]=useState(false); // quan ly hien thi setting (them giao vien hoac them khoa hoc)
+ 
+  const [indexSetting,setIdexSetting]=useState('');
     return(
+      
         <div className="content-side">
+            <div style={{display:indexSetting==='TC'?'':'none'}}><NewTeacher setIndedx={setIdexSetting}/></div>
+            <div style={{display:indexSetting==='SJ'?'':'none'}}><NewSubject setIndedx={setIdexSetting}/></div>
             <div className="top-side">
                 <div className="top-side-search">
                     <p style={{fontSize:'15px',marginRight:'10px'}}>🔍</p>
                     <input type="text" placeholder="Tiềm kiếm"/>
                     <button class="search-button"><CiSearch style={{color:'white'}}/></button>
                 </div>
-                <div className="top-side-setting"><IoSettings style={{fontSize:'25px',marginRight:'20px',
+                <div onMouseEnter={()=>setSettting(true)} onMouseLeave={()=>setSettting(false)} className="top-side-setting"><IoSettings style={{fontSize:'25px',marginRight:'20px',
                     color:'gray'
-                }}/></div>
+                }}/>
+                  <div style={{display:setting?'':'none'}} className="setting-mode">
+                    <ul>
+                      <li onClick={()=>setIdexSetting('TC')}>Thêm giáo viên</li>
+                      <li onClick={()=>setIdexSetting('')}>Thêm khóa học</li>
+                      <li onClick={()=>setIdexSetting('SJ')}>Thêm lĩnh vựt giảng dạy</li>
+                    </ul>
+                    
+                  </div>
+                </div>
             </div>
             <div className="content-side-board">
               <div className={`content-side-board-child  ${indextask!==1?'hiden':''} `} ><Homecomponent /></div>

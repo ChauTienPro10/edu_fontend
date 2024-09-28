@@ -1,4 +1,4 @@
-import React,{ useState } from "react";
+import React,{ useState ,useEffect} from "react";
 import  './course.css';
 import { color } from "chart.js/helpers";
 import { IoEyeSharp } from "react-icons/io5";
@@ -6,34 +6,46 @@ import { width } from "@fortawesome/free-solid-svg-icons/fa0";
 import { FaPencil } from "react-icons/fa6";
 import { IoCheckmarkDoneCircle } from "react-icons/io5";
 import { FaTrashCan } from "react-icons/fa6";
+import axios from 'axios';
+import { SERVER_GATEWAY_URL } from "../../config";
 function Course(){
+    const [filter,setFilter]=useState({level:0,subject:''})
+
     const [openPanel,setOpenPanel]=useState(false); // quan ly dong mo bang dieu chinh khoa hoc
     //  khu vuc su ly lua chon cap bac -start
     const [selectedValueLevel, setSelectedValuelevel] = useState(''); //khai bao biên quan lý lựa chọn cấp bậc
 
-    const handleSelectChangeLevel = (event) => {  // xu ly sthay doi luaawj chọn
-        setSelectedValuelevel(event.target.value);
+    const handleSelectChangeLevel = async(event) => {  // xu ly sthay doi luaawj chọn
+        await setSelectedValuelevel(event.target.value);
     };
     const optionsLevel = [  // data set thay bang data tuu csdl
         { value: '', label: 'Chọn' },
-        { value: 'option1', label: 'Option 1' },
-        { value: 'option2', label: 'Option 2' },
-        { value: 'option3', label: 'Option 3' },
+        { value: 1, label: 'Tiểu học' },
+        { value: 2, label: 'Thcs' },
+        { value: 3, label: 'Thpt' },
+        { value: 4, label: 'Đại học' },
     ];
      //  khu vuc su ly lua chon cap bac -end
 
      // khu vuc xu ly lua chon mon hoc -start
     const [selectedNameCourse,setSelectedNameCourse]=useState('');
-    const handleSelectNameCourse = (event) => {  // xu ly sthay doi luaawj chọn
-        setSelectedNameCourse(event.target.value);
+    const handleSelectNameCourse = async(event) => {  // xu ly sthay doi luaawj chọn
+        await setSelectedNameCourse(event.target.value);
     };
     const optionsName = [  // data set thay bang data tuu csdl
         { value: '', label: 'Chọn' },
-        { value: 'option1', label: 'Option 1' },
-        { value: 'option2', label: 'Option 2' },
-        { value: 'option3', label: 'Option 3' },
+        { value: 'toán', label: 'Toán' },
+        { value: 'lý', label: 'Lý' },
+        { value: 'hóa', label: 'Hóa' },
     ];
       // khu vuc xu ly lua chon mon hoc -end
+
+
+     const handleSelectFil=async() => {
+        // Lấy danh sách khóa học từ API hoặc backend
+        await setFilter({level:selectedValueLevel,subject:selectedNameCourse});
+        
+      }
     return (
         <div className="course-body">
             <div className="course-body-filter">
@@ -41,7 +53,7 @@ function Course(){
                 <label htmlFor="dropdown" style={{color:'grey',fontSize:'13px'}}>Chọn cấp bậc đào tạo: </label>
                 <select style={{outline:'none'
                     , border:'none',color:'grey',padding:'10px'
-                }} id="dropdown" value={selectedNameCourse} onChange={handleSelectNameCourse}>
+                }} id="dropdown" value={selectedValueLevel} onChange={handleSelectChangeLevel}>
                     {optionsLevel.map((option) => (
                         <option key={option.value} value={option.value}>
                             {option.label}
@@ -54,7 +66,7 @@ function Course(){
                 <label htmlFor="dropdown" style={{color:'grey',fontSize:'13px'}}>Chọn môn học: </label>
                 <select style={{outline:'none'
                     , border:'none',color:'grey',padding:'10px'
-                }} id="dropdown" value={selectedValueLevel} onChange={handleSelectChangeLevel}>
+                }} id="dropdown" value={selectedNameCourse} onChange={handleSelectNameCourse}>
                     {optionsName.map((option) => (
                         <option key={option.value} value={option.value}>
                             {option.label}
@@ -64,15 +76,17 @@ function Course(){
                 </div>
                 <div className="course-body-filter-container"><button style={{background:'rgb(77, 121, 214)',
                     border:'transparent', padding:'5px 15px 5px 15px', color:'white', cursor:'pointer'
-                }}>Lọc</button>
+                }}
+                    onClick={()=>handleSelectFil()}
+                >Lọc</button>
                     <button style={{background:'rgb(236, 70, 58)',
                     border:'transparent', padding:'5px 15px 5px 15px', color:'white', cursor:'pointer',marginLeft:'10px'
-                }}>Tất cả</button>
+                }} onClick={()=>setFilter({level:0,subject:''})}>Tất cả</button>
                 </div>
 
                 
             </div>
-            <DataTable openPanel={openPanel} setOpenPanel={setOpenPanel}/>
+            <DataTable openPanel={openPanel} setOpenPanel={setOpenPanel} filter={filter}/>
             <PanelControl openPanel={openPanel} setOpenPanel={setOpenPanel}/>
             
         </div>
@@ -81,29 +95,76 @@ function Course(){
 }
 
 
-const DataTable = ({openPanel,setOpenPanel}) => {
-    const dataList = [
-        { id: 1, name: 'Toán', teacher: "Châu Dương Phát Tiến", level: 'ĐH' },
-        { id: 2, name: 'English', teacher: "Châu Dương Phát Tiến", level: 'ĐH' },
-        { id: 3, name: 'Vật lý', teacher: "Trần Quang Duy", level:'ĐH' },{ id: 1, name: 'Toán', teacher: "Châu Dương Phát Tiến", level: 'ĐH' },
-        { id: 2, name: 'English', teacher: "Châu Dương Phát Tiến", level: 'ĐH' },
-        { id: 3, name: 'Vật lý', teacher: "Trần Quang Duy", level:'ĐH' },
-        { id: 1, name: 'Toán', teacher: "Châu Dương Phát Tiến", level: 'ĐH' },
-        { id: 2, name: 'English', teacher: "Châu Dương Phát Tiến", level: 'ĐH' },
-        { id: 3, name: 'Vật lý', teacher: "Trần Quang Duy", level:'ĐH' },
-        { id: 1, name: 'Toán', teacher: "Châu Dương Phát Tiến", level: 'ĐH' },
-        { id: 2, name: 'English', teacher: "Châu Dương Phát Tiến", level: 'ĐH' },
-        { id: 3, name: 'Vật lý', teacher: "Trần Quang Duy", level:'ĐH' },
-        { id: 1, name: 'Toán', teacher: "Châu Dương Phát Tiến", level: 'ĐH' },
-        { id: 2, name: 'English', teacher: "Châu Dương Phát Tiến", level: 'ĐH' },
-        { id: 3, name: 'Vật lý', teacher: "Trần Quang Duy", level:'ĐH' },
-        { id: 1, name: 'Toán', teacher: "Châu Dương Phát Tiến", level: 'ĐH' },
-        { id: 2, name: 'English', teacher: "Châu Dương Phát Tiến", level: 'ĐH' },
-        { id: 3, name: 'Vật lý', teacher: "Trần Quang Duy", level:'ĐH' },
-        { id: 1, name: 'Toán', teacher: "Châu Dương Phát Tiến", level: 'ĐH' },
-        { id: 2, name: 'English', teacher: "Châu Dương Phát Tiến", level: 'ĐH' },
-        { id: 3, name: 'Vật lý', teacher: "Trần Quang Duy", level:'ĐH' }
-    ];
+const DataTable = ({openPanel,setOpenPanel,filter}) => {
+    const [dataList,setDataList]=useState([]);// quan ly dasnh sach khoa hoc
+    const fetchCourses = async () => { // lay tat ca khoa hoc
+        try {
+            const userJSON = sessionStorage.getItem('user');
+            const user_ = userJSON ? JSON.parse(userJSON) : null;
+            
+            if(user_._jwt!==undefined){
+                const response = await axios.get(`${SERVER_GATEWAY_URL}/api/elasticSearch/course/get.all`,{},
+                    {
+                        headers: {
+                            'Authorization': `Bearer ${user_._jwt}`, // Thêm JWT token vào header
+                            'Content-Type': 'application/json', // Đảm bảo header đúng loại dữ liệu bạn đang gửi
+                          },
+                    },
+                );
+                setDataList(response.data);
+                
+                
+            }
+        
+        
+        } catch (error) {
+        console.error('Error fetching courses:', error);
+
+
+        }
+    };
+
+    //////////////////////////////////////////////////////////
+
+    const fetchCoursesByFilter = async () => { // lay tat ca khoa hoc
+        try {
+            const userJSON = sessionStorage.getItem('user');
+            const user_ = userJSON ? JSON.parse(userJSON) : null;
+            
+            if(user_._jwt!==undefined){
+                const response = await axios.get(`${SERVER_GATEWAY_URL}/api/elasticSearch/course/getLevel?level=${filter.level}`,{},
+                    {
+                        headers: {
+                            'Authorization': `Bearer ${user_._jwt}`, // Thêm JWT token vào header
+                            'Content-Type': 'application/json', // Đảm bảo header đúng loại dữ liệu bạn đang gửi
+                          },
+                    },
+                );
+                setDataList(response.data);
+                
+                
+            }
+        
+        
+        } catch (error) {
+        console.error('Error fetching courses:', error);
+
+
+        }
+    };
+/////////////////////////////////////////////////
+    useEffect(() => {
+        // Lấy danh sách khóa học từ API hoặc backend
+        fetchCourses();
+      }, []);
+
+      useEffect(() => {
+        // Lấy danh sách khóa học từ API hoặc backend theo level
+        if(filter.level===0){
+            fetchCourses();
+        }
+        else fetchCoursesByFilter();
+      }, [filter]);
     const containerStyle = {
         width:'90%',
         boxShadow: '4px 4px 10px rgba(0, 0, 0, 0.2)',
@@ -153,7 +214,7 @@ const DataTable = ({openPanel,setOpenPanel}) => {
                 {dataList.map((item) => (
                     <tr key={item.id}>
                        <td style={tdStyle}>{item.id}</td>
-                        <td style={tdStyle}>{item.name}</td>
+                        <td style={tdStyle}>{item.title}</td>
                         <td style={tdStyle}>{item.teacher}</td>
                         <td style={tdStyle}>{item.level}</td>
                         <td style={tdStyle}><button onClick={()=>{setOpenPanel(!openPanel)}} style={{background:'transparent',border:'transparent',cursor:'pointer'}}><IoEyeSharp /></button></td>

@@ -105,6 +105,40 @@
 }
 .content-side .top-side .top-side-setting{
     cursor: pointer;
+    position: relative;
+}
+.top-side-setting .setting-mode{
+    position: absolute;
+    width: 200px;
+    height: auto;
+    background: white;
+    top: 30px;
+    right: 0;
+    border-radius: 10px;
+    box-shadow: 20px 20px 40px 20px rgba(0, 0, 0, 0.2);
+
+ 
+}
+.top-side-setting .setting-mode ul{
+    list-style: none;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+
+}
+.top-side-setting .setting-mode ul li{
+    margin: auto;
+    color: grey;
+    text-align: center;
+    font-size: smaller;
+    padding: 10px;
+    width: 100%;
+}
+.top-side-setting .setting-mode ul li:hover{
+    background: gray;
+    color: white;
 }
 .content-side .content-side-board{
     width: 100%;

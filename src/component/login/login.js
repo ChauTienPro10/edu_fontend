@@ -79,7 +79,7 @@ function Body(){
           response.data.result.token,
           // response.data.role,
           response.data.result.username,
-          // response.data.id
+          response.data.id
         );
         sessionStorage.setItem('user', JSON.stringify(user));
         const userJSON = sessionStorage.getItem('user');
@@ -104,10 +104,10 @@ function Body(){
     return(
       <div className="body-container">
       <div style={{display:`${isLoading?'':'none'}`}}><MyLoading/></div>
-      <div onClick={()=>{setLoginState(0);}} style={{display:`${loginState!==2?'none':''}`}}>
+      <div  onClick={()=>{setLoginState(0);}} style={{display:`${loginState!==2?'none':''}`}}>
         <LoginFailue message={'Đăng nhập thất bại'} />
       </div>
-      <div onClick={async ()=>{await setLoginState(0);navigate('/')}} style={{display:`${loginState!==1?'none':''}`}}>
+      <div id="loginSuccess" onClick={async ()=>{await setLoginState(0);navigate('/')}} style={{display:`${loginState!==1?'none':''}`}}>
         <LoginSucces message={'Đăng nhập thành công'} />
       </div>
 
@@ -138,9 +138,9 @@ function Body(){
         </div>
         <div className="border-line"></div>
         <form onSubmit={handleLogin}>
-          <input type="email" placeholder="Email" required name="email" value={username}
+          <input id="email" type="email" placeholder="Email" required name="email" value={username}
           onChange={(e)=>setUsername(e.target.value)}/>
-          <input type="password" placeholder="Mật khẩu" required name="password" value={password}
+          <input id="pass" type="password" placeholder="Mật khẩu" required name="password" value={password}
           onChange={(e)=>setPassword(e.target.value)}/>
           
         <button type="submit">Đăng nhập</button>

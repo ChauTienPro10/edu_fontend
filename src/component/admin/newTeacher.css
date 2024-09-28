@@ -1,0 +1,49 @@
+
+.new-teacher-body{
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    z-index: 100;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.new-teacher-main{
+    width: 500px;
+    height: 500px;
+    background: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    box-shadow: 6px 6px 6px 6px rgba(0, 0, 0, 0.5);
+}
+
+.new-teacher-main .input-data{
+    width: 400px;
+    height: 50px;
+    border: none;
+    outline: none;
+    padding: 15px;
+    color: gray;
+    margin: 10px;
+    background: wheat;
+}
+.new-teacher-main .submit-button{
+    width: 400px;
+    height: 50px;
+    border: none;
+    outline: none;
+    padding: 15px;
+    background: rgb(56, 192, 78);
+    margin: 10px;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    
+}
+.new-teacher-main .submit-button:hover{
+    opacity: 0.7;
+}

@@ -7,6 +7,7 @@ import axios from 'axios';
 import { PiHandDeposit } from "react-icons/pi"; 
 import { PiHandWithdraw } from "react-icons/pi";
 import { AiOutlineTransaction } from "react-icons/ai";
+import { SERVER_GATEWAY_URL } from '../../config';
 
 function Wallet({isShow,setIsShow}){
     const [isFocus,setIsFocus]=useState(false);
@@ -14,9 +15,8 @@ function Wallet({isShow,setIsShow}){
     const divRef = useRef(null);
     const [isShowPolicy,setIsShowPolicy]=useState(false);
     const [policyCheck,setPolicyCheck]=useState(false);
-    const [accPay,setAccPay]=useState({
-
-    })
+    const [authened,setAuthened]=useState(false); // quan ly xac thuc lien ket vi
+    
     const [loading,setLoading]=useState(false); // quan ly cho tai
     const handleClickOutside = (event) => {
         // Check if the clicked element is outside the referenced div
@@ -25,13 +25,14 @@ function Wallet({isShow,setIsShow}){
           setIsShowPolicy(false);
         }
       };
+      ////////////////////////////////////////////////////
       const fetchLinkAccount = async () => {
         try {
             const userJSON = sessionStorage.getItem('user');
             const user_ = userJSON ? JSON.parse(userJSON) : null;
             
             if(user_._jwt!==undefined){
-                const response = await axios.post(`${SERVER_STUDENT}/student/pay/new`,{},
+                const response = await axios.post(`${SERVER_GATEWAY_URL}/api/student/pay/new`,{},
                     {
                         headers: {
                             'Authorization': `Bearer ${user_._jwt}`, // Thêm JWT token vào header
@@ -53,7 +54,43 @@ function Wallet({isShow,setIsShow}){
 
         }
     };
-    const handleLinkAccount=()=>{
+    ///////////////////////////////////////////////////
+   
+    const checkAccPay = async (user) => {
+        try {
+            setLoading(true);
+            const userJSON = sessionStorage.getItem('user');
+            const user_ = userJSON ? JSON.parse(userJSON) : null;
+            
+            const data={
+                username:user_._username,
+                password:password
+            }
+            const response = await axios.post(
+                `${SERVER_GATEWAY_URL}/api/student/pay/account.pay.check`, 
+                data,
+                {
+                    headers: {
+                        'Authorization': `Bearer ${user_._jwt}`, // JWT token để xác thực
+                    },
+                }
+            );
+            // Trả về kết quả từ response
+            console.log(response.data.result)
+            if(response.data.result===true){
+                setAuthened(true);
+            }
+            else alert('sai mat khau');
+            setLoading(false);
+        } catch (error) {
+            console.error("Error in checkAccPay:", error.response ? error.response.data : error.message);
+            throw error; // Nếu có lỗi, ném ra lỗi để xử lý bên ngoài
+        }
+    };
+
+    //////////////////////////////////////////////////////////////////////////
+
+    const handleLinkAccount=()=>{ //lioen key tai khoan
         if(policyCheck===true){
             setLoading(true);
             fetchLinkAccount();
@@ -68,6 +105,7 @@ function Wallet({isShow,setIsShow}){
           document.removeEventListener('mousedown', handleClickOutside);
         };
       }, []);
+      ////////////////////////////////////////////////////////////////
     return (
         <div className='wallet-container' ref={divRef}  style={{display:isShow?'':'none'}}> 
             <div className='wallet-header'>
@@ -88,8 +126,8 @@ function Wallet({isShow,setIsShow}){
                 <GiBatMask style={{fontSize:'50px', marginRight:'20px', color:'rgb(156, 60, 4)'}} />
                 
             </div>
-            <Logined_wallet_body/>
-            <div style={{display:'none'}} className='wallet-body'>
+            <Logined_wallet_body authened={authened}/>
+            <div style={{display:authened?'none':''}} className='wallet-body'>
                 <div className="body-welcome">
                     <div className='logo'>
                         <GiBatMask style={{fontSize:'150px', color:'rgb(156, 60, 4)'}}/>
@@ -100,10 +138,11 @@ function Wallet({isShow,setIsShow}){
                 <div className="body-loginform">
                     <div className='input-box'>
                     <label className="label" style={{fontSize:isFocus?'10px':'16px'}}  >Password</label>
-                    <input onBlur={()=>{setIsFocus(false);setPassword('')}} value={password}
+                    <input onBlur={()=>{}} value={password}
                     onChange={(e)=>setPassword(e.target.value)}
                     onFocus={()=>setIsFocus(true)} id="inputField" type="password" placeholder="" />
-                    <button className='submit-login'>Đăng nhập</button>
+                    <button onClick={()=>checkAccPay()} className='submit-login'>Đăng nhập</button>
+                    {loading && <GiBatMask className="bat-mask-icon" style={{fontSize:'20px', color:'rgb(156, 60, 4)',margin:'20px auto'}}/>}
                     <p style={{color:'gray', fontSize:'12px',margin:'20px auto',cursor:'pointer'}}>Quên mật khẩu?</p>
                     <p style={{color:'rgb(53, 133, 219)', fontSize:'14px',margin:'20px auto',cursor:'pointer'}}
                         onClick={()=>setIsShowPolicy(true)}
@@ -144,9 +183,9 @@ function Wallet({isShow,setIsShow}){
     );
 }
 
-function Logined_wallet_body(){
+function Logined_wallet_body({authened}){
     return (
-        <div className='logined-wallet-body'>
+        <div style={{display:authened?'':'none'}} className='logined-wallet-body'>
             <h3 style={{fontSize:'50px'}}>10 CDT</h3>
             <div className='transaction'>
                 <button><PiHandDeposit/></button>

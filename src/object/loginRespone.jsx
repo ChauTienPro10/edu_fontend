@@ -1,18 +1,18 @@
 class LoginResponse {
-    constructor(jwt,  username) {
+    constructor(jwt,  username,id) {
       this._jwt = jwt;
       // this._role = role;
       this._username = username;
-      // this._id = id;
+      this._id = id;
     }
   
-    // get id() {
-    //   return this._id;
-    // }
+    get id() {
+      return this._id;
+    }
   
-    // set id(value) {
-    //   this._id = value;
-    // }
+    set id(value) {
+      this._id = value;
+    }
   
     get username() {
       return this._username;

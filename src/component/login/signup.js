@@ -12,7 +12,7 @@ import { FaGoogle } from "react-icons/fa";
 import { FaYahoo } from "react-icons/fa";
 import { FaApple } from "react-icons/fa";
 import Footer from "../footer/footer";
-import { SERVER_URL } from "../../config";
+import { SERVER_GATEWAY_URL } from "../../config";
 import MyLoading from "../alert/loading";
 import LoginSucces from "../alert/LoginSucces";
 import LoginFailue from "../alert/loginFailue";
@@ -70,7 +70,7 @@ function Body(){
     event.preventDefault(); 
 
     try {
-      const response = await axios.post(`${SERVER_URL}/student/profile/new`, {
+      const response = await axios.post(`${SERVER_GATEWAY_URL}/api/student/profile/new`, {
         name,
         email,
         phone,
@@ -136,16 +136,16 @@ function Body(){
       </div>
       <div className="border-line"></div>
       <form onSubmit={handleSignup}>
-        <input type="text" placeholder="Họ và tên" required name="name" value={name} 
+        <input id="namebox" type="text" placeholder="Họ và tên" required name="name" value={name} 
         onChange={(e) => setName(e.target.value)}/>
-        <input type="email" placeholder="Email" required name="email" value={email}
+        <input id="emailbox" type="email" placeholder="Email" required name="email" value={email}
         onChange={(e) => setEmail(e.target.value)}/>
-        <input type="tel" required placeholder="Số điện thoại" name="phone" value={phone}
+        <input id="telbox" type="tel" required placeholder="Số điện thoại" name="phone" value={phone}
         onChange={(e) => setPhone(e.target.value)}/>
         <div className="password">
-          <input type="password" required name="password" placeholder="Mật khẩu" value={password}
+          <input id="pass" type="password" required name="password" placeholder="Mật khẩu" value={password}
           onChange={(e)=> setPassword(e.target.value)}/>
-          <input type="password" required name="password-cfỉrm" placeholder="Xác nhận mật khẩu"
+          <input id="passagainbox" type="password" required name="password-cfỉrm" placeholder="Xác nhận mật khẩu"
           onChange={(e)=> {e.target.value===password?setValidpass(true):setValidpass(false)}}/>
         </div>
         <p style={{color:'red',fontSize:'12px',display:validpass===false?'':'none'}}>Mật khâu không khớp!</p>

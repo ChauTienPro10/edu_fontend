@@ -6,7 +6,7 @@ import { IoIosCloseCircle } from "react-icons/io";
 function LoginFailue({message}){
     return(
         <div className="container">
-            <div className="content">
+            <div id="loginFalure" className="content">
                 <h3>THÔNG BÁO</h3>
                 
                 <div className="icon-content">
