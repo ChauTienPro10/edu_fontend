@@ -1,7 +1,7 @@
 import React ,{ useState ,useEffect}from "react";
 import './videoList.css';
 import YoutubePlayer from "../../videos/youtube";
-import { SERVER_ELASTICSEARCH } from "../../../config";
+import { SERVER_GATEWAY_URL } from "../../../config";
 import axios from 'axios';
 import LoginSucces from "../../alert/LoginSucces";
 import LoginFailue from "../../alert/loginFailue";
@@ -13,7 +13,7 @@ function Videoslist({isTeacher,setIsLoading,_course}){
     const getListVideo = async () => {
         try {
            
-        const response = await axios.get(`${SERVER_ELASTICSEARCH}/elasticSearch/video/getListVideo?idcourse=${_course.id}`);
+        const response = await axios.get(`${SERVER_GATEWAY_URL}/api/elasticSearch/video/getListVideo?idcourse=${_course.id}`);
         console.log(_course.id);
         await setVideos(response.data);
         
@@ -46,7 +46,7 @@ function Videoslist({isTeacher,setIsLoading,_course}){
             ) )}
 
             <button onClick={()=>{setModVideo(!modVideo)}}
-             style={{display:isTeacher?'none':'',background:'rgb(77, 121, 214)',border:'none'
+             style={{display:isTeacher?'':'none',background:'rgb(77, 121, 214)',border:'none'
                 ,color:'white', fontSize:'15px', padding:'10px', cursor:'pointer'
             }}>Thêm nội dung mới</button>
             <div className="panel-body" style={{display:!modVideo?'none':''}}>
@@ -63,6 +63,7 @@ function Addvideo({modVideo,setModVideo,setIsLoading ,_course}){
     const [title,setTitle]=useState('');
     const [description,setDescription]=useState('');
     const [stt,setStt]=useState(0);
+    const [err,setErr]=useState('');
     const addVideoFunc= async () => {
             setIsLoading(true);
             const data={
@@ -70,11 +71,11 @@ function Addvideo({modVideo,setModVideo,setIsLoading ,_course}){
                 description:description,
                 course:_course.id,
                 stt:stt,
-                linkId:videoId
+                link:videoId
                 
             }
             try {
-                const response = await axios.post(`${SERVER_ELASTICSEARCH}/elasticSearch/video/new`, data);
+                const response = await axios.post(`${SERVER_GATEWAY_URL}/api/elasticSearch/video/new`, data);
                 setIsLoading(false);
                 
                 const { code, message, result } = response.data;
@@ -86,6 +87,7 @@ function Addvideo({modVideo,setModVideo,setIsLoading ,_course}){
                     setIsSuccess(true);
                 } else {
                     setIsFailure(true);
+                    setErr(message);
                 }
                 
             } catch (error) {
@@ -104,7 +106,7 @@ function Addvideo({modVideo,setModVideo,setIsLoading ,_course}){
                     <LoginSucces message={'Đã thêm video'}/>
                 </div>
                 <div onClick={()=>{setIsFailure(false);}} style={{display:isFailure?'':'none'}} className="inform-table">
-                    <LoginFailue message={'Thêm video thất bại'}/>
+                    <LoginFailue message={err}/>
                 </div>
                 <div className="title-video">
                     <label  style={{color:'grey',fontSize:'13px'}}  htmlFor="videoTitle">Tiêu đề:</label>

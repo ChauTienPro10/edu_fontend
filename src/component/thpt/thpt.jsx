@@ -6,11 +6,11 @@ import { FaQuestionCircle } from "react-icons/fa";
 import { FaChevronLeft } from "react-icons/fa";
 import { FaChevronRight } from "react-icons/fa";
 import axios from 'axios';
-import { SERVER_URL,SERVER_ELASTICSEARCH } from "../../config";
+import { SERVER_URL,SERVER_GATEWAY_URL } from "../../config";
 import { BrowserRouter as Router, Route, Routes, Link,useLocation,useNavigate,Switch   } from 'react-router-dom';
 
 
-function Thpt(){
+function Thpt({level}){
     
     const navigate = useNavigate(); 
 
@@ -22,7 +22,7 @@ function Thpt(){
       }, []);
     const fetchCourses = async () => {
         try {
-        const response = await axios.get(`${SERVER_ELASTICSEARCH}/elasticSearch/course/getLevel?level=3`);
+        const response = await axios.get(`${SERVER_GATEWAY_URL}/api/elasticSearch/course/getLevel?level=${level}`);
         await setCourses(response.data);
         console.log(courses.length);
         

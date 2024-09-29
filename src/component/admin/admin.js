@@ -15,6 +15,8 @@ import Course from "./course";
 import Statistic from "./statistic";
 import NewTeacher from "./newTeacher";
 import NewSubject from "./subject";
+import NewCourse from "./newCourse";
+import Teacher from "./teacher";
 import { Chart as ChartJS, Title, Tooltip, Legend, ArcElement } from 'chart.js';
 ChartJS.register(Title, Tooltip, Legend, ArcElement);
 function Admin(){
@@ -71,6 +73,7 @@ function Content({ indextask,setIndextask }){
         <div className="content-side">
             <div style={{display:indexSetting==='TC'?'':'none'}}><NewTeacher setIndedx={setIdexSetting}/></div>
             <div style={{display:indexSetting==='SJ'?'':'none'}}><NewSubject setIndedx={setIdexSetting}/></div>
+            <div style={{display:indexSetting==='C'?'':'none'}}><NewCourse setIndedx={setIdexSetting}/></div>
             <div className="top-side">
                 <div className="top-side-search">
                     <p style={{fontSize:'15px',marginRight:'10px'}}>🔍</p>
@@ -83,7 +86,7 @@ function Content({ indextask,setIndextask }){
                   <div style={{display:setting?'':'none'}} className="setting-mode">
                     <ul>
                       <li onClick={()=>setIdexSetting('TC')}>Thêm giáo viên</li>
-                      <li onClick={()=>setIdexSetting('')}>Thêm khóa học</li>
+                      <li onClick={()=>setIdexSetting('C')}>Thêm khóa học</li>
                       <li onClick={()=>setIdexSetting('SJ')}>Thêm lĩnh vựt giảng dạy</li>
                     </ul>
                     
@@ -93,7 +96,7 @@ function Content({ indextask,setIndextask }){
             <div className="content-side-board">
               <div className={`content-side-board-child  ${indextask!==1?'hiden':''} `} ><Homecomponent /></div>
               <div className={ `content-side-board-child  ${indextask!==2?'hiden':''}`} ><Course /></div>
-              <div className={`content-side-board-child  ${indextask!==3?'hiden':''}`} ><Statistic /></div>
+              <div className={`content-side-board-child  ${indextask!==3?'hiden':''}`} ><Teacher /></div>
               <div className={`content-side-board-child  ${indextask!==4?'hiden':''}`} ><Statistic /></div>
               <div className={`content-side-board-child  ${indextask!==5?'hiden':''}`} ><Statistic /></div>
             </div>

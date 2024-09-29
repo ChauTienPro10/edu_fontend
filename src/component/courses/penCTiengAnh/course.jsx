@@ -5,7 +5,7 @@ import { FaQuestionCircle } from "react-icons/fa";
 import YoutubePlayer from "../../videos/youtube";
 import { FaPencil } from "react-icons/fa6";
 import { IoCheckmarkDoneCircle } from "react-icons/io5";
-import { SERVER_ELASTICSEARCH } from "../../../config";
+import { SERVER_GATEWAY_URL } from "../../../config";
 import { useLocation } from "react-router-dom";
 import axios from 'axios';
 import Videoslist from "./videosContainer";
@@ -121,7 +121,7 @@ function ContentCourse({_course,desContent, setDesContent,setIsLoading}){
     const getInforOfCourse = async () => {
         try {
            
-        const response = await axios.get(`${SERVER_ELASTICSEARCH}/elasticSearch/course/getInforCourse?id=${_course.id}`);
+        const response = await axios.get(`${SERVER_GATEWAY_URL}/api/elasticSearch/course/getInforCourse?id=${_course.id}`);
         console.log(_course.id);
         await setInforCourse(response.data);
         
@@ -176,7 +176,7 @@ function ContentCourse({_course,desContent, setDesContent,setIsLoading}){
             console.log(newInfor);
         
         try {
-            const response = await axios.post(`${SERVER_ELASTICSEARCH}/elasticSearch/course/modifyInforCourse`, newInfor);
+            const response = await axios.post(`${SERVER_GATEWAY_URL}/api/elasticSearch/course/modifyInforCourse`, newInfor);
             const { code, message, result } = response.data;
 
             if (code === 1000) {

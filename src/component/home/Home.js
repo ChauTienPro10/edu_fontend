@@ -497,13 +497,13 @@ function Courses(){
     <div className='courses-container'>
       <div className='thpt-thcs-th thpt-content' id='thpt'>
         <h4 style={{color:'gray',padding:'10px'}}>TRUNG HỌC PHỔ THÔNG</h4>
-        <Thpt /></div>
+        <Thpt level={3}/></div>
       <div className='thpt-thcs-th thcs-content' id='thcs'>
       <h4 style={{color:'gray',padding:'10px'}}>TRUNG HỌC CƠ SỞ</h4>
-        <Thpt /></div>
+        <Thpt level={2}/></div>
       <div className='thpt-thcs-th th-content' id='th'>
       <h4 style={{color:'gray',padding:'10px'}}>TIỂU HỌC</h4>
-        <Thpt /></div>
+        <Thpt level={1}/></div>
       
     </div>
   );
