@@ -29,7 +29,7 @@ function Course(){
 }
 function Body({_course,desContent,setDesContent}){
     const [desMod,setDesmod]=useState(false) // quan ly bat tat mode phan mo ta
-    
+    const role=sessionStorage.getItem('role');
     return (
         <div className="course-body">
            <nav className="Breadcrumb-container" aria-label="Breadcrumb">
@@ -52,7 +52,7 @@ function Body({_course,desContent,setDesContent}){
                             placeholder="Enter your text here"
                             style={{ display: !desMod ? 'none' : '' ,background:'rgba(255, 255, 255, 0.8)'}}
                         />
-                         <FaPencil style={{ display: desMod ? 'none' : '',cursor:'pointer'}} onClick={()=>{setDesmod(!desMod)}} />
+                         <FaPencil style={{ display: desMod || role!=='ROLE_TEACHER' ? 'none' : '',cursor:'pointer'}} onClick={()=>{setDesmod(!desMod)}} />
                          <IoCheckmarkDoneCircle style={{ display: !desMod ? 'none' : '',cursor:'pointer'}} onClick={()=>{setDesmod(!desMod)}} />
                     </p>
                     {/* ket thuc phan thay doi noi dung mo ta */}
@@ -110,7 +110,7 @@ function Body({_course,desContent,setDesContent}){
 }
 
 function ContentCourse({_course,desContent, setDesContent,setIsLoading}){
-   const [isTeacher,setIsTeacher]=useState(true);
+   const role=sessionStorage.getItem('role');
     const [inforCourse,setInforCourse]=useState(null); // quan ly thong khoa hoc
     const [methods,setMethods]=useState(['']) // phuong thuc hoc tap
     const [methodMod,setMethodMod]=useState(false);// dieu kihen bac tat mode
@@ -137,7 +137,6 @@ function ContentCourse({_course,desContent, setDesContent,setIsLoading}){
           // Fetch information of the course by course id
           await getInforOfCourse();
         };
-      
         fetchCourseInfo();
       }, []); // Empty dependency array to ensure this runs only once on mount
 
@@ -208,7 +207,7 @@ function ContentCourse({_course,desContent, setDesContent,setIsLoading}){
                                 }
                                 <input  style={{ display: !methodMod ? 'none' : '',background:'rgba(255, 255, 255, 0.8)' }} type="text" placeholder={'phương thức mới'}
                             value={newMethod} onChange={(e)=>setNewMethod(e.target.value)}/>
-                                <button style={{display:!isTeacher?'none':'',background:'grey', border:'traparent',padding:'1px 3px 1px 3px', borderRadius:'50%'
+                                <button style={{display:role!=='ROLE_TEACHER'?'none':'',background:'grey', border:'traparent',padding:'1px 3px 1px 3px', borderRadius:'50%'
                                     ,cursor:'pointer', color:'white'
                                 }} onClick={async(e)=>{
                                 await handleAddmethod(newMethod);
@@ -242,7 +241,7 @@ function ContentCourse({_course,desContent, setDesContent,setIsLoading}){
                                     }
                                 <input  style={{ display: !reqMod ? 'none' : '',background:'rgba(255, 255, 255, 0.8)' }} type="text" placeholder={'phương thức mới'}
                             value={newReq} onChange={(e)=>setNewReq(e.target.value)}/>
-                                <button style={{display:!isTeacher?'none':'',background:'grey', border:'traparent',padding:'1px 3px 1px 3px', borderRadius:'50%'
+                                <button style={{display:role!=='ROLE_TEACHER'?'none':'',background:'grey', border:'traparent',padding:'1px 3px 1px 3px', borderRadius:'50%'
                                     ,cursor:'pointer', color:'white'
                                 }} onClick={async(e)=>{
                                 await handleAddRequire(newReq);
@@ -268,7 +267,7 @@ function ContentCourse({_course,desContent, setDesContent,setIsLoading}){
                         </div>
                     </div>
                     <div style={{display:'flex', marginTop:'20px'}}> {/* danhh cho hoc vien*/ }
-                            <button style={{display:!isTeacher?'':'none',background:'rgb(77, 121, 214)', padding:'15px 35px 15px 35px',
+                            <button style={{display:role!=='ROLE_TEACHER'?'':'none',background:'rgb(77, 121, 214)', padding:'15px 35px 15px 35px',
                                 border:'none',color:'white', boxShadow:'4px 4px 10px rgba(0, 0, 0, 0.2)'
                                 ,cursor:'pointer'}}
                                 onClick={()=>{setShowPay(true)}}
@@ -277,14 +276,14 @@ function ContentCourse({_course,desContent, setDesContent,setIsLoading}){
                             
                     </div>
                     <div style={{display:'flex', marginTop:'20px'}}> {/* danhh cho giao  vien*/ }
-                            <button style={{display:!isTeacher?'none':'',background:'rgb(77, 121, 214)', padding:'3px 5px 3px 5px',
+                            <button style={{display:role!=='ROLE_TEACHER'?'none':'',background:'rgb(77, 121, 214)', padding:'3px 5px 3px 5px',
                                 border:'none',color:'white', boxShadow:'4px 4px 10px rgba(0, 0, 0, 0.2)'
                                 ,cursor:'pointer'}}
                                 onClick={()=>{modifyCourseInfor()}}
                                 >Cập nhật</button>
                             
                     </div>
-                    <ListVideo  isTeacher={isTeacher} setIsLoading={setIsLoading} _course={_course}/>
+                    <ListVideo  isTeacher={role==='ROLE_TEACHER'} setIsLoading={setIsLoading} _course={_course}/>
                 </div>
                 <div className="course-body-right">
                     <RelaxtiveVideo/>

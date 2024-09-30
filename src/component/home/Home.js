@@ -104,7 +104,7 @@ export function Logined({isLogin,setIsLogin}){
   const [showNotify, setShowNotify]=useState(false);
   const [isShow,setIsShow]=useState(false);
   const [isLoading,setIsLoading]=useState(false);
-
+  const navigate = useNavigate();
   
   const [email,setEmail]=useState('')
   // xu ly xac thuc dang nhap
@@ -134,7 +134,7 @@ export function Logined({isLogin,setIsLogin}){
 
         }
       }
-      
+      navigate('/');
       setIsLoading(false);
     } catch (error) {
       console.log(error);

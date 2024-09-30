@@ -16,7 +16,7 @@ function Wallet({isShow,setIsShow}){
     const [isShowPolicy,setIsShowPolicy]=useState(false);
     const [policyCheck,setPolicyCheck]=useState(false);
     const [authened,setAuthened]=useState(false); // quan ly xac thuc lien ket vi
-    
+    const [user,setUser]=useState({});
     const [loading,setLoading]=useState(false); // quan ly cho tai
     const handleClickOutside = (event) => {
         // Check if the clicked element is outside the referenced div
@@ -76,11 +76,11 @@ function Wallet({isShow,setIsShow}){
                 }
             );
             // Trả về kết quả từ response
-            console.log(response.data.result)
-            if(response.data.result===true){
+            if(response.data.code===1000){
                 setAuthened(true);
+                setUser(response.data.result)
             }
-            else alert('sai mat khau');
+            else alert(response.data.message);
             setLoading(false);
         } catch (error) {
             console.error("Error in checkAccPay:", error.response ? error.response.data : error.message);
@@ -120,13 +120,13 @@ function Wallet({isShow,setIsShow}){
                 }}/>
                 </div>
                 <div className='account-name'>
-                    <p style={{color:'grey',fontSize:'16px'}}>Chau Duong</p>
-                    <p style={{color:'grey',fontSize:'12px'}}>0x1uhdnkds</p>
-                </div>
+                    <p style={{color:'grey',fontSize:'16px'}}>{user.email}</p>
+                    <p style={{color:'grey',fontSize:'12px', maxWidth:'100px', overflow:'hidden'}}>{user.address}</p>
+                </div>  
                 <GiBatMask style={{fontSize:'50px', marginRight:'20px', color:'rgb(156, 60, 4)'}} />
                 
             </div>
-            <Logined_wallet_body authened={authened}/>
+            <Logined_wallet_body authened={authened} user={user}/>
             <div style={{display:authened?'none':''}} className='wallet-body'>
                 <div className="body-welcome">
                     <div className='logo'>
@@ -183,10 +183,10 @@ function Wallet({isShow,setIsShow}){
     );
 }
 
-function Logined_wallet_body({authened}){
+function Logined_wallet_body({authened,user}){
     return (
         <div style={{display:authened?'':'none'}} className='logined-wallet-body'>
-            <h3 style={{fontSize:'50px'}}>10 CDT</h3>
+            <h3 style={{fontSize:'50px'}}>{user.balance} CDT</h3>
             <div className='transaction'>
                 <button><PiHandDeposit/></button>
                 <button><PiHandWithdraw/></button>

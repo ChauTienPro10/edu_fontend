@@ -23,6 +23,7 @@ import LoginFailue from "../alert/loginFailue";
 import MyLoading from "../alert/loading";
 import ReactDOM from 'react-dom';
 import Header from "../header/Header";
+import MyJwtDecoder from "../../object/JwtDecoder ";
 function Login(){
   
     return(
@@ -85,7 +86,8 @@ function Body(){
         const userJSON = sessionStorage.getItem('user');
         const user_ = userJSON ? JSON.parse(userJSON) : null;
         console.log(user_._jwt);
-        
+        sessionStorage.setItem('role',MyJwtDecoder(response.data.result.token,'').scope);
+        // console.log(MyJwtDecoder(response.data.result.token,'').scope);
         if(user._jwt!==undefined){
           setIsLoading(false);
           setLoginState(1);

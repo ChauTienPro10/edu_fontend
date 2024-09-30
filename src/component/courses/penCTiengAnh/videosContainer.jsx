@@ -1,4 +1,5 @@
 import React ,{ useState ,useEffect}from "react";
+import { useNavigate } from "react-router-dom";
 import './videoList.css';
 import YoutubePlayer from "../../videos/youtube";
 import { SERVER_GATEWAY_URL } from "../../../config";
@@ -8,6 +9,8 @@ import LoginFailue from "../../alert/loginFailue";
 
 
 function Videoslist({isTeacher,setIsLoading,_course}){
+    const navigate = useNavigate();
+
     const [modVideo,setModVideo]=useState(false);
     const [videos,setVideos]=useState([]);
     const getListVideo = async () => {
@@ -23,6 +26,17 @@ function Videoslist({isTeacher,setIsLoading,_course}){
         }
     };
 
+    /// xu ly lua chon video
+    const handleCLickOnVideo=()=>{
+        if(sessionStorage.getItem('role')===null){
+            navigate('/login');
+            
+        }
+        else{
+            alert('clicked');
+        }
+        
+    }
     useEffect(() => {
         const fetchVideos = async () => {
           // Fetch information of the course by course id
@@ -36,7 +50,7 @@ function Videoslist({isTeacher,setIsLoading,_course}){
     return(
         <div className="videos-body">
             { videos!==null && videos.map((video, index)=>(
-                <div className="video-element">
+                <div onClick={()=>handleCLickOnVideo()} className="video-element">
                 <div className="img-div"></div>
                 <div className="video-description">
                     <h4 style={{color:'grey'}}>{video.title}</h4>

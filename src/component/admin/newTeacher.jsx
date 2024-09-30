@@ -7,6 +7,7 @@ function NewTeacher({setIndedx}){
     const [major,setMajor]=useState('');
     const [level,setLevel]=useState('');
     const [error,setError]=useState('');
+    const [email,setEmail]=useState('');
     const [loading,setLoading]=useState(false);
 
 
@@ -18,6 +19,7 @@ function NewTeacher({setIndedx}){
             name,
             major,
             level,
+            email,
             
           });
     
@@ -29,7 +31,8 @@ function NewTeacher({setIndedx}){
             setName('');
             setMajor('');
             setLevel('');
-            alert("Thêm thành công")
+            setEmail('');
+;            alert("Thêm thành công")
           }
           
           else{
@@ -47,6 +50,9 @@ function NewTeacher({setIndedx}){
                 <label htmlFor="teacher-name">Họ và tên giáo viên</label>
                     <input id="teacher-name" className="input-data"  type="text" placeholder="Họ và tên giáo viên" required  value={name} 
                 onChange={(e) => setName(e.target.value)}/>
+                <label htmlFor="teacher-email">Email đăng nhập</label>
+                    <input id="teacher-email" className="input-data"  type="email" placeholder="email đăng nhập" required  value={email} 
+                onChange={(e) => setEmail(e.target.value)}/>
                 <label htmlFor="teacher-major">Chuyên môn giảng dạy</label>
                 <input id="teacher-major" className="input-data"  type="text" placeholder="Chuyên môn" required  value={major} 
                 onChange={(e) => setMajor(e.target.value)}/>
