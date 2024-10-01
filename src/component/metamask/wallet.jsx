@@ -8,6 +8,7 @@ import { PiHandDeposit } from "react-icons/pi";
 import { PiHandWithdraw } from "react-icons/pi";
 import { AiOutlineTransaction } from "react-icons/ai";
 import { SERVER_GATEWAY_URL } from '../../config';
+import BuyToken from './buyToken';
 
 function Wallet({isShow,setIsShow}){
     const [isFocus,setIsFocus]=useState(false);
@@ -192,6 +193,7 @@ function Logined_wallet_body({authened,user}){
                 <button><PiHandWithdraw/></button>
                 <button><AiOutlineTransaction/></button>
             </div>
+            <BuyToken/>
         </div>
     );
 }
