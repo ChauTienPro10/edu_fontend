@@ -272,7 +272,7 @@ function ContentCourse({_course,desContent, setDesContent,setIsLoading}){
                                 ,cursor:'pointer'}}
                                 onClick={()=>{setShowPay(true)}}
                                 >Mua khóa học</button>
-                            <Paypage show={showPay} setShow={setShowPay}/>
+                            <Paypage show={showPay} setShow={setShowPay} course={_course}/>
                             
                     </div>
                     <div style={{display:'flex', marginTop:'20px'}}> {/* danhh cho giao  vien*/ }

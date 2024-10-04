@@ -1,41 +1,125 @@
 import './paypage.css';
-import React from 'react';
+import React,{useEffect,useState} from 'react';
 import { RiCopperCoinFill } from "react-icons/ri";
 import { GiBatMask } from "react-icons/gi";
+import { SERVER_GATEWAY_URL } from '../../../config';
+import { FaCheckCircle } from "react-icons/fa";
+import axios from 'axios';
+function Paypage({show,setShow,course}){
+    const address= sessionStorage.getItem('address');
+    const balance= sessionStorage.getItem('balance');
+    const email=sessionStorage.getItem('user')._usernaem;
+    const [base64String,setBase64String]=useState('');
+    const [code,setCode]=useState('');
+    const [amount,setAmount]=useState(0);
+    const [loadingDeposit,setLoadingDeposit]=useState(false);// quan ly tien trinh nap token
+    const [payed,setPayed]=useState(false);
 
-function Paypage({show,setShow}){
+    const fetchGenQR = async (amount) => {
+
+        try {
+            const userJSON = sessionStorage.getItem('user');
+            const user_ = userJSON ? JSON.parse(userJSON) : null;
+            
+            if(user_._jwt!==undefined){
+                const response = await axios.post(`${SERVER_GATEWAY_URL}/api/student/pay/generateQR`,{amount:amount,email:user_._username},
+                    {
+                        headers: {
+                            'Authorization': `Bearer ${user_._jwt}`, // Thêm JWT token vào header
+                            'Content-Type': 'application/json', // Đảm bảo header đúng loại dữ liệu bạn đang gửi
+                          },
+                    },
+                );
+                console.log(response.data.result);
+                setBase64String(response.data.result);
+            }
+        
+        
+        } catch (error) {
+        console.error('Error fetching courses:', error);
+
+        }
+    };
+
+    const fetchBuyCourse=async (amount)=>{
+        try {
+            const userJSON = sessionStorage.getItem('user');
+            const user_ = userJSON ? JSON.parse(userJSON) : null;
+            
+            if(user_._jwt!==undefined){
+                const response = await axios.post(`${SERVER_GATEWAY_URL}/api/student/pay/buy.course`,{price:amount
+                    ,course:course.id
+                    ,email:user_._username},
+                    {
+                        headers: {
+                            'Authorization': `Bearer ${user_._jwt}`, // Thêm JWT token vào header
+                            'Content-Type': 'application/json', // Đảm bảo header đúng loại dữ liệu bạn đang gửi
+                          },
+                    },
+                );
+                console.log(response.data.result);
+                if(response.data.code===1000){
+                    sessionStorage.setItem('balance', sessionStorage.getItem('balance')-amount);
+                }
+            }
+        
+        
+        } catch (error) {
+        console.error('Error fetching courses:', error);
+
+        }
+    }
+
+
     return (
-        <div style={{display:show?'':'none'}} className='pay-body'>
+        <div style={{display:show?'':'none'}}  className='pay-body'>
             <div className='pay-main'>
                 <div className='header-pay'>
-                    <p>Thanh toán</p>
+                    <p>Hệ thống thanh toán CDToken</p>
                 </div>
-                <div className='body-pay'>
-                    <p style={{fontSize:'13px',padding:'5px',fontWeight:'lighter'}}>{`Email: ${"test@gmail.com"}`}</p>
-                    <p style={{fontSize:'13px',padding:'5px',fontWeight:'lighter'}}>{`Tài khoản: ${"0x00Av..."}`}</p>
-                    <div style={{display:'flex',alignItems:'center'}}><p style={{fontSize:'13px',padding:'5px'}}>{`Số dư: ${"100"} `}</p>
+                <div style={{display:(base64String==='' && !payed)?'':'none'}} className='body-pay'>
+                    <p style={{fontSize:'13px',padding:'5px',fontWeight:'lighter'}}>{`Email: ${email}`}</p>
+                    <p style={{fontSize:'13px',padding:'5px',fontWeight:'lighter',maxWidth:'200px',overflow:'hidden' }}>{`Tài khoản: ${address}`}</p>
+                    <div style={{display:'flex',alignItems:'center'}}><p style={{fontSize:'13px',padding:'5px'}}>{`Số dư: ${balance} `}</p>
                     <RiCopperCoinFill style={{color:'gold'}}/></div>
                     <div style={{display:'flex' , justifyContent:'center',alignItems:'center',padding:'20px'
                         ,flexDirection:'column'
                     }}><GiBatMask style={{fontSize:'100px', color:'rgb(156, 60, 4)'}}/>
-                        <p style={{color:'gray',fontSize:'15px'}}>Hệ thống thanh toán CDToken</p>
+                        <p style={{color:'gray',fontSize:'15px'}}>{course.title}</p>
                     </div>
-                    <input style={
-                        {
-                            width:'100%',
-                            height:'30px',
-                            background:'transparent',
-                            border:'none',
-                            outline:'none',
-                            color:'grey',
-                            padding:'20px'
-                        }
-                    } type='password' placeholder='mật khẩu của bạn'/>
+                    <p>{`Học phí: ${100} CDT`}</p>
 
                     <div className='option-but'>
                         <button onClick={()=>setShow(false)} style={{background:'rgb(255, 62, 62)',color:'white'}}>Hủy</button>
-                        <button style={{background:'rgb(41, 228, 72)'}}>Mua</button>
+                        <button style={{background:'rgb(41, 228, 72)'}} onClick={()=>fetchGenQR(100)}>Tiếp tục</button>
                     </div>
+                </div>
+
+
+                <div style={{display:(base64String==='' && !payed)?'none':''}} className='deposit-body'>
+                    <img style={{margin:'10px',width:'150px',height:'150px'}} src={`data:image/png;base64,${base64String}`} alt="QR Code" />
+                    <input onChange={(e)=>setCode(e.target.value)} value={code} style={{height:'30px', border:'none'
+                        ,padding:'5px', width:'100px', margin:'3px'
+                    }} type='text' id='ver-code' placeholder='Mã xác thực'/>
+                    <button style={{width:'60%',background:'rgb(33, 174, 230)',opacity:loadingDeposit?'0.5':'1'}} onClick={()=>fetchBuyCourse(10)}  id='submit-trans' >Thanh toán</button>
+                    <button onClick={()=>setBase64String('')} style={{width:'60%',background:'red',opacity:loadingDeposit?'0.5':'1'}}  id='submit-trans' >Quay về</button>
+
+                </div>
+                <div style={{display:payed?'':'none'}} className='bill-container'>
+                    <FaCheckCircle style={{margin:'auto',color:'green',fontSize:'100px',paddingBottom:'20px'}}/>
+                    <p style={{margin:'auto'}}>Mua thành công</p>
+                    <div><p>Id: </p><p style={{color:'grey', fontSize:'16px', marginLeft:'20px'}}>sdffhsdjf</p></div>
+                    <div><p>Khóa học: </p><p  style={{color:'grey', fontSize:'16px', marginLeft:'20px'}}>{"khoa hoc 1"}</p></div>
+                    <div><p>Email: </p><p  style={{color:'grey', fontSize:'16px', marginLeft:'20px'}}>{"khoa hoc 1"}</p></div>
+                    <div><p>Thời gian: </p><p  style={{color:'grey', fontSize:'16px', marginLeft:'20px'}}>{"khoa hoc 1"}</p></div>
+                    <div><p>Tổng: </p><p  style={{color:'grey', fontSize:'16px', marginLeft:'20px'}}>{"khoa hoc 1"}</p></div>
+                    <button
+                    style={{
+                        height:'50px', border:'none', background:'green', fontSize:'18px', color:'white', marginTop:'20px'
+                        ,cursor:'pointer'
+                    }}>ok</button>
+
+
                 </div>
             </div>
         </div>

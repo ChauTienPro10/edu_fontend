@@ -66,3 +66,17 @@
 .option-but button:hover{
     opacity: 1;
 }
+
+
+
+
+.bill-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 40px;
+}
+.bill-container div{
+    display: flex;
+    padding: 5px;
+}

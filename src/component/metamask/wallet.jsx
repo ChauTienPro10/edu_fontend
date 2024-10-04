@@ -13,12 +13,13 @@ import BuyToken from './buyToken';
 function Wallet({isShow,setIsShow}){
     const [isFocus,setIsFocus]=useState(false);
     const [password,setPassword]=useState('');
-    const divRef = useRef(null);
+    const divRef = useRef(null);// quan ly click ben ngoai 
     const [isShowPolicy,setIsShowPolicy]=useState(false);
     const [policyCheck,setPolicyCheck]=useState(false);
     const [authened,setAuthened]=useState(false); // quan ly xac thuc lien ket vi
     const [user,setUser]=useState({});
     const [loading,setLoading]=useState(false); // quan ly cho tai
+    
     const handleClickOutside = (event) => {
         // Check if the clicked element is outside the referenced div
         if (divRef.current && !divRef.current.contains(event.target)) {
@@ -26,6 +27,14 @@ function Wallet({isShow,setIsShow}){
           setIsShowPolicy(false);
         }
       };
+
+      const setAccounttoStorage = async (acc) => {
+        sessionStorage.setItem('address', acc.address);
+        sessionStorage.setItem('balance', acc.balance);
+    };
+
+     
+
       ////////////////////////////////////////////////////
       const fetchLinkAccount = async () => {
         try {
@@ -79,7 +88,8 @@ function Wallet({isShow,setIsShow}){
             // Trả về kết quả từ response
             if(response.data.code===1000){
                 setAuthened(true);
-                setUser(response.data.result)
+                await setUser(response.data.result)
+                await setAccounttoStorage(response.data.result);
             }
             else alert(response.data.message);
             setLoading(false);
@@ -185,15 +195,22 @@ function Wallet({isShow,setIsShow}){
 }
 
 function Logined_wallet_body({authened,user}){
+    const [tokenTask, setTokenTask]=useState(0);
+    const [balance,setBalance]=useState(user.balance); // quan ly so du cua tai khoan
+    useEffect(() => {
+        if(sessionStorage.getItem('balance')){
+            setBalance(sessionStorage.getItem('balance'));
+        }
+      }, [sessionStorage.getItem('balance')]);
     return (
         <div style={{display:authened?'':'none'}} className='logined-wallet-body'>
-            <h3 style={{fontSize:'50px'}}>{user.balance} CDT</h3>
+            <h3 style={{fontSize:'50px'}}>{balance} CDT</h3>
             <div className='transaction'>
-                <button><PiHandDeposit/></button>
-                <button><PiHandWithdraw/></button>
-                <button><AiOutlineTransaction/></button>
+                <button onClick={()=>{setTokenTask(1)}}><PiHandDeposit/></button> {/* 1 la nap tiien */}
+                <button onClick={()=>{setTokenTask(2)}} ><PiHandWithdraw/></button>  {/* 2 la rut tien tiien */}
+                <button onClick={()=>{setTokenTask(3)}}><AiOutlineTransaction/></button>  {/* 3 la chuyen tien */}
             </div>
-            <BuyToken/>
+            { tokenTask===1 &&  <BuyToken setBalance={setBalance}/>}
         </div>
     );
 }
