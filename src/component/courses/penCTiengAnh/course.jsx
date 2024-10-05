@@ -283,7 +283,7 @@ function ContentCourse({_course,desContent, setDesContent,setIsLoading}){
                                 >Cập nhật</button>
                             
                     </div>
-                    <ListVideo  isTeacher={role==='ROLE_TEACHER'} setIsLoading={setIsLoading} _course={_course}/>
+                    <ListVideo  isTeacher={role==='ROLE_TEACHER'} setIsLoading={setIsLoading} _course={_course} setShowPay={setShowPay}/>
                 </div>
                 <div className="course-body-right">
                     <RelaxtiveVideo/>
@@ -299,7 +299,10 @@ function ContentCourse({_course,desContent, setDesContent,setIsLoading}){
 
 
 
-function ListVideo({isTeacher, setIsLoading, _course}){
+function ListVideo({isTeacher, setIsLoading, _course,setShowPay}){
+    // isTeacher kiem tra co quyern teacher khong
+    // setShowPay cho phep bat tat trang thanh toan
+    // _course cho phep xu dung thong tin khoa hoc
     return(
         <div className="list-video-body">
             <div className="head-list">
@@ -307,7 +310,7 @@ function ListVideo({isTeacher, setIsLoading, _course}){
                     width:'200px' ,borderRadius:'5px 5px 0 2px',border:'traparent',height:'100%'
                 }}>Đề cương khóa học</h4>
             </div>
-            <Videoslist isTeacher={isTeacher} setIsLoading={setIsLoading} _course={_course}/>
+            <Videoslist isTeacher={isTeacher} setIsLoading={setIsLoading} _course={_course} setShowPay={setShowPay}/>
         </div>
     )
 }

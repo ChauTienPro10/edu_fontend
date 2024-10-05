@@ -8,7 +8,9 @@ import LoginSucces from "../../alert/LoginSucces";
 import LoginFailue from "../../alert/loginFailue";
 
 
-function Videoslist({isTeacher,setIsLoading,_course}){
+
+
+function Videoslist({isTeacher,setIsLoading,_course,setShowPay}){
     const navigate = useNavigate();
 
     const [modVideo,setModVideo]=useState(false);
@@ -27,16 +29,45 @@ function Videoslist({isTeacher,setIsLoading,_course}){
     };
 
     /// xu ly lua chon video
-    const handleCLickOnVideo=()=>{
+    const handleCLickOnVideo=async ()=>{
         if(sessionStorage.getItem('role')===null){
             navigate('/login');
-            
         }
         else{
-            alert('clicked');
+            await fetchRegisterInfor();
         }
         
     }
+
+    const fetchRegisterInfor=async()=>{
+        try {
+            const userJSON = sessionStorage.getItem('user');
+            const user_ = userJSON ? JSON.parse(userJSON) : null;
+            if(user_._jwt!==undefined){
+                const response = await axios.post(`${SERVER_GATEWAY_URL}/api/student/register/check`,{email:user_._username,course:_course.id},
+                    {
+                        headers: {
+                            'Authorization': `Bearer ${user_._jwt}`, // Thêm JWT token vào header
+                            'Content-Type': 'application/json', // Đảm bảo header đúng loại dữ liệu bạn đang gửi
+                          },
+                    },
+                );
+                console.log(response.data.code);
+                if(response.data.code===10001){
+                    alert("Bạn chưa tham gia khóa học")
+                    setShowPay(true);
+                }
+                if(response.data.code===1000){
+                    navigate("/learning", { state: { videos: videos } });
+                }
+                
+            }
+           
+            } catch (error) {
+            console.error('Error :', error);
+            }
+    }
+
     useEffect(() => {
         const fetchVideos = async () => {
           // Fetch information of the course by course id

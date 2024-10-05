@@ -1,0 +1,88 @@
+.learning-body{
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    
+}
+.video-player{
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+.video-player .comment-body{
+    width: 100%;
+    border-top: 1px solid black;
+    padding: 20px;
+    height: 300px;
+    overflow-y: scroll;
+}
+.video-player .comment-body .comment{
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.253);
+}
+.video-player .comment-body .comment .content{
+    margin: 0 20px 0 20px;
+    max-width: 400px;
+}
+
+
+
+.push-comment{
+    width: 100%;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+   
+}
+#cmt{
+    width: 70%;
+    height: 100%;
+    padding: 10px;
+    border: none;
+    outline: none;
+    border: 1px solid rgba(0, 0, 0, 0.27);
+}
+#submit-cmt{
+    width: 50px;
+    height: 100%;
+    border: none;
+    background: rgb(27, 211, 243);
+    margin-left: 5px;
+    cursor: pointer;
+}
+
+
+.list-videos{
+    padding: 10px;
+    height: 90vh;
+    overflow-y: scroll;
+    width: 40%;
+}
+
+.list-videos .video-element{
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 100px;
+    padding: 5px;
+    box-shadow: -3px 0 5px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+
+}
+
+.list-videos .video-element .img-div{
+    background-image: url('../assets/images/cimg2.png');
+    background-position: center;
+    background-size: cover;
+    width: 25%;
+    height: 100%;
+}
+.list-videos .video-element .video-description{
+    display: flex;
+    flex-direction: column;
+    padding: 5px 10px 5px 10px;
+}

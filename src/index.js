@@ -13,6 +13,7 @@ import Wallet from './component/metamask/wallet';
 import Header from './component/header/Header';
 import Login from './component/login/login';
 import Signup from './component/login/signup';
+import Learning from './component/learning/learning';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 
@@ -26,6 +27,7 @@ root.render(
         <Route path="/course" element={<Course />} />
         <Route path="/" element={<Home />} />
         <Route path="/management" element={<Admin />} />
+        <Route path="/learning" element={<Learning />} />
 
         
       </Routes>

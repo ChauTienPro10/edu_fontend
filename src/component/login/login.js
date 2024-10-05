@@ -1,27 +1,19 @@
 import React from "react";
-import { FaUser } from "react-icons/fa";
-import { IoKey } from "react-icons/io5";
 import { useState } from "react";
-import { SERVER_URL } from "../../config";
 import { SERVER_GATEWAY_URL } from "../../config";
-import { BrowserRouter as Router, Route, Routes, Link,useLocation,useNavigate,Switch   } from 'react-router-dom';
+import { BrowserRouter as useNavigate   } from 'react-router-dom';
 
 import axios from "axios";
-import Cookies from 'js-cookie';
-import { IoMdMenu } from "react-icons/io";
-import { IoSearch } from "react-icons/io5";
 import { FaFacebookF } from "react-icons/fa";
 import { FaGoogle } from "react-icons/fa";
 import { FaYahoo } from "react-icons/fa";
 import { FaApple } from "react-icons/fa";
 import Footer from "../footer/footer";
-import Signup from "./signup";
 import "./login.css"
 import LoginResponse from "../../object/loginRespone";
 import LoginSucces from "../alert/LoginSucces";
 import LoginFailue from "../alert/loginFailue";
 import MyLoading from "../alert/loading";
-import ReactDOM from 'react-dom';
 import Header from "../header/Header";
 import MyJwtDecoder from "../../object/JwtDecoder ";
 function Login(){
