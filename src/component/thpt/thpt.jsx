@@ -24,7 +24,6 @@ function Thpt({level}){
         try {
         const response = await axios.get(`${SERVER_GATEWAY_URL}/api/elasticSearch/course/getLevel?level=${level}`);
         await setCourses(response.data);
-        console.log(courses.length);
         
         } catch (error) {
         console.error('Error fetching courses:', error);

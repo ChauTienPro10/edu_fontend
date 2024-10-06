@@ -175,7 +175,16 @@ function ContentCourse({_course,desContent, setDesContent,setIsLoading}){
             console.log(newInfor);
         
         try {
-            const response = await axios.post(`${SERVER_GATEWAY_URL}/api/elasticSearch/course/modifyInforCourse`, newInfor);
+            const userJSON = sessionStorage.getItem('user');
+            const user_ = userJSON ? JSON.parse(userJSON) : null;
+            const response = await axios.post(`${SERVER_GATEWAY_URL}/api/elasticSearch/course/modifyInforCourse`, newInfor,
+                {
+                    headers: {
+                        'Authorization': `Bearer ${user_._jwt}`, // Thêm JWT token vào header
+                        'Content-Type': 'application/json', // Đảm bảo header đúng loại dữ liệu bạn đang gửi
+                      },
+                }
+            );
             const { code, message, result } = response.data;
 
             if (code === 1000) {

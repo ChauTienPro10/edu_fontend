@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import { SERVER_GATEWAY_URL } from "../../config";
-import { BrowserRouter as useNavigate   } from 'react-router-dom';
+import {  useNavigate   } from 'react-router-dom';
 
 import axios from "axios";
 import { FaFacebookF } from "react-icons/fa";
@@ -28,31 +28,7 @@ function Login(){
     
     );
 }
-// function Header(){
-//   const navigate = useNavigate();
 
-//     const ToSignup = (path) => {
-//     navigate(path);
-//   };
-//     return(
-//         <header>
-//             <div className="search-part">
-//               <div className="list-course-part">
-//                 <IoMdMenu className="icon"/>
-//                 <p>Các khóa học</p>
-//               </div>
-//               <div className="search-box-part">
-//                 <input type="text"  placeholder='Tim kiem khoa hoc'/>
-//                 <IoSearch className='icon' />
-//               </div>
-//             </div>
-//             <div className="button-part">
-//               <button className="login-but">Đăng nhập</button>
-//               <button onClick={() => ToSignup('/signup')} className="sign-but">Đăng ký</button>
-//             </div>
-//           </header>
-//     );
-// }
 function Body(){
   
   const [loginState,setLoginState]=useState(0);
@@ -70,7 +46,6 @@ function Body(){
         });
         const user = new LoginResponse(
           response.data.result.token,
-          // response.data.role,
           response.data.result.username,
           response.data.id
         );
@@ -79,7 +54,6 @@ function Body(){
         const user_ = userJSON ? JSON.parse(userJSON) : null;
         console.log(user_._jwt);
         sessionStorage.setItem('role',MyJwtDecoder(response.data.result.token,'').scope);
-        // console.log(MyJwtDecoder(response.data.result.token,'').scope);
         if(user._jwt!==undefined){
           setIsLoading(false);
           setLoginState(1);

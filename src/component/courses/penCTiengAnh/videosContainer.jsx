@@ -119,22 +119,32 @@ function Addvideo({modVideo,setModVideo,setIsLoading ,_course}){
                 link:videoId
                 
             }
+            const userJSON = sessionStorage.getItem('user');
+            const user_ = userJSON ? JSON.parse(userJSON) : null;
             try {
-                const response = await axios.post(`${SERVER_GATEWAY_URL}/api/elasticSearch/video/new`, data);
-                setIsLoading(false);
-                
-                const { code, message, result } = response.data;
-    
-                if (code === 1000) {
-                    setTitle('');
-                    setDescription('');
-                    setVideoId('');
-                    setIsSuccess(true);
-                } else {
-                    setIsFailure(true);
-                    setErr(message);
-                }
-                
+                if(user_._jwt!==undefined){
+                    const response = await axios.post(`${SERVER_GATEWAY_URL}/api/elasticSearch/video/new`, data,
+                        {
+                            headers: {
+                                'Authorization': `Bearer ${user_._jwt}`, // Thêm JWT token vào header
+                                'Content-Type': 'application/json', // Đảm bảo header đúng loại dữ liệu bạn đang gửi
+                            },
+                        },
+                    );
+                    setIsLoading(false);
+                    
+                    const { code, message, result } = response.data;
+        
+                    if (code === 1000) {
+                        setTitle('');
+                        setDescription('');
+                        setVideoId('');
+                        setIsSuccess(true);
+                    } else {
+                        setIsFailure(true);
+                        setErr(message);
+                    }
+            }
             } catch (error) {
                 setIsLoading(false);
                 console.error('Error:', error);

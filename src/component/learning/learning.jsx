@@ -7,19 +7,46 @@ import Header from "../header/Header";
 import { useLocation } from "react-router-dom";
 import SockJS from 'sockjs-client';
 import { Stomp } from '@stomp/stompjs';
+import axios from 'axios';
+import { SERVER_GATEWAY_URL } from "../../config";
+
 
 
 
 function Learning(){
+    const userJSON = sessionStorage.getItem('user');
+    const user_ = userJSON ? JSON.parse(userJSON) : null;
+   
+    
+    
     const location = useLocation();
     const { videos } = location.state || {};
-    const [comments,setComment]=useState({});
+    const [comments,setComments]=useState([]);
     const [cmt,setCmt]=useState('');
     const[idVideo,setIdVideo]=useState('7KDRqBpT8NA');
 
 
 
     const [stompClient, setStompClient] = useState(null);
+
+    const fetchComment=async ()=>{
+        try {
+            const userJSON = sessionStorage.getItem('user');
+            const user_ = userJSON ? JSON.parse(userJSON) : null;
+            if(user_._jwt!==undefined){
+                const response = await axios.get(`${SERVER_GATEWAY_URL}/api/student/comment/get.comment?idcourse=${videos[0].course}`);
+                console.log(response.data);
+                setComments(response.data);
+            }
+           
+            } catch (error) {
+            console.error('Error :', error);
+            }
+    }
+
+    useEffect(()=>{
+        fetchComment();
+    },[])
 
     useEffect(() => {
         // Kết nối với SockJS server
@@ -36,7 +63,8 @@ function Learning(){
             // Đăng ký nhận tin nhắn từ server
             stompClientInstance.subscribe('/topic/messages', (message) => {
                 console.log('Received: ' + message.body);
-                
+                setComments((prev) => [...prev, JSON.parse(message.body)]);
+                setCmt('');
             });
            
         });
@@ -52,12 +80,22 @@ function Learning(){
 
     
     
-    const sendMessage = (message) => {
-        if (stompClient) {
-            stompClient.send("/app/sendMessage", {}, message);
-        } else {
-            console.error("Chưa có kết nối STOMP!");
+    const sendMessage = () => {
+        if(cmt!==''){
+            const messageObj = {
+                username: user_._username,
+                content: cmt,
+                courseid:videos[0].course,
+            };
+            
+            if (stompClient) {
+                const message = JSON.stringify(messageObj); // Convert the object to a JSON string
+                stompClient.send("/app/sendMessage", {}, message);
+            } else {
+                console.error("Chưa có kết nối STOMP!");
+            }
         }
+        
     };
 
     return (
@@ -70,31 +108,21 @@ function Learning(){
                  <YoutubePlayer videoId={idVideo} _height={'350'} _width={'600'}/>
                  <p style={{color:'grey',fontSize:'16px'}}>Video bai học số 1</p>
                  <div className="comment-body">
-                    <div className="comment">
-                        <FaUserGraduate style={{}}/>
-                        <div className="content">
-                            <p style={{fontSize:'14px'}}>tuan@gmail.com</p>
-                            <p style={{fontSize:'12px'}}>ngày 2 tháng 9 năm 1945 bác Hò đọc Tuyên Ngôn Độc Lập</p>
-                        </div>
-                        <MdOutlineMoreHoriz style={{cursor:'pointer'}}/>
-                    </div>
+                    {comments && comments.map((cmt, index) => {
+                        return (
+                            <div className="comment" key={index}>
+                                <FaUserGraduate />
+                                <div className="content">
+                                    <p style={{ fontSize: '14px' ,display:'flex'}}>{cmt.email}<p style={{fontSize:'8px'}}>{cmt.time}</p></p>  {/* Assuming 'email' field is present */}
+                                    <p style={{ fontSize: '12px' }}>{cmt.content}</p>   {/* Assuming 'text' field is present */}
+                                </div>
+                                <MdOutlineMoreHoriz style={{ cursor: 'pointer' }} />
+                            </div>
+                        );
+                    })}
+                    
 
-                    <div className="comment">
-                        <FaUserGraduate style={{}}/>
-                        <div className="content">
-                            <p style={{fontSize:'14px'}}>tuan@gmail.com</p>
-                            <p style={{fontSize:'12px'}}>ngày 2 tháng 9 năm 1945 bác Hò đọc Tuyên Ngôn Độc Lập khai sinh ra nước Việt Nam ngày 2 tháng 9 năm 1945 bác Hò đọc Tuyên Ngôn Độc Lập khai sinh ra nước Việt Nam</p>
-                        </div>
-                        <MdOutlineMoreHoriz style={{cursor:'pointer'}}/>
-                    </div>
-                    <div className="comment">
-                        <FaUserGraduate style={{}}/>
-                        <div className="content">
-                            <p style={{fontSize:'14px'}}>tuan@gmail.com</p>
-                            <p style={{fontSize:'12px'}}>ngày 2 tháng 9 năm 1945 bác Hò đọc Tuyên Ngôn Độc Lập khai sinh ra nước Việt Nam ngày 2 tháng 9 năm 1945 bác Hò đọc Tuyên Ngôn Độc Lập khai sinh ra nước Việt Nam</p>
-                        </div>
-                        <MdOutlineMoreHoriz style={{cursor:'pointer'}}/>
-                    </div>
+                    
                    
                     
                  </div>
@@ -102,7 +130,7 @@ function Learning(){
                     <textarea id="cmt" name="multiText" rows="2" cols="30" placeholder="ý kiến vủa bạn" 
                     value={cmt}
                     onChange={(e)=>setCmt(e.target.value)}></textarea>
-                    <button onClick={()=>sendMessage("hello")} id="submit-cmt">Gửi</button>
+                    <button onClick={()=>sendMessage()} id="submit-cmt">Gửi</button>
                  </div>
             </div>
             <div className="list-videos" >

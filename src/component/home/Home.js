@@ -84,8 +84,8 @@ function Myheader(){
         <div className='right-bar navbar'>
           <div className='contactphone'><FaPhoneAlt className='icon'/><p>0812788212</p></div>
           <div className={`loginbox ${isLogin!==false?'hiden':''}`}>
-            <button onClick={() => ToNavigate('/login')} className='loginbut'>Dang Nhap</button>
-            <button onClick={() => ToNavigate('/signup')} className='signbox'>Dang Ky</button>
+            <button onClick={() => ToNavigate('/login')} className='loginbut'>Đăng nhập</button>
+            <button onClick={() => ToNavigate('/signup')} className='signbox'>Đăng ký</button>
           </div>
           <Logined  isLogin={isLogin} setIsLogin={setIsLogin}/>
         </div>
