@@ -24,7 +24,8 @@ function Learning(){
     const [comments,setComments]=useState([]);
     const [cmt,setCmt]=useState('');
     const[idVideo,setIdVideo]=useState('7KDRqBpT8NA');
-
+    const[ videoTitle,seTtitleVideo]=useState('');
+    const [mode,setmode]=useState(-1);
 
 
     const [stompClient, setStompClient] = useState(null);
@@ -47,6 +48,29 @@ function Learning(){
     useEffect(()=>{
         fetchComment();
     },[])
+
+    const fetchDeleteComment=async(id)=>{
+        try {
+           
+            if(user_._jwt!==undefined){
+                const response = await axios.post(`${SERVER_GATEWAY_URL}/api/student/comment/delete.comment`,{email:user_._username,id:id},
+                    {
+                        headers: {
+                            'Authorization': `Bearer ${user_._jwt}`, // Thêm JWT token vào header
+                            'Content-Type': 'application/json', // Đảm bảo header đúng loại dữ liệu bạn đang gửi
+                          },
+                    }
+                );
+                if(response.data===true){
+                    fetchComment();
+                }
+                
+            }
+           
+            } catch (error) {
+            console.error('Error :', error);
+            }
+    }
 
     useEffect(() => {
         // Kết nối với SockJS server
@@ -106,7 +130,7 @@ function Learning(){
             
             <div className="video-player">
                  <YoutubePlayer videoId={idVideo} _height={'350'} _width={'600'}/>
-                 <p style={{color:'grey',fontSize:'16px'}}>Video bai học số 1</p>
+                 <p style={{color:'grey',fontSize:'16px'}}>{videoTitle}</p>
                  <div className="comment-body">
                     {comments && comments.map((cmt, index) => {
                         return (
@@ -116,7 +140,16 @@ function Learning(){
                                     <p style={{ fontSize: '14px' ,display:'flex'}}>{cmt.email}<p style={{fontSize:'8px'}}>{cmt.time}</p></p>  {/* Assuming 'email' field is present */}
                                     <p style={{ fontSize: '12px' }}>{cmt.content}</p>   {/* Assuming 'text' field is present */}
                                 </div>
-                                <MdOutlineMoreHoriz style={{ cursor: 'pointer' }} />
+                                <div onMouseEnter={()=>setmode(index)} onMouseLeave={()=>setmode(-1)} className="container-opt"> 
+                                    <MdOutlineMoreHoriz style={{ cursor: 'pointer' }} />
+                                    {mode===index && (
+                                        <ul className="opt-mod">
+                                            <li onClick={()=>fetchDeleteComment(cmt.id)} className="delete">Xóa</li>
+                                        </ul>
+                                    )}
+                                    
+                                </div>
+                                
                             </div>
                         );
                     })}
@@ -135,7 +168,7 @@ function Learning(){
             </div>
             <div className="list-videos" >
             { videos!==null && videos.map((video, index)=>(
-                <div onClick={()=>setIdVideo(video.link)}  className="video-element">
+                <div onClick={()=>{setIdVideo(video.link);seTtitleVideo(video.title)}}  className="video-element">
                 <div className="img-div"></div>
                 <div className="video-description">
                     <h4 style={{color:'grey'}}>{video.title}</h4>

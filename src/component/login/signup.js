@@ -90,6 +90,7 @@ function Body(){
         setLoginState(1); // dang ky tai khoang moi thanh cong
       }
       else{
+        alert(response.data.message)
         setIsLoading(false);
         setLoginState(2);
       }

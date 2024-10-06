@@ -86,3 +86,42 @@
     flex-direction: column;
     padding: 5px 10px 5px 10px;
 }
+
+.container-opt{
+    position: relative;
+}
+.opt-mod{
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    position: absolute;
+    bottom: -100%;
+    box-shadow: 1px 1px 1px 1px rgba(128, 128, 128, 0.418);
+    border-radius: 3px;
+
+}
+.opt-mod li{
+    font-size: 12px;
+    padding: 5px 15px 5px 15px ;
+    background: grey;
+
+
+}
+.opt-mod li:hover{
+    opacity: 0.7;
+}
+.opt-mod li::before{
+    display: block;
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;  /* Cạnh trái trong suốt */
+    border-right: 5px solid transparent; /* Cạnh phải trong suốt */
+    border-bottom: 10px solid grey; 
+    bottom: 90%;
+    left: 0;
+}

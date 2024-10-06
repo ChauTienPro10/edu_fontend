@@ -15,6 +15,8 @@ function Videoslist({isTeacher,setIsLoading,_course,setShowPay}){
 
     const [modVideo,setModVideo]=useState(false);
     const [videos,setVideos]=useState([]);
+    const userJSON = sessionStorage.getItem('user');
+    const user_ = userJSON ? JSON.parse(userJSON) : null;
     const getListVideo = async () => {
         try {
            
@@ -41,27 +43,31 @@ function Videoslist({isTeacher,setIsLoading,_course,setShowPay}){
 
     const fetchRegisterInfor=async()=>{
         try {
-            const userJSON = sessionStorage.getItem('user');
-            const user_ = userJSON ? JSON.parse(userJSON) : null;
-            if(user_._jwt!==undefined){
-                const response = await axios.post(`${SERVER_GATEWAY_URL}/api/student/register/check`,{email:user_._username,course:_course.id},
-                    {
-                        headers: {
-                            'Authorization': `Bearer ${user_._jwt}`, // Thêm JWT token vào header
-                            'Content-Type': 'application/json', // Đảm bảo header đúng loại dữ liệu bạn đang gửi
-                          },
-                    },
-                );
-                console.log(response.data.code);
-                if(response.data.code===10001){
-                    alert("Bạn chưa tham gia khóa học")
-                    setShowPay(true);
-                }
-                if(response.data.code===1000){
-                    navigate("/learning", { state: { videos: videos } });
-                }
-                
+            if(sessionStorage.getItem('role')==='ROLE_TEACHER'){
+                navigate("/learning", { state: { videos: videos } });
             }
+            else{
+                if(user_._jwt!==undefined){
+                    const response = await axios.post(`${SERVER_GATEWAY_URL}/api/student/register/check`,{email:user_._username,course:_course.id},
+                        {
+                            headers: {
+                                'Authorization': `Bearer ${user_._jwt}`, // Thêm JWT token vào header
+                                'Content-Type': 'application/json', // Đảm bảo header đúng loại dữ liệu bạn đang gửi
+                              },
+                        },
+                    );
+                    console.log(response.data.code);
+                    if(response.data.code===10001){
+                        alert("Bạn chưa tham gia khóa học")
+                        setShowPay(true);
+                    }
+                    if(response.data.code===1000){
+                        navigate("/learning", { state: { videos: videos } });
+                    }
+                    
+                }
+            }
+            
            
             } catch (error) {
             console.error('Error :', error);
