@@ -30,7 +30,6 @@ function Thpt({level}){
         }
     };
     useEffect(() => {
-        console.log('Number of courses:', courses.length);
         setCountTHPT(courses.length);
         setCountTHPTHot(courses.length);
     }, [courses]); // Runs every time 'courses' state changes

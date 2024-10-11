@@ -14,6 +14,7 @@ import Header from './component/header/Header';
 import Login from './component/login/login';
 import Signup from './component/login/signup';
 import Learning from './component/learning/learning';
+import MyCourse from './component/my_course/My_course';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 
@@ -28,8 +29,7 @@ root.render(
         <Route path="/" element={<Home />} />
         <Route path="/management" element={<Admin />} />
         <Route path="/learning" element={<Learning />} />
-
-        
+        <Route path="/my_course" element={<MyCourse />} />
       </Routes>
       <Botchat />
     </Router>

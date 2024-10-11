@@ -105,12 +105,12 @@ export function Logined({isLogin,setIsLogin}){
   const [isShow,setIsShow]=useState(false);
   const [isLoading,setIsLoading]=useState(false);
   const navigate = useNavigate();
-  
+  const userJSON = sessionStorage.getItem('user');
+  const user_ = userJSON ? JSON.parse(userJSON) : null;
   const [email,setEmail]=useState('')
   // xu ly xac thuc dang nhap
   useEffect(() => {
-    const userJSON = sessionStorage.getItem('user');
-    const user_ = userJSON ? JSON.parse(userJSON) : null;
+    
     if (user_!==null) {
       setEmail(user_._username);
       setIsLogin(true);
@@ -149,7 +149,7 @@ export function Logined({isLogin,setIsLogin}){
       
       <div className='to-course div-class'>
         <FaBook style={{marginRight:'10px',fontSize:'22px',color:'gray'}}/>
-        <a  href='#'>Khóa học của tôi</a>
+        <a  onClick={()=>navigate('/my_course', { state: { email } })}>Khóa học của tôi</a>
       </div>
       <div className='cart div-class' >
       <GiBatMask onClick={()=>setIsShow(!isShow)} style={{
@@ -171,7 +171,7 @@ export function Logined({isLogin,setIsLogin}){
         </div>
       </div>
       <div className='yours div-class' onMouseEnter={()=>{setShowDetail(true)}} onMouseLeave={()=>{setShowDetail(false)}}>
-        <div className='avatar'></div>
+        <div className='avatar'><FaUser style={{color:'white'}}/></div>
         <RiArrowDownSFill />
         <div onMouseEnter={()=>{setShowDetail(true)}} onMouseLeave={()=>{setShowDetail(false)}} 
         className='detail' style={{display:showDetail?'':'none'}}>

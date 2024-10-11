@@ -92,6 +92,9 @@ function Paypage({show,setShow,course}){
                     setPayed(true);
                     
                 }
+                else{
+                    alert(response.data.message);
+                }
             }
         
         
