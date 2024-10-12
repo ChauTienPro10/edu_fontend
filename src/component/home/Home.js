@@ -171,8 +171,8 @@ export function Logined({isLogin,setIsLogin}){
         </div>
       </div>
       <div className='yours div-class' onMouseEnter={()=>{setShowDetail(true)}} onMouseLeave={()=>{setShowDetail(false)}}>
-        <div className='avatar'><FaUser style={{color:'white'}}/></div>
-        <RiArrowDownSFill />
+        <div className='avatar'><FaUser style={{color:'grey'}}/></div>
+       
         <div onMouseEnter={()=>{setShowDetail(true)}} onMouseLeave={()=>{setShowDetail(false)}} 
         className='detail' style={{display:showDetail?'':'none'}}>
           <div>

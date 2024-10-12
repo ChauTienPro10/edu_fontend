@@ -16,11 +16,19 @@ export default function MyCourse(){
     function toCoursePage(course){
         navigate('/course', { state: { course } });
     }
+    const role=sessionStorage.getItem('role');
+    console.log(sessionStorage.getItem('role'));
     const fetchGetYourCours=async ()=>{
         try {
-           
-            const response = await axios.get(`${SERVER_GATEWAY_URL}/api/student/register/getyourcourse?email=${email}`);
-            await setCourses(response.data.result);
+            if(role==='ROLE_USER'){
+                const response = await axios.get(`${SERVER_GATEWAY_URL}/api/student/register/getyourcourse?email=${email}`);
+                await setCourses(response.data.result);
+            }
+            else if(role==='ROLE_TEACHER'){
+                const response = await axios.get(`${SERVER_GATEWAY_URL}/api/elasticSearch/course/teacher.get.course?email=${email}`);
+                await setCourses(response.data.result);
+            }
+            
             
             } catch (error) {
             console.error('Error fetching courses:', error);
