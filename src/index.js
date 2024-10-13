@@ -15,6 +15,7 @@ import Login from './component/login/login';
 import Signup from './component/login/signup';
 import Learning from './component/learning/learning';
 import MyCourse from './component/my_course/My_course';
+import Container_course from './component/my_course/course_container';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 
@@ -30,6 +31,7 @@ root.render(
         <Route path="/management" element={<Admin />} />
         <Route path="/learning" element={<Learning />} />
         <Route path="/my_course" element={<MyCourse />} />
+        <Route path="/result_search" element={<Container_course />} />
       </Routes>
       <Botchat />
     </Router>

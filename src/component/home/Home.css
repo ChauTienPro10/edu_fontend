@@ -503,7 +503,20 @@
     transform: translateX(-50%) rotate(45deg);
     display: none;
 }
-
+ .show-detail .list-course-content{
+    width: 100%;
+    height: auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr; /* 3 cột với kích thước bằng nhau */
+    grid-gap: 10px; /* Khoảng cách giữa các phần tử */
+    padding: 20px;
+}
+.show-detail .list-course-content p{
+    font-size: 14px;
+}
+.show-detail .list-course-content p:hover{
+    color: #2e75fa;
+}
 .show-detail.hiden{
     display: none;
 }
@@ -550,9 +563,7 @@ a{
     color: gray;
 
 }
-.select-level-bar ul li:hover{
-    
-}
+
 .thpt:hover a{
     color: #1a2ff0;
 }

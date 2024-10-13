@@ -48,6 +48,8 @@ function Home() {
 }
 
 function Myheader(){
+  const [searchText,setSearchText]=useState(''); // quan ly nnoi dung tim kiem 
+
   const navigate = useNavigate();
   const [isLogin,setIsLogin]=useState(false);
   const ToNavigate = (path) => {
@@ -70,6 +72,21 @@ function Myheader(){
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
+
+  // chuc nang tim kiem khoa hoc
+  const findCourse=async ()=>{
+    if(searchText!==''){
+      try{
+        const response = await axios.get(`${SERVER_GATEWAY_URL}/api/elasticSearch/course/search/${searchText}`);
+        
+        navigate('/result_search', { state: { listCourse: response.data} });
+      }
+      catch(e){
+        console.log(e);
+      }
+    }
+  }
+  ///
   return(
     
       <div className='header'>
@@ -77,8 +94,8 @@ function Myheader(){
         <div
       className={`imagelogo ${isSmaller ? 'smaller' : ''}`}></div>
           <div className='search-box'>
-            <IoSearch className='icon'/>
-            <input type='text' placeholder='Tim kiem khoa hoc'/>
+            <IoSearch onClick={()=>findCourse()} className='icon'/>
+            <input type='text' placeholder='Tim kiem khoa hoc' onChange={(e)=>setSearchText(e.target.value)} value={searchText}/>
           </div>
         </div>
         <div className='right-bar navbar'>
@@ -208,9 +225,12 @@ export function Logined({isLogin,setIsLogin}){
 }
 
 function Mybody(){
+  const navigate=useNavigate();
+
   // ==========================================================================
   const [indexID, setIndexId]=useState(0);
   const [isHovered, setIsHovered] = useState(false);// xu ly hien thi show-detail  
+  const [courses,setCourses]=useState([]);
   const handleMouseEnter = (id) => { // chuyen ve true neu re chuot vao
     setIsHovered(true);
     setIndexId(id);
@@ -221,9 +241,61 @@ function Mybody(){
     setIsHovered(false);
   };
   // ========================================================================
+// lay cac khoa theo bang goi y
+  useEffect(() => {
+    const fetchData = async () => {
+      if (indexID === 1) {
+        try {
+          const response = await axios.get(`${SERVER_GATEWAY_URL}/api/elasticSearch/course/matcher_search/chữa mất gốc`);
+          setCourses(response.data);
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }
+      }
+      if (indexID === 3) {
+        try {
+          const response = await axios.get(`${SERVER_GATEWAY_URL}/api/elasticSearch/course/matcher_search/nâng cao`);
+          setCourses(response.data);
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }
+      }
+      if (indexID === 4) {
+        try {
+          const response = await axios.get(`${SERVER_GATEWAY_URL}/api/elasticSearch/course/matcher_search/luyện thi đại học`);
+          setCourses(response.data);
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }
+      }
+      if (indexID === 5) {
+        try {
+          const response = await axios.get(`${SERVER_GATEWAY_URL}/api/elasticSearch/course/getLevel?level=3`);
+          setCourses(response.data);
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }
+      }
+      if (indexID === 6) {
+        try {
+          const response = await axios.get(`${SERVER_GATEWAY_URL}/api/elasticSearch/course/matcher_search/luyện thi vào lớp 10`);
+          setCourses(response.data);
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }
+      }
+      if (indexID === 7) {
+        try {
+          const response = await axios.get(`${SERVER_GATEWAY_URL}/api/elasticSearch/course/getLevel?level=2`);
+          setCourses(response.data);
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }
+      }
+    };
 
-  
-  
+    fetchData();
+  }, [indexID]);
   
   const [contentadv, setContentadv] = useState('Initial content');
   useEffect(() => {
@@ -277,7 +349,7 @@ function Mybody(){
                 onMouseLeave={handleMouseLeave} 
                 
                 style={{display:'flex',alignItems:'center'}}>
-                <RiGraduationCapFill /><p>Đại học-Cao đẳng</p></li>
+                <RiGraduationCapFill /><p>Chữa mất gốc</p></li>
               <li onMouseEnter={() => handleMouseEnter(2)}
                 onMouseLeave={handleMouseLeave} 
                 style={{display:'flex',alignItems:'center'}}><RiGraduationCapFill /><p>Bổ trợ phương pháp-kỹ năng</p></li>
@@ -309,7 +381,13 @@ function Mybody(){
           </div>
           <div onMouseLeave={handleMouseLeave} onMouseEnter={() => handleMouseEnter(indexID)} className={`show-detail ${isHovered ? '' : 'hiden'}`}>
             <div className='show-detail-header'>
-              <ShowDetailHeaderlist index={indexID}/>
+              <ShowDetailHeaderlist index={indexID} setCourses={setCourses}/>
+            </div>
+            <div className='list-course-content'>
+              {courses && courses.map((item,i)=>(
+                <p onClick={()=>navigate('/course', { state: { course:item } })}>{item.title}</p>
+              ))
+              }
             </div>
           </div>
           <AdverstBoard />
@@ -342,13 +420,16 @@ function Mybody(){
 
 
 function ShowDetailHeaderlist({ index }){
+ 
+ 
+
   // =======================================================================
   // const [itemsHeader, setItemsHeader] = useState([]);
   // =======================================================================
   if(index === 1){
     return(
       <ul>
-        <li>KHÓA HỌC</li>
+        <li>Các khóa học chữa mất gốc</li>
       </ul>
     );
   }
@@ -362,44 +443,43 @@ function ShowDetailHeaderlist({ index }){
     );
   }
   if(index=== 3){
+    
+    
     return(
       <ul>
-        <li>ILEARN</li>
-        <li>ILIVE</li>
+        <li>Các khóa nâng cao cho học sinh giỏi</li>
       </ul>
     );
   }
   if(index=== 4){
     return(
       <ul>
-        <li>TOPONI</li>
-        <li>SÁCH</li>
+        <li>Các khóa học luyện thi đại học</li>
+        
       </ul>
     );
   }
   if(index=== 5){
     return(
       <ul>
-        <li>ILEARN</li>
-        <li>SÁCH</li>
-        <li>ILIVE</li>
+        <li>Các khóa học cấp trung học phổ thông</li>
+      
       </ul>
     );
   }
   if(index=== 6){
     return(
       <ul>
-        <li>KHÓA HỌC</li>
-        <li>SÁCH</li>
+        <li>Các khóa học luyện thi vào lớp 10</li>
+        
       </ul>
     );
   }
   if(index=== 7){
     return(
       <ul>
-        <li>ILEARN</li>
-        <li>SÁCH</li>
-        <li>ILIVE</li>
+        <li>Các khóa học cấp trung học cơ sở </li>
+        
       </ul>
     );
   }

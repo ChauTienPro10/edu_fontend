@@ -17,6 +17,7 @@ import NewTeacher from "./newTeacher";
 import NewSubject from "./subject";
 import NewCourse from "./newCourse";
 import Teacher from "./teacher";
+import NewNotice from "./newNotify";
 import { Chart as ChartJS, Title, Tooltip, Legend, ArcElement } from 'chart.js';
 ChartJS.register(Title, Tooltip, Legend, ArcElement);
 function Admin(){
@@ -74,6 +75,7 @@ function Content({ indextask,setIndextask }){
             <div style={{display:indexSetting==='TC'?'':'none'}}><NewTeacher setIndedx={setIdexSetting}/></div>
             <div style={{display:indexSetting==='SJ'?'':'none'}}><NewSubject setIndedx={setIdexSetting}/></div>
             <div style={{display:indexSetting==='C'?'':'none'}}><NewCourse setIndedx={setIdexSetting}/></div>
+            <div style={{display:indexSetting==='TB'?'':'none'}}><NewNotice setIndedx={setIdexSetting}/></div>
             <div className="top-side">
                 <div className="top-side-search">
                     <p style={{fontSize:'15px',marginRight:'10px'}}>🔍</p>
@@ -88,6 +90,7 @@ function Content({ indextask,setIndextask }){
                       <li onClick={()=>setIdexSetting('TC')}>Thêm giáo viên</li>
                       <li onClick={()=>setIdexSetting('C')}>Thêm khóa học</li>
                       <li onClick={()=>setIdexSetting('SJ')}>Thêm lĩnh vựt giảng dạy</li>
+                      <li onClick={()=>setIdexSetting('TB')}>Thêm Thông báo</li>
                     </ul>
                     
                   </div>
