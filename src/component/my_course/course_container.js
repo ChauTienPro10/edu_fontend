@@ -5,11 +5,11 @@ import Header from '../header/Header';
 import Footer from '../footer/footer';
 import { FaYoutube } from "react-icons/fa6";
 import { FaQuestionCircle } from "react-icons/fa";
-import axios from 'axios';
-import { SERVER_GATEWAY_URL } from '../../config';
+
 
 export default function Container_course(){
     const location = useLocation();
+    const navigate=useNavigate();
     const { listCourse } = location.state || {};
     console.log(listCourse);
     return (
@@ -29,7 +29,7 @@ export default function Container_course(){
                         <div className="baigiang" >
                             <FaQuestionCircle style={{color:'rgb(0, 119, 255)'}}/>
                             <a  href="#">1000 câu hỏi</a></div>
-                        <button className="but-moreinfor" >ĐẾN KHÓA HỌC</button>
+                        <button onClick={()=>navigate('/course', { state: { course } })} className="but-moreinfor" >ĐẾN KHÓA HỌC</button>
                     </div>
                 </div>
                 ))}

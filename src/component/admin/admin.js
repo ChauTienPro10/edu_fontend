@@ -1,4 +1,4 @@
-import React,{useState} from "react";
+import React,{useEffect, useState} from "react";
 import './admin.css';
 import { RiAdminFill } from "react-icons/ri";
 import { IoHome } from "react-icons/io5";
@@ -18,7 +18,9 @@ import NewSubject from "./subject";
 import NewCourse from "./newCourse";
 import Teacher from "./teacher";
 import NewNotice from "./newNotify";
+import axios from "axios";
 import { Chart as ChartJS, Title, Tooltip, Legend, ArcElement } from 'chart.js';
+import { SERVER_GATEWAY_URL } from "../../config";
 ChartJS.register(Title, Tooltip, Legend, ArcElement);
 function Admin(){
   const [indextask,setIndextask]=useState(0);
@@ -108,67 +110,81 @@ function Content({ indextask,setIndextask }){
 }
 
 function Homecomponent(){
+
+    const [infor,setInfor]=useState({});// quan ly thong tin he thong
+
+    const getInfor=async()=>{
+      try{
+        const response = await axios.get(`${SERVER_GATEWAY_URL}/api/student/manager/getInforManagement`);
+        console.log(response.data.result);
+        setInfor(response.data.result);
+      }catch(e){
+        console.log(e);
+      }
+    }
+    useEffect(()=>{
+      getInfor();
+    },[])
     return(
         <div className="dash-board-home">
             <div className="board board-1">
                 <div className="board-teacher board-statistic">
                     <p style={{fontSize:'13px', color:'white'}}>Số lượng giảng viên</p>
-                    <p style={{fontSize:'20px',color:'white'}}>100 giảng viên</p>
+                    <p style={{fontSize:'20px',color:'white'}}>{`${infor.numOfTeacher} giảng viên`}</p>
                     <FaChalkboardTeacher style={{color:'white',fontSize:'30px',marginBottom:'10px'}}/>
                 </div>
                 <div className="board-student board-statistic">
                     <p style={{fontSize:'13px', color:'white'}}>Số lượng học viên</p>
-                    <p style={{fontSize:'20px',color:'white'}}>100 học viên</p>
+                    <p style={{fontSize:'20px',color:'white'}}>{`${infor.numOfStudent} học viên`}</p>
                     <PiStudentFill style={{color:'white',fontSize:'30px',marginBottom:'10px'}}/>
                 </div>
             </div>
             <div className="board board-2">
             <div className="board-course board-statistic">
                     <p style={{fontSize:'13px', color:'white'}}>Số lượng khóa học</p>
-                    <p style={{fontSize:'20px',color:'white'}}>100 khóa học</p>
+                    <p style={{fontSize:'20px',color:'white'}}>{`${infor.numOfCourse} khóa học`}</p>
                     <FaBookMedical style={{color:'white',fontSize:'30px',marginBottom:'10px'}}/>
             </div>
             <div className="board-registration board-statistic">
-                    <p style={{fontSize:'13px', color:'white'}}>Số lượng khóa học đã được đăng ký</p>
-                    <p style={{fontSize:'20px',color:'white'}}>100 khóa học</p>
+                    <p style={{fontSize:'13px', color:'white'}}>Số lượng đã đăng ký</p>
+                    <p style={{fontSize:'20px',color:'white'}}>{`${infor.numOfRegister} khóa học`}</p>
                     <GiArchiveRegister style={{color:'white',fontSize:'30px',marginBottom:'10px'}}/>
             </div>
             </div>
-            <div className=" board-3">
-                <PieChartTeacher th={40} thcs={20} thpt={30} dh={10}/>
-                <PieChartStudent th={40} thcs={20} thpt={30} dh={10}/>
-                <PieChartCourse th={40} thcs={20} thpt={30} dh={10}/>
-            </div>
+            {infor.typeofTeacher!==undefined && (<div className=" board-3">
+                <PieChartTeacher th={infor.typeofTeacher.th} thcs={infor.typeofTeacher.thcs} thpt={infor.typeofTeacher.thpt}/>
+                <PieChartStudent enroll={infor.numOfEnroll} not={(infor.numOfStudent-infor.numOfEnroll)} />
+                <PieChartCourse th={infor.typesOfCourses.th} thcs={infor.typesOfCourses.thcs} thpt={infor.typesOfCourses.thpt}/>
+            </div>)}
         </div>
     );
 }
 
 
-const PieChartTeacher = ({th,thcs,thpt,dh}) => {
-    const _th=(th*100)/(th+thcs+thpt+dh);
-    const _thcs=(thcs*100)/(th+thcs+thpt+dh);
+const PieChartTeacher = ({th,thcs,thpt}) => {
+    const _th=(th*100)/(th+thcs+thpt);
+    const _thcs=(thcs*100)/(th+thcs+thpt);
 
-    const _thpt=(thpt*100)/(th+thcs+thpt+dh);
-    const _dh=(dh*100)/(th+thcs+thpt+dh);
+    const _thpt=(thpt*100)/(th+thcs+thpt);
+    // const _dh=(dh*100)/(th+thcs+thpt+dh);
 
     const data = {
-      labels: ['Tiểu học','Thcs','Thpt','Đại học'],
+      labels: ['Tiểu học','Thcs','Thpt'],
       datasets: [
         {
           label: 'Số lượng %',
-          data: [_th,_thcs,_thpt,_dh],
+          data: [_th,_thcs,_thpt],
           backgroundColor: [
             'rgba(255, 99, 132, 0.7)',
             'rgba(54, 162, 235, 0.7)',
             'rgba(255, 206, 86, 0.7)',
-            'rgba(245, 12, 12, 0.7)',
+            
             
           ],
           borderColor: [
             'rgba(255, 99, 132, 1)',
             'rgba(54, 162, 235, 1)',
             'rgba(255, 206, 86, 1)',
-            'rgba(255,255,255,1)',
            
           ],
           borderWidth: 1
@@ -185,32 +201,25 @@ const PieChartTeacher = ({th,thcs,thpt,dh}) => {
   };
 
 
-  const PieChartStudent = ({th,thcs,thpt,dh}) => {
-    const _th=(th*100)/(th+thcs+thpt+dh);
-    const _thcs=(thcs*100)/(th+thcs+thpt+dh);
+  const PieChartStudent = ({enroll,not}) => {
+    const _enroll=(enroll*100)/(enroll+not);
+    const _not=(not*100)/(enroll+not);
 
-    const _thpt=(thpt*100)/(th+thcs+thpt+dh);
-    const _dh=(dh*100)/(th+thcs+thpt+dh);
+    
 
     const data = {
-      labels: ['Tiểu học','Thcs','Thpt','Đại học'],
+      labels: ['Đã tham gia','Chưa tham gia'],
       datasets: [
         {
           label: 'Số lượng %',
-          data: [_th,_thcs,_thpt,_dh],
+          data: [_enroll,_not],
           backgroundColor: [
             'rgba(255, 99, 132, 0.7)',
             'rgba(54, 162, 235, 0.7)',
-            'rgba(255, 206, 86, 0.7)',
-            'rgba(245, 12, 12, 0.7)',
-            
           ],
           borderColor: [
             'rgba(255, 99, 132, 1)',
             'rgba(54, 162, 235, 1)',
-            'rgba(255, 206, 86, 1)',
-            'rgba(255,255,255,1)',
-           
           ],
           borderWidth: 1
         }
@@ -219,38 +228,35 @@ const PieChartTeacher = ({th,thcs,thpt,dh}) => {
   
     return (
         <div style={{ width: '200px', height: '200px',display:'flex',alignItems:'center',flexDirection:'column' }}>
-          <h2 style={{fontSize:'14px'}}>Thống kê học viên</h2>
+          <h2 style={{fontSize:'14px'}}>Thống kê đăng ký</h2>
           <Pie data={data} />
         </div>
       );
   };
 
 
-  const PieChartCourse = ({th,thcs,thpt,dh}) => {
-    const _th=(th*100)/(th+thcs+thpt+dh);
-    const _thcs=(thcs*100)/(th+thcs+thpt+dh);
+  const PieChartCourse = ({th,thcs,thpt}) => {
+    const _th=(th*100)/(th+thcs+thpt);
+    const _thcs=(thcs*100)/(th+thcs+thpt);
 
-    const _thpt=(thpt*100)/(th+thcs+thpt+dh);
-    const _dh=(dh*100)/(th+thcs+thpt+dh);
+    const _thpt=(thpt*100)/(th+thcs+thpt);
 
     const data = {
-      labels: ['Tiểu học','Thcs','Thpt','Đại học'],
+      labels: ['Tiểu học','Thcs','Thpt'],
       datasets: [
         {
           label: 'Số lượng %',
-          data: [_th,_thcs,_thpt,_dh],
+          data: [_th,_thcs,_thpt],
           backgroundColor: [
             'rgba(255, 99, 132, 0.7)',
             'rgba(54, 162, 235, 0.7)',
             'rgba(255, 206, 86, 0.7)',
-            'rgba(245, 12, 12, 0.7)',
             
           ],
           borderColor: [
             'rgba(255, 99, 132, 1)',
             'rgba(54, 162, 235, 1)',
             'rgba(255, 206, 86, 1)',
-            'rgba(255,255,255,1)',
            
           ],
           borderWidth: 1

@@ -28,6 +28,8 @@ import { GiBatMask } from "react-icons/gi";
 import { SERVER_GATEWAY_URL } from "../../config";
 import MyLoading from '../alert/loading';
 import axios from "axios";
+import SockJS from 'sockjs-client';
+import { Stomp } from '@stomp/stompjs';
 
 
 function Home() {
@@ -125,6 +127,25 @@ export function Logined({isLogin,setIsLogin}){
   const userJSON = sessionStorage.getItem('user');
   const user_ = userJSON ? JSON.parse(userJSON) : null;
   const [email,setEmail]=useState('')
+  const [newNotice,setNewNotice]=useState(false);// thong bao khi co thong bao moi
+  const [notices,setNotices]=useState([]);
+  const [stompClient, setStompClient] = useState(null);
+
+
+  // lay 10  thong bao he thong 
+
+  const getNotify=async ()=>{
+    try{
+      const response = await axios.get(`${SERVER_GATEWAY_URL}/api/student/comment/get.notify`);
+      setNotices(response.data);      
+    }
+    catch(e){
+      console.log(e);
+    }
+  }
+  useEffect(()=>{
+    getNotify();
+  },[])
   // xu ly xac thuc dang nhap
   useEffect(() => {
     
@@ -158,6 +179,54 @@ export function Logined({isLogin,setIsLogin}){
       setIsLoading(false);
     }
   }
+
+  ///
+  useEffect(() => {
+    // Kết nối với SockJS server
+    const socket = new SockJS('http://localhost:8081/student/ws');
+    const stompClientInstance = Stomp.over(socket);
+
+    // Kết nối STOMP
+    stompClientInstance.connect({}, (frame) => {
+        console.log('Connected: ' + frame);
+
+        // Sau khi kết nối, lưu stompClient vào state
+        setStompClient(stompClientInstance);
+
+        // Đăng ký nhận tin nhắn từ server
+        stompClientInstance.subscribe('/topic/notifi_client', (message) => {
+            console.log('Received: ' + message.body);
+            setNotices((prevNotices) => [JSON.parse(message.body), ...prevNotices]);
+            setNewNotice(true);
+        });
+      
+    });
+
+    // Cleanup: ngắt kết nối khi component unmount
+    return () => {
+        if (stompClientInstance) {  
+            stompClientInstance.disconnect();
+        }
+    };
+    
+  }, []);
+
+
+  const sendMessage = () => {
+    if(true){
+        const messageObj = {
+            content:"chau duong phat tien"
+        };
+        
+        if (stompClient) {
+            const message = JSON.stringify(messageObj); // Convert the object to a JSON string
+            stompClient.send("/app/notify", {}, message);
+        } else {
+            console.error("Chưa có kết nối STOMP!");
+        }
+    }
+    
+};
   return (
     <div className={`container-infor ${isLogin!==true?'hiden':''}`}>
       <div style={{display:`${isLoading?'':'none'}`}}><MyLoading/></div>
@@ -176,13 +245,23 @@ export function Logined({isLogin,setIsLogin}){
                 }}/>
        
       </div>
-      <div className='notify div-class' onMouseEnter={()=>{setShowNotify(true)}} onMouseLeave={()=>{setShowNotify(false)}}>
-        <IoNotifications style={{fontSize:'22px',color:'gray'}}/>
+      <div className='notify div-class' onMouseEnter={()=>{setShowNotify(true); setNewNotice(false)}} onMouseLeave={()=>{setShowNotify(false)}}>
+        <div style={{display:'flex'}}>
+          <IoNotifications style={{fontSize:'22px',color:'gray'}}/>
+          {newNotice &&( <p style={{color:'red',fontSize:'20px'}}>!</p>)}
+         
+        </div>
+        
         <div className='dt-notify' style={{display:showNotify?'':'none'}}>
           <h4 style={{padding:'5px 0 10px 0'}}>Thông báo</h4>
           <div className='content-notify'>
             <ul>
-              <li><a href='#'>Bạn chưa có thông báo nào.</a></li>
+              {notices.length===0 && (<li><a style={{fontSize:'12px'}}>Bạn chưa có thông báo nào.</a></li>)}
+              {notices.length!==0 &&(
+                notices.map((item,index)=>(
+                  <li key={index}><a style={{fontSize:'12px'}}>{item.content}</a></li>
+                ))
+              )}
             </ul>
           </div>
         </div>

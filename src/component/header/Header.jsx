@@ -6,16 +6,13 @@ import "./header.css"
 import { IoMdHome } from "react-icons/io";
 import { Logined } from "../home/Home";
 import { SERVER_GATEWAY_URL } from "../../config";
-import SockJS from 'sockjs-client';
-import { Stomp } from '@stomp/stompjs';
+
 import axios from "axios";
 function Header(){
   const navigate = useNavigate(); 
   const [isLogin,setIsLogin]=useState(false);
   const [searchText,setSearchText]=useState(''); // quan ly tim kiem khoa hoc
-  const [stompClient, setStompClient] = useState(null);
   
-    
  // chuc nang tim kiem khoa hoc
  const findCourse=async ()=>{
   if(searchText!==''){
@@ -29,52 +26,7 @@ function Header(){
     }
   }
 }
-///
-      useEffect(() => {
-        // Kết nối với SockJS server
-        const socket = new SockJS('http://localhost:8081/student/ws');
-        const stompClientInstance = Stomp.over(socket);
 
-        // Kết nối STOMP
-        stompClientInstance.connect({}, (frame) => {
-            console.log('Connected: ' + frame);
-
-            // Sau khi kết nối, lưu stompClient vào state
-            setStompClient(stompClientInstance);
-
-            // Đăng ký nhận tin nhắn từ server
-            stompClientInstance.subscribe('/topic/notifi_client', (message) => {
-                console.log('Received: ' + message.body);
-                
-            });
-          
-        });
-
-        // Cleanup: ngắt kết nối khi component unmount
-        return () => {
-            if (stompClientInstance) {  
-                stompClientInstance.disconnect();
-            }
-        };
-        
-      }, []);
-
-
-      const sendMessage = () => {
-        if(true){
-            const messageObj = {
-                content:"chau duong phat tien"
-            };
-            
-            if (stompClient) {
-                const message = JSON.stringify(messageObj); // Convert the object to a JSON string
-                stompClient.send("/app/notify", {}, message);
-            } else {
-                console.error("Chưa có kết nối STOMP!");
-            }
-        }
-        
-    };
       
       return(
           <header >
