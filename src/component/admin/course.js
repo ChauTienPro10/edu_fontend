@@ -8,13 +8,13 @@ import { IoCheckmarkDoneCircle } from "react-icons/io5";
 import { FaTrashCan } from "react-icons/fa6";
 import axios from 'axios';
 import { SERVER_GATEWAY_URL } from "../../config";
-function Course(){
+function Course({findData}){
     const [filter,setFilter]=useState({level:0,subject:''})
 
     const [openPanel,setOpenPanel]=useState(false); // quan ly dong mo bang dieu chinh khoa hoc
     //  khu vuc su ly lua chon cap bac -start
     const [selectedValueLevel, setSelectedValuelevel] = useState(''); //khai bao biên quan lý lựa chọn cấp bậc
-
+    const [courseItem,setCourseItem]=useState({});
     const handleSelectChangeLevel = async(event) => {  // xu ly sthay doi luaawj chọn
         await setSelectedValuelevel(event.target.value);
     };
@@ -86,8 +86,9 @@ function Course(){
 
                 
             </div>
-            <DataTable openPanel={openPanel} setOpenPanel={setOpenPanel} filter={filter}/>
-            <PanelControl openPanel={openPanel} setOpenPanel={setOpenPanel}/>
+            <DataTable openPanel={openPanel} setOpenPanel={setOpenPanel} filter={filter} setCourseItem={setCourseItem}
+             findData={findData}/>
+            <PanelControl openPanel={openPanel} setOpenPanel={setOpenPanel} course={courseItem}/> 
             
         </div>
         
@@ -95,7 +96,7 @@ function Course(){
 }
 
 
-const DataTable = ({openPanel,setOpenPanel,filter}) => {
+const DataTable = ({openPanel,setOpenPanel,filter,setCourseItem,findData}) => {
     const [dataList,setDataList]=useState([]);// quan ly dasnh sach khoa hoc
     const fetchCourses = async () => { // lay tat ca khoa hoc
         try {
@@ -155,8 +156,15 @@ const DataTable = ({openPanel,setOpenPanel,filter}) => {
 /////////////////////////////////////////////////
     useEffect(() => {
         // Lấy danh sách khóa học từ API hoặc backend
-        fetchCourses();
-      }, []);
+        if(findData.title!==undefined){
+            setDataList([findData]);
+        }
+        else{
+            // fetchCourses();
+            setDataList([]);
+
+        }
+      }, [findData]);
 
       useEffect(() => {
         // Lấy danh sách khóa học từ API hoặc backend theo level
@@ -217,7 +225,7 @@ const DataTable = ({openPanel,setOpenPanel,filter}) => {
                         <td style={tdStyle}>{item.title}</td>
                         <td style={tdStyle}>{item.teacher}</td>
                         <td style={tdStyle}>{item.level}</td>
-                        <td style={tdStyle}><button onClick={()=>{setOpenPanel(!openPanel)}} style={{background:'transparent',border:'transparent',cursor:'pointer'}}><IoEyeSharp /></button></td>
+                        <td style={tdStyle}><button onClick={()=>{setOpenPanel(!openPanel);setCourseItem(item)}} style={{background:'transparent',border:'transparent',cursor:'pointer'}}><IoEyeSharp /></button></td>
                     </tr>
                 ))}
             </tbody>
@@ -225,11 +233,11 @@ const DataTable = ({openPanel,setOpenPanel,filter}) => {
     </div>
     );
 };
-
-function PanelControl({openPanel,setOpenPanel}){
-    const [nameCourse,setNameCourse]=useState("PEN C-Tiếng anh");// quan ly ten khoa hoc
+ 
+function PanelControl({openPanel,setOpenPanel,course}){
+    const [nameCourse,setNameCourse]=useState('');// quan ly ten khoa hoc
     const [nameMod , setNameMod]=useState(false); // quan ly bat tat sua ten khoa hoc
-    const [price,setPrice]=useState(1000) //quan ly gia
+    const [price,setPrice]=useState(0) //quan ly gia
     const [priceMod,setPriceMod]=useState(false); // quan ly che do chinh sua gia
     return (
         <div className={`control-body ${openPanel ?'':'hiden'}`}>
@@ -240,7 +248,7 @@ function PanelControl({openPanel,setOpenPanel}){
                     <div className="input-name input-container">
                         <input  style={{ display: !nameMod ? 'none' : '' ,background:'rgba(255, 255, 255, 0.8)'}} type="text" placeholder={nameCourse}
                         value={nameCourse} onChange={(e)=>setNameCourse(e.target.value)}/>
-                        <h4 style={{ display: nameMod ? 'none' : '' }}>{nameCourse}</h4>
+                        <h4 style={{ display: nameMod ? 'none' : '' }}>{course.title}</h4>
                         <button  onClick={()=>{setNameMod(!nameMod)}} style={{marginLeft:'10px',border:'transparent',
                             background:'transparent', color:'grey',cursor:'pointer'
                         }}>{nameMod ? <IoCheckmarkDoneCircle /> : <FaPencil />}</button>
@@ -249,7 +257,7 @@ function PanelControl({openPanel,setOpenPanel}){
                     <div className="input-price input-container">
                         <input  style={{ display: !priceMod ? 'none' : '',background:'rgba(255, 255, 255, 0.8)' }} type="number" placeholder={price}
                         value={price} onChange={(e)=>setPrice(e.target.value)}/>
-                        <p style={{ display: priceMod ? 'none' : '' ,color:'grey'}}>Giá :{price} đ</p>
+                        <p style={{ display: priceMod ? 'none' : '' ,color:'grey'}}>Giá :{100} CDT</p>
                         <button  onClick={()=>{setPriceMod(!priceMod)}} style={{marginLeft:'10px',border:'transparent',
                             background:'transparent', color:'grey',cursor:'pointer'
                         }}>{priceMod ? <IoCheckmarkDoneCircle /> : <FaPencil />}</button>
@@ -262,8 +270,8 @@ function PanelControl({openPanel,setOpenPanel}){
                 </div>
                 <div className="control-body-container-both control-body-container-right">
                     <div className="avt-container"></div>
-                    <h4 style={{color:'grey', marginTop:'20px'}}>Giáo viên : {' Châu Dương Phát Tiến'}</h4>
-                    <h4 style={{color:'grey', marginTop:'20px'}}>Cấp bậc đào tạo : {' ĐH'}</h4>
+                    <h4 style={{color:'grey', marginTop:'20px'}}>Giáo viên : {course.teacher}</h4>
+                    <h4 style={{color:'grey', marginTop:'20px'}}>Cấp bậc đào tạo : {course.level}</h4>
                     <FaTrashCan style={{color:'red',width:'50px',height:'50px', cursor:'pointer',marginTop:'50px'}}/>
                 </div>
             </div>

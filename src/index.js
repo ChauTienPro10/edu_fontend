@@ -16,6 +16,7 @@ import Signup from './component/login/signup';
 import Learning from './component/learning/learning';
 import MyCourse from './component/my_course/My_course';
 import Container_course from './component/my_course/course_container';
+import ChangePassPage from './component/change_password/change_pass';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 
@@ -32,6 +33,7 @@ root.render(
         <Route path="/learning" element={<Learning />} />
         <Route path="/my_course" element={<MyCourse />} />
         <Route path="/result_search" element={<Container_course />} />
+        <Route path="/change_password" element={<ChangePassPage />} />
       </Routes>
       <Botchat />
     </Router>

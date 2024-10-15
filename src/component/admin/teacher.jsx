@@ -8,7 +8,7 @@ import { IoCheckmarkDoneCircle } from "react-icons/io5";
 import { FaTrashCan } from "react-icons/fa6";
 import axios from 'axios';
 import { SERVER_GATEWAY_URL } from "../../config";
-function Teacher(){
+function Teacher({findData}){
     const [filter,setFilter]=useState({level:0,subject:''})
 
     const [openPanel,setOpenPanel]=useState(false); // quan ly dong mo bang dieu chinh khoa hoc
@@ -75,7 +75,7 @@ function Teacher(){
 
                 
             </div>
-            <DataTable openPanel={openPanel} setOpenPanel={setOpenPanel} filter={filter}/>
+            <DataTable openPanel={openPanel} setOpenPanel={setOpenPanel} filter={filter} findData={findData}/>
             <PanelControl openPanel={openPanel} setOpenPanel={setOpenPanel}/>
             
         </div>
@@ -84,7 +84,7 @@ function Teacher(){
 }
 
 
-const DataTable = ({openPanel,setOpenPanel,filter}) => {
+const DataTable = ({openPanel,setOpenPanel,filter,findData}) => {
     const [dataList,setDataList]=useState([]);// quan ly dasnh sach khoa hoc
     const fetchTeacher = async () => { // lay tat ca khoa hoc
         try {
@@ -144,8 +144,16 @@ const DataTable = ({openPanel,setOpenPanel,filter}) => {
 /////////////////////////////////////////////////
     useEffect(() => {
         // Lấy danh sách khóa học từ API hoặc backend
-        fetchTeacher();
-      }, []);
+        // fetchTeacher();
+        if(findData.major!==undefined){
+            setDataList([findData]);
+        }
+        else{
+            // fetchCourses();
+            setDataList([]);
+
+        }
+      }, [findData]);
 
       useEffect(() => {
         // Lấy danh sách khóa học từ API hoặc backend theo level

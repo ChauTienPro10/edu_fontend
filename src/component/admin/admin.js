@@ -69,8 +69,26 @@ function Taskbar({ indextask,setIndextask }){
 }
 function Content({ indextask,setIndextask }){
    const[setting,setSettting]=useState(false); // quan ly hien thi setting (them giao vien hoac them khoa hoc)
- 
+  const [searchText,setSearchText]=useState('');
   const [indexSetting,setIdexSetting]=useState('');
+  const [findData,setFindData]=useState({}); // luu du lieu tim kiem duoc
+  const search=async()=>{
+    try{
+      const response = await axios.get(`${SERVER_GATEWAY_URL}/api/elasticSearch/course/admin.findbyid?id=${searchText}`);
+      setFindData(response.data)
+      
+    }catch(e){
+      console.log(e);
+    }
+  }
+  useEffect(()=>{ // xu ly phan biet du lieu tim kiem la giao vien hay khoa hoc
+    if(findData.title!==undefined){
+      setIndextask(2);
+    }
+    else if(findData.major!==undefined){
+      setIndextask(3);
+    }
+  },[findData])
     return(
       
         <div className="content-side">
@@ -81,8 +99,8 @@ function Content({ indextask,setIndextask }){
             <div className="top-side">
                 <div className="top-side-search">
                     <p style={{fontSize:'15px',marginRight:'10px'}}>🔍</p>
-                    <input type="text" placeholder="Tiềm kiếm"/>
-                    <button class="search-button"><CiSearch style={{color:'white'}}/></button>
+                    <input type="text" placeholder="Tiềm kiếm" value={searchText} onChange={(e)=>setSearchText(e.target.value)}/>
+                    <button onClick={()=>search()} class="search-button"><CiSearch style={{color:'white'}}/></button>
                 </div>
                 <div onMouseEnter={()=>setSettting(true)} onMouseLeave={()=>setSettting(false)} className="top-side-setting"><IoSettings style={{fontSize:'25px',marginRight:'20px',
                     color:'gray'
@@ -100,8 +118,8 @@ function Content({ indextask,setIndextask }){
             </div>
             <div className="content-side-board">
               <div className={`content-side-board-child  ${indextask!==1?'hiden':''} `} ><Homecomponent /></div>
-              <div className={ `content-side-board-child  ${indextask!==2?'hiden':''}`} ><Course /></div>
-              <div className={`content-side-board-child  ${indextask!==3?'hiden':''}`} ><Teacher /></div>
+              <div className={ `content-side-board-child  ${indextask!==2?'hiden':''}`} ><Course findData={findData}/></div>
+              <div className={`content-side-board-child  ${indextask!==3?'hiden':''}`} ><Teacher findData={findData}/></div>
               <div className={`content-side-board-child  ${indextask!==4?'hiden':''}`} ><Statistic /></div>
               <div className={`content-side-board-child  ${indextask!==5?'hiden':''}`} ><Statistic /></div>
             </div>

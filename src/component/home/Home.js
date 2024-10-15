@@ -212,21 +212,7 @@ export function Logined({isLogin,setIsLogin}){
   }, []);
 
 
-  const sendMessage = () => {
-    if(true){
-        const messageObj = {
-            content:"chau duong phat tien"
-        };
-        
-        if (stompClient) {
-            const message = JSON.stringify(messageObj); // Convert the object to a JSON string
-            stompClient.send("/app/notify", {}, message);
-        } else {
-            console.error("Chưa có kết nối STOMP!");
-        }
-    }
-    
-};
+ 
   return (
     <div className={`container-infor ${isLogin!==true?'hiden':''}`}>
       <div style={{display:`${isLoading?'':'none'}`}}><MyLoading/></div>
@@ -289,7 +275,7 @@ export function Logined({isLogin,setIsLogin}){
             <FaUser style={{color:'gray',marginRight:'10px'}}/>
             <p>Thông tin cá nhân</p>
           </div>
-          <div>
+          <div onClick={()=>navigate("/change_password")}>
             <FaKey style={{color:'gray',marginRight:'10px'}}/>
             <p>Đổi mật khẩu</p>
           </div>
