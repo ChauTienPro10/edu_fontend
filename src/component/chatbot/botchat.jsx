@@ -39,6 +39,11 @@ function Botchat(){
         await setMessages((prev) => prev.slice(0, -1)); // bo phan tu dau tien cua list messages
         setMessages((pre) => [...pre, newData]);
       }
+      else if(response.data.type==='teacher'){
+        const newData = { text: response.data.name,  by: 'BOT',obj: response.data};
+        await setMessages((prev) => prev.slice(0, -1)); // bo phan tu dau tien cua list messages
+        setMessages((pre) => [...pre, newData]);
+      }
       else{
         const newData = { text: response.data.title,  by: 'BOT'};
         await setMessages((prev) => prev.slice(0, -1)); // bo phan tu dau tien cua list messages
@@ -94,7 +99,7 @@ function Botchat(){
                 {messages.map((mes, index) => (
                     <div key={index} className='container-message'>
                        <div  className='first-mess' style={{justifyContent:mes.by ==='BOT'?'left':'right'}}>
-                            <div><p>{mes.text}</p>{mes.obj && mes.by==='BOT' && (<a style={{textDecoration:'underline',fontSize:'10px', cursor:'pointer'}} 
+                            <div><p>{mes.text}</p>{mes.obj && mes.obj.type==='course' && mes.by==='BOT' && (<a style={{textDecoration:'underline',fontSize:'10px', cursor:'pointer'}} 
                               onClick={()=>toCoursePage(mes.obj)}
                             >{`xem : ${mes.obj.id}`} </a>)}</div>
                             

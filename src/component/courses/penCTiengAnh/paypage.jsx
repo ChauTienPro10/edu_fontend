@@ -4,11 +4,13 @@ import { RiCopperCoinFill } from "react-icons/ri";
 import { GiBatMask } from "react-icons/gi";
 import { SERVER_GATEWAY_URL } from '../../../config';
 import { FaCheckCircle } from "react-icons/fa";
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 function Paypage({show,setShow,course}){
+    const navigate=useNavigate();
     const address= sessionStorage.getItem('address');
     const balance= sessionStorage.getItem('balance');
-    const email=sessionStorage.getItem('user')._usernaem;
+    console.log(sessionStorage.getItem('user'))
     const [base64String,setBase64String]=useState('');
     const [code,setCode]=useState('');
     const [amount,setAmount]=useState(0);
@@ -17,6 +19,7 @@ function Paypage({show,setShow,course}){
     const userJSON = sessionStorage.getItem('user');
     const user_ = userJSON ? JSON.parse(userJSON) : null;
     const [boughtRespone,setBoughtResponse]=useState({});
+    
 
     const fetchGenQR = async (amount) => {
 
@@ -43,6 +46,8 @@ function Paypage({show,setShow,course}){
 
         }
     };
+
+    
 
     const fetchauthenCode = async () => {
         try {
@@ -112,7 +117,7 @@ function Paypage({show,setShow,course}){
                     <p>Hệ thống thanh toán CDToken</p>
                 </div>
                 <div style={{display:(base64String==='' && !payed)?'':'none'}} className='body-pay'>
-                    <p style={{fontSize:'13px',padding:'5px',fontWeight:'lighter'}}>{`Email: ${email}`}</p>
+                    <p style={{fontSize:'13px',padding:'5px',fontWeight:'lighter'}}>{`Email: ${user_._username}`}</p>
                     <p style={{fontSize:'13px',padding:'5px',fontWeight:'lighter',maxWidth:'200px',overflow:'hidden' }}>{`Tài khoản: ${address}`}</p>
                     <div style={{display:'flex',alignItems:'center'}}><p style={{fontSize:'13px',padding:'5px'}}>{`Số dư: ${balance} `}</p>
                     <RiCopperCoinFill style={{color:'gold'}}/></div>

@@ -18,6 +18,7 @@ import NewSubject from "./subject";
 import NewCourse from "./newCourse";
 import Teacher from "./teacher";
 import NewNotice from "./newNotify";
+import Student from "./student";
 import axios from "axios";
 import { Chart as ChartJS, Title, Tooltip, Legend, ArcElement } from 'chart.js';
 import { SERVER_GATEWAY_URL } from "../../config";
@@ -120,7 +121,7 @@ function Content({ indextask,setIndextask }){
               <div className={`content-side-board-child  ${indextask!==1?'hiden':''} `} ><Homecomponent /></div>
               <div className={ `content-side-board-child  ${indextask!==2?'hiden':''}`} ><Course findData={findData}/></div>
               <div className={`content-side-board-child  ${indextask!==3?'hiden':''}`} ><Teacher findData={findData}/></div>
-              <div className={`content-side-board-child  ${indextask!==4?'hiden':''}`} ><Statistic /></div>
+              <div className={`content-side-board-child  ${indextask!==4?'hiden':''}`} ><Student /></div>
               <div className={`content-side-board-child  ${indextask!==5?'hiden':''}`} ><Statistic /></div>
             </div>
         </div>

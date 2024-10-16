@@ -10,13 +10,21 @@ import { useLocation } from "react-router-dom";
 import axios from 'axios';
 import Videoslist from "./videosContainer";
 import MyLoading from "../../alert/loading"; 
+import { useNavigate } from "react-router-dom";
 import Paypage from "./paypage";
 function Course(){
     const location = useLocation();
     const { course } = location.state || {};
     const [desContent,setDesContent]=useState('');
     const [isLoading,setIsLoading]=useState(false);
-
+    const userJSON = sessionStorage.getItem('user');
+    const user_ = userJSON ? JSON.parse(userJSON) : null;
+    const navigate=useNavigate();
+    useEffect(()=>{
+        if(sessionStorage.getItem('user')===null || sessionStorage.getItem('user')===undefined){
+            navigate('/login');
+        }
+    },[]);
 
     return(
         <div className="course-container">
@@ -281,7 +289,7 @@ function ContentCourse({_course,desContent, setDesContent,setIsLoading}){
                                 ,cursor:'pointer'}}
                                 onClick={()=>{setShowPay(true)}}
                                 >Mua khóa học</button>
-                            <Paypage show={showPay} setShow={setShowPay} course={_course}/>
+                            {sessionStorage.getItem('user')!==null && sessionStorage.getItem('user')!==undefined && (<Paypage show={showPay} setShow={setShowPay} course={_course}/>)}
                             
                     </div>
                     <div style={{display:'flex', marginTop:'20px'}}> {/* danhh cho giao  vien*/ }
@@ -295,7 +303,7 @@ function ContentCourse({_course,desContent, setDesContent,setIsLoading}){
                     <ListVideo  isTeacher={role==='ROLE_TEACHER'} setIsLoading={setIsLoading} _course={_course} setShowPay={setShowPay}/>
                 </div>
                 <div className="course-body-right">
-                    <RelaxtiveVideo/>
+                    <RelaxtiveVideo title_course={_course.title}/>
                 </div>
                 
             </div>
@@ -323,7 +331,26 @@ function ListVideo({isTeacher, setIsLoading, _course,setShowPay}){
         </div>
     )
 }
-function RelaxtiveVideo(){
+function RelaxtiveVideo({title_course}){
+    const navigate=useNavigate();
+    const [relateCourse,setRelateCourse]=useState([])
+    const get_relate_course=async()=>{
+        try{
+            const response = await axios.get(`${SERVER_GATEWAY_URL}/api/elasticSearch/course/search/${title_course}`);
+           setRelateCourse(response.data);
+          }
+          catch(e){
+            console.log(e);
+          }
+    }
+    const toNewCourse=(course)=>{
+
+        navigate('/course', { state: { course } });
+        window.location.reload();
+    }
+    useEffect(()=>{
+        get_relate_course();
+    },[relateCourse])
     const [isMore, setIsMore]=useState(false);
    
     return (
@@ -332,46 +359,14 @@ function RelaxtiveVideo(){
         }}>
             <h4 style={{color:'rgba(0,0,0,0.8)',marginBottom:'20px'}}>Khóa học liên quan</h4>
             <ul>
-                <li><div className="div-container-relate">
-                    <div className="img-div"></div>
-                    <a href="#">PEN-C VẬT LÝ</a>    
-                </div></li>
-                <li><div className="div-container-relate">
-                    <div className="img-div"></div>
-                    <a href="#">PEN-C VẬT LÝ</a>    
-                </div></li>
-                <li><div className="div-container-relate">
-                    <div className="img-div"></div>
-                    <a href="#">PEN-C VẬT LÝ</a>    
-                </div></li>
-                <li><div className="div-container-relate">
-                    <div className="img-div"></div>
-                    <a href="#">PEN-C VẬT LÝ</a>    
-                </div></li>
-                <li><div className="div-container-relate">
-                    <div className="img-div"></div>
-                    <a href="#">PEN-C VẬT LÝ</a>    
-                </div></li>
-                <li><div className="div-container-relate">
-                    <div className="img-div"></div>
-                    <a href="#">PEN-C VẬT LÝ</a>    
-                </div></li>
-                <li><div className="div-container-relate">
-                    <div className="img-div"></div>
-                    <a href="#">PEN-C VẬT LÝ</a>    
-                </div></li>
-                <li><div className="div-container-relate">
-                    <div className="img-div"></div>
-                    <a href="#">PEN-C VẬT LÝ</a>    
-                </div></li>
-                <li><div className="div-container-relate">
-                    <div className="img-div"></div>
-                    <a href="#">PEN-C VẬT LÝ</a>    
-                </div></li>
-                <li><div className="div-container-relate">
-                    <div className="img-div"></div>
-                    <a href="#">PEN-C VẬT LÝ</a>    
-                </div></li>
+                {relateCourse && relateCourse.map((course,index)=>(
+                    <li onClick={()=> toNewCourse(course)}><div className="div-container-relate">
+                        <div className="img-div"></div>
+                        <a>{course.title}</a>    
+                    </div></li>
+                ))}
+                
+                
             </ul>
             <button onClick={()=>{setIsMore(true)}} style={{display:`${isMore?'none':''}`}}>XEM THÊM</button>
         </div>
