@@ -58,7 +58,7 @@ function Header(){
   );
 }
 function Body(){
-  const [name, setName] = useState('');
+  const [fullname, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [password,setPassword]=useState('');
@@ -71,7 +71,7 @@ function Body(){
 
     try {
       const response = await axios.post(`${SERVER_GATEWAY_URL}/api/student/profile/new`, {
-        name,
+        fullname,
         email,
         phone,
         password
@@ -137,7 +137,7 @@ function Body(){
       </div>
       <div className="border-line"></div>
       <form onSubmit={handleSignup}>
-        <input id="namebox" type="text" placeholder="Họ và tên" required name="name" value={name} 
+        <input id="namebox" type="text" placeholder="Họ và tên" required name="name" value={fullname} 
         onChange={(e) => setName(e.target.value)}/>
         <input id="emailbox" type="email" placeholder="Email" required name="email" value={email}
         onChange={(e) => setEmail(e.target.value)}/>
