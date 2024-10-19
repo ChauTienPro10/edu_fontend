@@ -68,13 +68,25 @@ export default function Student(){
             setShowPage(page_number.slice(indexPage-4, indexPage+1));
         }
     }, [indexPage]);
+
+    const [students,setStudents]=useState([{}]);
+    const find_by_data=async()=>{ // tim kiem student
+        try{
+            const response = await axios.get(`${SERVER_GATEWAY_URL}/api/student/profile/find_student?data=${findData}`);
+            setStudents(response.data);
+        }
+        catch(e){
+            console.log(e);
+        }
+    };
+    
     
     return (
         <div className='student-body'>
             <div className='student-body-option'>
                 <div className='find-by-name'>
                     <input placeholder='Tên,email hoặc số điện thoại' className='name-find' type='text' value={findData} onChange={(e)=>setFindData(e.target.value)}/>
-                    <button className='find-button'>Tìm kiếm</button>
+                    <button onClick={()=>find_by_data()} className='find-button'>Tìm kiếm</button>
                 </div>
                 <div className='trans-page'>
                     <button onClick={()=>trans_left()}>{'<'}</button>
@@ -85,13 +97,14 @@ export default function Student(){
                 </div>
             </div>
             <div className='student-body-main'>
-                <DataTable indexPage={indexPage}/>
+                <DataTable indexPage={indexPage} students={students} setStudents={setStudents}/>
             </div>
         </div>
     );
 }
-const DataTable=({indexPage})=>{
-    const [students,setStudents]=useState([{}]);
+
+const DataTable=({indexPage,students,setStudents})=>{
+    
     const get_student_by_index=async(index)=>{
         try{
             const response = await axios.get(`${SERVER_GATEWAY_URL}/api/student/profile/get_by_index`, {
