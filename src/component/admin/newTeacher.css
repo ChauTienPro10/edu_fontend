@@ -24,12 +24,18 @@
 .new-teacher-main .input-data{
     width: 400px;
     height: 50px;
-    border: none;
+    border: 1px solid rgba(0, 0, 0, 0.233);
     outline: none;
     padding: 15px;
     color: gray;
     margin: 10px;
-    background: wheat;
+    
+}
+.new-teacher-main label{
+    font-size: 12px;
+    width: 100%;
+    font-weight: lighter;
+    padding-left: 25px;
 }
 .new-teacher-main .submit-button{
     width: 400px;
@@ -42,8 +48,13 @@
     color: white;
     cursor: pointer;
     font-size: 16px;
-    
 }
 .new-teacher-main .submit-button:hover{
     opacity: 0.7;
+}
+
+.show-detail{
+    font-size: 14px;
+    font-weight: lighter;
+    padding: 6px;
 }

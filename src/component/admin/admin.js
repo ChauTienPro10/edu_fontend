@@ -21,6 +21,7 @@ import NewNotice from "./newNotify";
 import Student from "./student";
 import axios from "axios";
 import { Chart as ChartJS, Title, Tooltip, Legend, ArcElement } from 'chart.js';
+import Discount from "./new_discount";
 import { SERVER_GATEWAY_URL } from "../../config";
 ChartJS.register(Title, Tooltip, Legend, ArcElement);
 function Admin(){
@@ -97,6 +98,7 @@ function Content({ indextask,setIndextask }){
             <div style={{display:indexSetting==='SJ'?'':'none'}}><NewSubject setIndedx={setIdexSetting}/></div>
             <div style={{display:indexSetting==='C'?'':'none'}}><NewCourse setIndedx={setIdexSetting}/></div>
             <div style={{display:indexSetting==='TB'?'':'none'}}><NewNotice setIndedx={setIdexSetting}/></div>
+            <div style={{display:indexSetting==='DC'?'':'none'}}><Discount setIndedx={setIdexSetting}/></div>
             <div className="top-side">
                 <div className="top-side-search">
                     <p style={{fontSize:'15px',marginRight:'10px'}}>🔍</p>
@@ -112,6 +114,7 @@ function Content({ indextask,setIndextask }){
                       <li onClick={()=>setIdexSetting('C')}>Thêm khóa học</li>
                       <li onClick={()=>setIdexSetting('SJ')}>Thêm lĩnh vựt giảng dạy</li>
                       <li onClick={()=>setIdexSetting('TB')}>Thêm Thông báo</li>
+                      <li onClick={()=>setIdexSetting('DC')}>Thêm mã giảm giá</li>
                     </ul>
                     
                   </div>
