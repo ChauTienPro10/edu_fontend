@@ -9,19 +9,27 @@ function NewTeacher({setIndedx}){
     const [error,setError]=useState('');
     const [email,setEmail]=useState('');
     const [loading,setLoading]=useState(false);
-
+    const userJSON = sessionStorage.getItem('user');
+    const user_ = userJSON ? JSON.parse(userJSON) : null;
 
     const fetchNewTeacher = async (event) => {
         setLoading(true);
 
         try {
-          const response = await axios.post(`${SERVER_GATEWAY_URL}/api/elasticSearch/teacher/new`, {
+          const response = await axios.post(`${SERVER_GATEWAY_URL}/api/elasticSearch/teacher/new`, { 
             name,
             major,
             level,
             email,
             
-          });
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${user_._jwt}`,
+            },
+          }
+        
+        );
     
          
           

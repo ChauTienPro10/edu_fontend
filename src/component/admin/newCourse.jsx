@@ -10,10 +10,10 @@ function NewCourse({setIndedx}){
     const [level,setLevel]=useState(0);
     const [subject,setSubject]=useState('');
     const [teacher,setTeacher]=useState('');
-    
     const [error,setError]=useState('');
     const [loading,setLoading]=useState(false);
-
+    const userJSON = sessionStorage.getItem('user');
+    const user_ = userJSON ? JSON.parse(userJSON) : null;
 
     const fetchNewCourse = async (event) => {
         setLoading(true);
@@ -27,7 +27,14 @@ function NewCourse({setIndedx}){
             teacher,
             subject
             
-          });
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${user_._jwt}`,
+            },
+          }
+
+        );
     
          
           

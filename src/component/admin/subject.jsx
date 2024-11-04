@@ -7,6 +7,8 @@ function NewSubject({setIndedx}){
     const [name,setName]=useState('');
     const [error,setError]=useState('');
     const [loading,setLoading]=useState(false);
+    const userJSON = sessionStorage.getItem('user');
+    const user_ = userJSON ? JSON.parse(userJSON) : null;
 
     const fetchNewSubject = async (event) => {
         setLoading(true);
@@ -14,7 +16,14 @@ function NewSubject({setIndedx}){
           const response = await axios.post(`${SERVER_GATEWAY_URL}/api/elasticSearch/course/subject/new`, {
             code,
             name,
-          });
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${user_._jwt}`,
+            },
+          }
+        
+        );
           if(response.data.code===1000){
             console.log(response.data.result);
             setError('');
@@ -28,7 +37,7 @@ function NewSubject({setIndedx}){
           }
       
         } catch (_error) {
-            setError(_error);
+            setError("Lỗi server");
         }
         setLoading(false);
       };

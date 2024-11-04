@@ -23,11 +23,13 @@ import axios from "axios";
 import { Chart as ChartJS, Title, Tooltip, Legend, ArcElement } from 'chart.js';
 import Discount from "./new_discount";
 import { SERVER_GATEWAY_URL } from "../../config";
+import AdLogin from "./login/ad_login";
 ChartJS.register(Title, Tooltip, Legend, ArcElement);
 function Admin(){
   const [indextask,setIndextask]=useState(0);
     return(
         <div className="main-body">
+            <AdLogin />
             <Taskbar indextask={indextask} setIndextask={setIndextask}/>
             <Content indextask={indextask} setIndextask={setIndextask}/>
         </div>

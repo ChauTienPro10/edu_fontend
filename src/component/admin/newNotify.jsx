@@ -13,7 +13,7 @@ function NewNotice({setIndedx}){
 
     useEffect(() => {
         // Kết nối với SockJS server
-        const socket = new SockJS('http://localhost:8081/student/ws');
+        const socket = new SockJS('http://localhost:8081/student/ws'); 
         const stompClientInstance = Stomp.over(socket);
 
         // Kết nối STOMP

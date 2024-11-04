@@ -1,0 +1,43 @@
+.ad-login-body{
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.47);
+    z-index: 10;
+    position: fixed;
+    left: 0;
+    top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ad-login-body .main-board{
+    width: 400px;
+    height: 300px;
+    background: white;
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+}
+.input{
+    width: 100%;
+    height: 40px;
+    outline: none;
+    margin-top: 10px;
+    padding: 10px;
+}
+.button{
+    width: 100%;
+    height: 40px;
+    border: none;
+    background: rgb(78, 190, 251);
+    margin-top: 50px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+.button:hover{
+    opacity: 0.7;
+}

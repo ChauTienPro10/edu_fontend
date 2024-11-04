@@ -32,7 +32,7 @@ function Thpt({level}){
     useEffect(() => {
         setCountTHPT(courses.length);
         setCountTHPTHot(courses.length);
-    }, [courses]); // Runs every time 'courses' state changes
+    }, []); // Runs every time 'courses' state changes
    
     function toCoursePage(course){
         navigate('/course', { state: { course } });
