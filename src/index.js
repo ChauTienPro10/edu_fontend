@@ -17,6 +17,8 @@ import Learning from './component/learning/learning';
 import MyCourse from './component/my_course/My_course';
 import Container_course from './component/my_course/course_container';
 import ChangePassPage from './component/change_password/change_pass';
+import NewMember from './component/incentives/newmember'; // Ưu đãi thành viên mới
+import Practice from './component/courses/penCTiengAnh/practice/practice';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 
@@ -34,6 +36,8 @@ root.render(
         <Route path="/my_course" element={<MyCourse />} />
         <Route path="/result_search" element={<Container_course />} />
         <Route path="/change_password" element={<ChangePassPage />} />
+        <Route path='/incentive/newmember' element={<NewMember/>} />
+        <Route path='/course/practice/:id' element={<Practice/>} />
       </Routes>
       <Botchat />
     </Router>

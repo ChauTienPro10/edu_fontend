@@ -1,0 +1,30 @@
+.add-practice-page-body{
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.319);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 100;
+}
+.add-practice-page-body .main-board{
+    background: white;
+    border-radius: 5px;
+    box-shadow: -1px 0 3px rgba(0, 0, 0, 0.2);
+    width: 1000px;
+    height: 500px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: start;
+}
+.content-practice{
+    width: 800px;
+    height: 250px;
+    padding: 15px;
+   
+}

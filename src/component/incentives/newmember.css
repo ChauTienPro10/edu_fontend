@@ -1,0 +1,90 @@
+
+.incentive-newmember-body{
+    width: 100vw;
+    height: 100vh;
+}
+
+.incentive-newmember-body .intro-content {
+    width: 100%;
+    height: 100%;
+    background: url('/public/backgroundvoucher.jpg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover; /* Đảm bảo hình nền phủ toàn bộ */
+}
+.main-board{
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.571);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.main-content{
+    width: 600px;
+    height: 600px;
+    background: rgba(255, 255, 255, 0.423);
+    border-radius: 10px;
+    box-shadow: 5px 5px 10px 2px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    align-items: center;
+
+}
+.sale-icon-fire{
+    animation: shake 2.5s ease-in-out; /* thời lượng 0.5 giây */
+    animation-iteration-count: infinite; /* Lặp lại hiệu ứng mãi mãi */
+}
+
+@keyframes shake {
+    0%, 100% {
+        transform: translateX(0);
+    }
+      50%, 70%, 90% {
+        transform: translateX(-10px);
+    }
+     40%, 60%, 80% {
+        transform: translateX(10px);
+    }
+}
+
+.logo-voucher{
+    margin-top: 30px;
+    border-radius: 10px;
+    width: 100%;
+    height: 250px;
+    background: url('/public/Screenshot\ 2024-11-04\ 171920.png');
+}
+
+.text-content{
+    animation: zoom 2s ease-in-out; /* thời lượng 0.5 giây */
+    animation-iteration-count: infinite; /* Lặp lại hiệu ứng mãi mãi */
+}
+
+@keyframes zoom{
+    0%,100%{
+        font-size: 16px;
+    }
+    50%{
+        font-size: 20px;
+    }
+    
+}
+.button-getvoucher{
+    position: fixed;
+    background: greenyellow;
+    width: 200px;
+    height: 80px;
+    font-size: 20px;
+    bottom: 0;
+    margin: 100px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    
+}
+.button-getvoucher:hover{   
+    width: 210px;
+    height: 85px;
+}
