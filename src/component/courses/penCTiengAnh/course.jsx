@@ -99,6 +99,7 @@ const Practice = ({ isTeacher, course }) => {
         try {
 
             const response = await axios.get(`${SERVER_GATEWAY_URL}/api/elasticSearch/practice/getAllCourseById?id=${course.id}`);
+            console.log(response.data);
             setPractices(response.data)
 
 
@@ -111,9 +112,9 @@ const Practice = ({ isTeacher, course }) => {
         getAllPractice();
     }, []);
 
-    const navigate=useNavigate();
-    const toPractice=async(practiceId)=>{ // đii đến trang thảo luận bài tập
-        navigate(`/course/practice/${practiceId}`);
+    const toPractice=async(practiceId,content)=>{ // đii đến trang thảo luận bài tập
+        window.open(`/course/practice/${practiceId}?content=${encodeURIComponent(content)}`, '_blank');
+
     }
 
 
@@ -122,7 +123,7 @@ const Practice = ({ isTeacher, course }) => {
             <AddPracticePage show={show} setShow={setShow} course={course} />
             <ul className="list-container-practice">
                 {practices && practices.map((prac,index)=>(
-                    <li onClick={()=>toPractice(prac.id)}>
+                    <li onClick={()=>toPractice(prac.id,prac.content)}>
                     <p style={{fontSize:'12px'}}>{prac.content}</p>
                     <div> <p style={{fontWeight:'bolder',fontSize:'14px'}}>Độ khó</p>
                      {Array.from({ length: prac.hardLevel }, (_, idx) => ( <span style={{color:'orange'}} key={idx}>&#9733;</span> // Hiển thị biểu tượng ngôi sao 

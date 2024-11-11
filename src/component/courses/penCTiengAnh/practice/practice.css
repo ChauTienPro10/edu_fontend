@@ -87,9 +87,12 @@
     padding-left: 40px;
     display: flex;
     flex-direction: column;
-    height: 60vh;
+    height: auto;
+    max-height: 250px;
     overflow-y: scroll;
 }
 .disscus-area .cmt-content{
     border-bottom: 1px solid black;
+    display: flex;
+    align-items: center;
 }
