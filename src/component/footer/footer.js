@@ -11,7 +11,7 @@ function Footer(){
                         <li>Giáo viên nổi tiếng</li>
                         <li>Hệ thống trung tâm HOCMAI</li>
                         <li>Học sinh tiêu biểu</li>
-                        <li>Điều khoản chính sách</li>
+                        <li>Điều khoản chính sách</li> 
                         <li>Quy chế hoạt động</li>
                         <li>Tuyển dụng</li>
                     </ul>
@@ -53,11 +53,11 @@ function Footer(){
             </div>
             <div className="foot-bottom">
                 <p>Cơ quan chủ quản: Công ty Cổ phần Đầu tư và Dịch vụ Giáo dục<br/>
-                MST: 0102183602 do Sở kế hoạch và Đầu tư thành phố Hà Nội cấp ngày 13 tháng 03 năm 2007<br/>
-                Địa chỉ:<br/>
-                - Văn phòng Hà Nội: Tầng 4, Tòa nhà 25T2, Đường Nguyễn Thị Thập, Phường Trung Hoà, Quận Cầu Giấy, Hà Nội.<br/>
-                - Văn phòng TP.HCM: 13M đường số 14 khu đô thị Miếu Nổi, Phường 3, Quận Bình Thạnh, TP. Hồ Chí Minh<br/>
-                Hotline: 19006933 – Email: hotro@hocmai.vn<br/>
+                MST: 0102183602 do Sở kế hoạch và Đầu tư thành phố Hà Nội cấp ngày 13 tháng 03 năm 2007
+                Địa chỉ:
+                - Văn phòng Hà Nội: Tầng 4, Tòa nhà 25T2, Đường Nguyễn Thị Thập, Phường Trung Hoà, Quận Cầu Giấy, Hà Nội.
+                - Văn phòng TP.HCM: 13M đường số 14 khu đô thị Miếu Nổi, Phường 3, Quận Bình Thạnh, TP. Hồ Chí Minh
+                Hotline: 19006933 – Email: hotro@hocmai.vn
                 Chịu trách nhiệm nội dung: Phạm Giang Linh</p>
                 <p>Giấy phép cung cấp dịch vụ mạng xã hội trực tuyến số 597/GP-BTTTT Bộ Thông tin và Truyền thông cấp ngày 30/12/2016.</p>
             </div>

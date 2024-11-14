@@ -92,7 +92,7 @@ function Myheader() {
   return (
 
     <div className='header'>
-      <div className='left-bar navbar'>
+      <div className='navbar left-bar '>
         <div
           className={`imagelogo ${isSmaller ? 'smaller' : ''}`}></div>
         <div className='search-box'>
@@ -227,7 +227,7 @@ export function Logined({ isLogin, setIsLogin }) {
 
 
       <div className='to-course div-class'>
-        <FaBook style={{ marginRight: '10px', fontSize: '22px', color: 'gray' }} />
+        <FaBook onClick={() => navigate('/my_course', { state: { email } })} style={{ marginRight: '10px', fontSize: '22px', color: 'gray' }} />
         <a onClick={() => navigate('/my_course', { state: { email } })}>Khóa học của tôi</a>
       </div>
       <div className='cart div-class' >
