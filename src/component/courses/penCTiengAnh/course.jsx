@@ -82,7 +82,7 @@ function Body({ _course, desContent, setDesContent }) {
                 </div>
                 <div className="infor-right">
                     <h3 style={{ marginTop: '60px' }}>Bài tập tự luyện</h3>
-                    <Practice isTeacher={true} course={_course} />
+                    <Practice isTeacher={role==='ROLE_TEACHER'?true:false} course={_course} />
                 </div>
             </div>
 
