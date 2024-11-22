@@ -673,7 +673,7 @@ function Certificate() {
         const userJSON = sessionStorage.getItem('user');
         const user_ = userJSON ? JSON.parse(userJSON) : null;
         alert(user_._jwt);
-      }}>TẢI ỨNG DỤNG HỌC MÃI</button>
+      }}>TẢI ỨNG DỤNG</button>
     </div>
   );
 }

@@ -60,6 +60,7 @@ function Thpt({ level }) {
             const newPos = event.clientX;
             if (initX - newPos > 0) { // di chuyen sang trai
                 const newX = initX - newPos;
+                console.log(initialElement - newX);
                 if ((initialElement - newX) > (0 - trans_max)) {
                     setPosition({
                         x: initialElement - newX,
@@ -176,7 +177,7 @@ function Thpt({ level }) {
                     }}>
                         <div className="circle-right"><FaChevronRight style={{ color: 'gray' }} /></div>
                     </div>
-                    <div className="slider" onMouseDown={handleMouseDown} style={{ left: `${position.x}px`, top: `${position.y}px` }}>
+                    <div className="slider"  style={{ left: `${position.x}px`, top: `${position.y}px` }}>
                         {courses.map((course, index) => (
                             <div className="course" key={index}>
                                 <div className="course-dt">

@@ -1,11 +1,7 @@
 import React from "react";
-import { FaUser } from "react-icons/fa";
-import { IoKey } from "react-icons/io5";
 import { useState } from "react";
 import { useNavigate  } from 'react-router-dom';
 import axios from "axios";
-import Cookies from 'js-cookie';
-import { IoMdMenu } from "react-icons/io";
 import { IoSearch } from "react-icons/io5";
 import { FaFacebookF } from "react-icons/fa";
 import { FaGoogle } from "react-icons/fa";
@@ -15,9 +11,12 @@ import Footer from "../footer/footer";
 import { SERVER_GATEWAY_URL } from "../../config";
 import MyLoading from "../alert/loading";
 import LoginSucces from "../alert/LoginSucces";
+import { IoMdHome } from "react-icons/io";
+
 import LoginFailue from "../alert/loginFailue";
 import "./login.css"
-import Login from "./login";
+import Header from "../header/Header";
+
 function Signup(){
     return(
       
@@ -32,7 +31,7 @@ function Signup(){
    
     );
 }
-function Header(){
+function Header1(){
   const navigate = useNavigate();
 
   const ToLogin = (path) => {
@@ -42,8 +41,8 @@ function Header(){
     <header>
           <div className="search-part">
             <div className="list-course-part">
-              <IoMdMenu className="icon"/>
-              <p>Các khóa học</p>
+              <IoMdHome className="icon"/> 
+              <p>Trang chủ</p>
             </div>
             <div className="search-box-part">
               <input type="text"  placeholder='Tim kiem khoa hoc'/>

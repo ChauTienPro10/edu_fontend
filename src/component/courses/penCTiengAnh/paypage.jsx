@@ -146,7 +146,7 @@ function Paypage({ show, setShow, course }) {
                     }}><GiBatMask style={{ fontSize: '100px', color: 'rgb(156, 60, 4)' }} />
                         <p style={{ color: 'gray', fontSize: '15px' }}>{course.title}</p>
                     </div>
-                    <p>{`Học phí: ${100} CDT`}</p>
+                    <p>{`Học phí: ${10} CDT`}</p>
 
                     <div className='option-but'>
                         <button onClick={() => setShow(false)} style={{ background: 'rgb(255, 62, 62)', color: 'white' }}>Hủy</button>

@@ -8,6 +8,8 @@ import { Logined } from "../home/Home";
 import { FaBars } from "react-icons/fa";
 import { SERVER_GATEWAY_URL } from "../../config";
 
+
+
 import axios from "axios";
 function Header() {
   const navigate = useNavigate();
@@ -36,7 +38,7 @@ function Header() {
       <div className="search-part">
         <div className="list-course-part">
           <IoMdHome onClick={() => navigate('/')} className="icon" style={{ cursor: 'pointer' }} />
-          <p>Các khóa học</p>
+          <p>Trang chủ</p>
         </div>
         <div className="search-box-part">
           <input type="text" placeholder='Tim kiem khoa hoc' value={searchText} onChange={(e) => setSearchText(e.target.value)} />
