@@ -1,0 +1,115 @@
+.practice-body-page{
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+}
+
+.board-left{
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    border-right: 1px solid black;
+}
+.board-left .practice-content{
+    padding: 30px;
+    width: 100%;
+}
+.board-left .board-resolve{
+    padding: 15px;
+    width: 100%;
+}
+.option-button{
+    width: 100%;
+    height: 50px;
+    display: flex;
+    justify-content: right;
+    align-items: center;
+}
+.option-button .button-write{
+    padding: 5px 10px;
+    border: none;
+    background: rgb(101, 157, 12);
+    color: white;
+    font-size: 10px;
+    cursor: pointer;
+}
+.option-button .button-write:hover{
+    opacity: 0.7;
+}
+.math-editor-container{
+    width: 100%;
+}
+.math-editor{
+    width: 100%;
+
+}
+.opt-math{
+    width: 100%;
+    height: 30px;
+}
+.opt-math button{
+    margin-left: 2px;
+}
+.text-edit-area{
+    width: 100%;
+    height: 100px;
+    padding: 10px;
+}
+.block-math{
+    background: red;
+}
+
+
+
+/*                ====                 */
+
+.board-right{
+    width: 50%;
+    border-left: 1px solid black;
+    height: 100vh;
+    overflow-y: scroll;
+
+}
+.result-show{
+    padding: 10px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.344);
+}
+
+.interaction-opt{
+    padding: 10px;
+    width: 100%;
+    height: 40px;
+    display: flex;
+    align-items: center;
+}
+.disscus-area{
+    width: 100%;
+    padding-left: 40px;
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    max-height: 250px;
+    overflow-y: scroll;
+}
+.disscus-area .cmt-content{
+    border-bottom: 1px solid black;
+    display: flex;
+    align-items: center;
+}
+
+
+@media (max-width: 768px) {
+    
+    .practice-body-page{
+        flex-direction: column;
+        height: auto;
+    }
+    .board-left{
+        width: 100%;
+        height: auto;
+    }
+    .board-right{
+        width: 100%;
+        height: auto;
+    }
+  }

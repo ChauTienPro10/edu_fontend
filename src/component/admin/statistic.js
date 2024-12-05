@@ -1,22 +1,36 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import './statistic.css';
 import { Line } from 'react-chartjs-2';
+import axios from "axios";
+import { SERVER_GATEWAY_URL } from "../../config";
 import { Chart as ChartJS, LineElement, CategoryScale, LinearScale, PointElement, Title, Tooltip, Legend } from 'chart.js';
 ChartJS.register(LineElement, CategoryScale, LinearScale, PointElement, Title, Tooltip, Legend);// Đăng ký các components của Chart.js
-function Statistic(){
-    return(
+function Statistic() {
+    const [balance,setBalance]=useState(0);
+    async function getBalance(){
+        const response= (await axios.get(`${SERVER_GATEWAY_URL}/api/registerService/getAdTokens`));
+        const balance = response.data.balance; // Lấy giá trị balance
+        setBalance(balance);
+      
+    }
+
+    useEffect(() => {
+        
+        getBalance();
+    }, [])
+    return (
         <div className="statistic-body">
             <div className="statistic-body-table">
-                <DataTableOut/>
-                <DataTablein/>
+                <DataTableOut />
+                <DataTablein />
             </div>
             <div className="statistic-body-table">
                 <LineChart />
                 <div className="result">
-                    <p style={{color:'grey'}}> Tổng lợi nhuận :{20000000} triệu đồng</p>
+                    <p style={{ color: 'grey' }}> Token :{balance} CDTs</p>
                 </div>
             </div>
-            
+
         </div>
     );
 }
@@ -27,66 +41,66 @@ const DataTableOut = () => {
         { month: 1, total: 20000000 },
         { month: 2, total: 20000000 },
         { month: 3, total: 20000000 },
-        
-      
+
+
     ];
     const containerStyle = {
-        width:'45%',
+        width: '45%',
         boxShadow: '4px 4px 10px rgba(0, 0, 0, 0.2)',
         maxHeight: '500px', // Chiều cao cố định cho bảng
         overflowY: 'auto',  // Kích hoạt thanh cuộn dọc nếu nội dung vượt quá chiều cao
         // Đường viền cho div chứa bảng
-       
+
     };
     const tableStyle = {
         width: '100%', // Kích thước chiều rộng của bảng
-        
-        
+
+
         borderCollapse: 'collapse', // Loại bỏ khoảng trống giữa các ô trong bảng
-        
+
     };
 
     const thStyle = {
         padding: '10px',
         background: 'rgb(77, 121, 214)',
         textAlign: 'left',
-        color:'white',
+        color: 'white',
         position: 'sticky',          // Làm cho tiêu đề cố định
         top: 0,                      // Vị trí cố định là trên cùng
-        zIndex: 1, 
+        zIndex: 1,
     };
 
     const tdStyle = {
         padding: '8px',
         textAlign: 'left',
-        fontSize:'12px',
-        color:'grey',
+        fontSize: '12px',
+        color: 'grey',
     };
 
     return (
-      <div style={containerStyle}>
-        <table style={tableStyle}>
-            <thead>
-                <tr>
-                <th style={thStyle}>ID</th>
-                    <th style={thStyle}>Tháng</th>
-                    <th style={thStyle}>Tổng lương</th>
-                    
-                </tr>
-            </thead>
-            <tbody >
-                {dataList.map((item) => (
-                    <tr key={item.id}>
-                       <td style={tdStyle}>{item.id}</td>
-                        <td style={tdStyle}>{item.month}</td>
-                        <td style={tdStyle}>{item.total}.triệu đồng </td>
-                        {/* <td style={tdStyle}>{item.level}</td> */}
-                        {/* <td style={tdStyle}><button style={{background:'transparent',border:'transparent',cursor:'pointer'}}><IoEyeSharp /></button></td> */}
+        <div style={containerStyle}>
+            <table style={tableStyle}>
+                <thead>
+                    <tr>
+                        <th style={thStyle}>ID</th>
+                        <th style={thStyle}>Tháng</th>
+                        <th style={thStyle}>Tổng lương</th>
+
                     </tr>
-                ))}
-            </tbody>
-        </table>
-    </div>
+                </thead>
+                <tbody >
+                    {dataList.map((item) => (
+                        <tr key={item.id}>
+                            <td style={tdStyle}>{item.id}</td>
+                            <td style={tdStyle}>{item.month}</td>
+                            <td style={tdStyle}>{item.total}.triệu đồng </td>
+                            {/* <td style={tdStyle}>{item.level}</td> */}
+                            {/* <td style={tdStyle}><button style={{background:'transparent',border:'transparent',cursor:'pointer'}}><IoEyeSharp /></button></td> */}
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+        </div>
     );
 };
 
@@ -95,73 +109,73 @@ const DataTablein = () => {
         { month: 1, total: 20000000 },
         { month: 2, total: 20000000 },
         { month: 3, total: 20000000 },
-        
-      
+
+
     ];
     const containerStyle = {
-        width:'45%',
+        width: '45%',
         boxShadow: '4px 4px 10px rgba(0, 0, 0, 0.2)',
         maxHeight: '500px', // Chiều cao cố định cho bảng
         overflowY: 'auto',  // Kích hoạt thanh cuộn dọc nếu nội dung vượt quá chiều cao
         // Đường viền cho div chứa bảng
-      
-       
+
+
     };
     const tableStyle = {
         width: '100%', // Kích thước chiều rộng của bảng
-        
-        
+
+
         borderCollapse: 'collapse', // Loại bỏ khoảng trống giữa các ô trong bảng
-        
+
     };
 
     const thStyle = {
         padding: '10px',
         background: 'rgb(77, 121, 214)',
         textAlign: 'left',
-        color:'white',
+        color: 'white',
         position: 'sticky',          // Làm cho tiêu đề cố định
         top: 0,                      // Vị trí cố định là trên cùng
-        zIndex: 1, 
+        zIndex: 1,
     };
 
     const tdStyle = {
         padding: '8px',
         textAlign: 'left',
-        fontSize:'12px',
-        color:'grey',
+        fontSize: '12px',
+        color: 'grey',
     };
 
     return (
-      <div style={containerStyle}>
-        <table style={tableStyle}>
-            <thead>
-                <tr>
-                <th style={thStyle}>ID</th>
-                    <th style={thStyle}>Tháng</th>
-                    <th style={thStyle}>Tổng lương</th>
-                    
-                </tr>
-            </thead>
-            <tbody >
-                {dataList.map((item) => (
-                    <tr key={item.id}>
-                       <td style={tdStyle}>{item.id}</td>
-                        <td style={tdStyle}>{item.month}</td>
-                        <td style={tdStyle}>{item.total}.triệu đồng </td>
-                        {/* <td style={tdStyle}>{item.level}</td> */}
-                        {/* <td style={tdStyle}><button style={{background:'transparent',border:'transparent',cursor:'pointer'}}><IoEyeSharp /></button></td> */}
+        <div style={containerStyle}>
+            <table style={tableStyle}>
+                <thead>
+                    <tr>
+                        <th style={thStyle}>ID</th>
+                        <th style={thStyle}>Tháng</th>
+                        <th style={thStyle}>Tổng lương</th>
+
                     </tr>
-                ))}
-            </tbody>
-        </table>
-    </div>
+                </thead>
+                <tbody >
+                    {dataList.map((item) => (
+                        <tr key={item.id}>
+                            <td style={tdStyle}>{item.id}</td>
+                            <td style={tdStyle}>{item.month}</td>
+                            <td style={tdStyle}>{item.total}.triệu đồng </td>
+                            {/* <td style={tdStyle}>{item.level}</td> */}
+                            {/* <td style={tdStyle}><button style={{background:'transparent',border:'transparent',cursor:'pointer'}}><IoEyeSharp /></button></td> */}
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+        </div>
     );
 };
 
 
 const LineChart = () => {
-    const _return=[4,5,1,6,4,-4];
+    const _return = [4, 5, 1, 6, 4, -4];
     const data = {
         labels: ['January', 'February', 'March', 'April', 'May', 'June'],
         datasets: [

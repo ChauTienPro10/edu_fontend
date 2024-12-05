@@ -38,7 +38,7 @@ function Home() {
 
     <div className='container-home'>
 
-      <Alert />
+      {/* <Alert /> */}
       <Myheader />
       <Mybody />
       <Courses />
@@ -92,7 +92,7 @@ function Myheader() {
   return (
 
     <div className='header'>
-      <div className='left-bar navbar'>
+      <div className='navbar left-bar '>
         <div
           className={`imagelogo ${isSmaller ? 'smaller' : ''}`}></div>
         <div className='search-box'>
@@ -227,7 +227,7 @@ export function Logined({ isLogin, setIsLogin }) {
 
 
       <div className='to-course div-class'>
-        <FaBook style={{ marginRight: '10px', fontSize: '22px', color: 'gray' }} />
+        <FaBook onClick={() => navigate('/my_course', { state: { email } })} style={{ marginRight: '10px', fontSize: '22px', color: 'gray' }} />
         <a onClick={() => navigate('/my_course', { state: { email } })}>Khóa học của tôi</a>
       </div>
       <div className='cart div-class' >
@@ -376,13 +376,29 @@ function Mybody() {
 
 
   // xử lý hiển thị mã khuyến mãi 
-  const [vouchers,setVoucher]=useState(["voucher khuyen mai 1","voucher khuyen mai 2","voucher khuyen mai 3","voucher khuyen mai 4"])
+  const [vouchers,setVoucher]=useState([])
   const [voucherIndex,setVoucherIndex]=useState(0);
+
+  // Lây danh sách voucher
+  const getVouchers=async()=>{
+    try {
+      const response = await axios.get(`${SERVER_GATEWAY_URL}/api/elasticSearch/voucher/get_all_voucher`);
+      setVoucher(response.data);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  }
+  useEffect(()=>{
+     getVouchers();
+  },[])
 
   useEffect(() => {
     const intervalId = setInterval(() => {
       // setContentadv(`New content at ${new Date().toLocaleTimeString()}`);
-      setVoucherIndex(prevIndex => (prevIndex + 1) % vouchers.length);
+      if(vouchers.length>0){
+        setVoucherIndex(prevIndex => (prevIndex + 1) % vouchers.length);
+
+      }
     }, 5000);
 
     return () => {
@@ -390,6 +406,10 @@ function Mybody() {
     };
   }, []);
   
+
+  function openInNewTab(url) {
+    window.open(url, '_blank', 'noopener,noreferrer');
+}
 
   return (
     <div className='body'>
@@ -417,8 +437,8 @@ function Mybody() {
          
                     <FaFire className='icon-adverst' />
                     <p>
-                        {contentadv} {vouchers[voucherIndex]} {/* Assuming voucher has a 'name' property */}
-                        <Link to="">Nhận ngay</Link>
+                        {contentadv} {vouchers.length>0 && vouchers[voucherIndex].name} {/* Assuming voucher has a 'name' property */}
+                        <Link onClick={()=>openInNewTab(vouchers[voucherIndex].linkTo)}>Nhận ngay</Link>
                     </p>
                 </div>
 
@@ -653,7 +673,7 @@ function Certificate() {
         const userJSON = sessionStorage.getItem('user');
         const user_ = userJSON ? JSON.parse(userJSON) : null;
         alert(user_._jwt);
-      }}>TẢI ỨNG DỤNG HỌC MÃI</button>
+      }}>TẢI ỨNG DỤNG</button>
     </div>
   );
 }

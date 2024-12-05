@@ -11,6 +11,7 @@ import axios from 'axios';
 import Videoslist from "./videosContainer";
 import MyLoading from "../../alert/loading";
 import { useNavigate } from "react-router-dom";
+import AddPracticePage from "./addPractice/addPractice";
 import Paypage from "./paypage";
 function Course() {
     const location = useLocation();
@@ -80,40 +81,65 @@ function Body({ _course, desContent, setDesContent }) {
                     </ul>
                 </div>
                 <div className="infor-right">
-                    <h3 style={{ marginTop: '60px' }}>Khóa học đã hết hạn đăng ký</h3>
-                    <ul style={{ width: '100%', marginLeft: '0', listStyle: 'none' }} >
-                        <li className="li-container">Mục tiêu khóa học
-                            <ul style={{ paddingLeft: '40px', listStyle: 'square' }}>
-                                <li className="li-content">Nắm vững kiến thức và đạt điểm cao trong bài thi tốt nghiệp THPT môn Tiếng Anh.</li>
-                            </ul>
-                        </li>
-                        <li className="li-container">Cấu trúc khóa học
-                            <ul style={{ paddingLeft: '40px', listStyle: 'square' }}>
-                                <li className="li-content">5 chuyên đề</li>
-                                <li className="li-content">62 bài giảng</li>
-                                <li className="li-content">Hơn 1500 bài tập</li>
-                            </ul>
-                        </li>
-                        <li className="li-container">Dịch vụ
-                            <ul style={{ paddingLeft: '40px', listStyle: 'square' }}>
-                                <li className="li-content"><a style={{ color: 'rgb(0, 81, 255)' }} href="#">Các kênh hỗ trợ học tập</a></li>
-                                <li className="li-content">Thảo luận trong từng bài giảng <FaQuestionCircle style={{ color: 'rgb(0, 81, 255)', cursor: 'pointer' }} /></li>
-                                <li className="li-content">Chương trình kiểm tra năng lực thường xuyên  <FaQuestionCircle style={{ color: 'rgb(0, 81, 255)', cursor: 'pointer' }} /></li>
-                            </ul>
-
-                        </li>
-                        <li className="li-container">Thời gian
-                            <ul style={{ paddingLeft: '40px', listStyle: 'square' }}>
-                                <li className="li-content">Hạn đăng ký: 31/05/2024 <FaQuestionCircle style={{ color: 'rgb(0, 81, 255)', cursor: 'pointer' }} /></li>
-                                <li className="li-content">Ngày bế giảng: 31/08/2024  <FaQuestionCircle style={{ color: 'rgb(0, 81, 255)', cursor: 'pointer' }} /></li>
-                            </ul>
-                        </li>
-                    </ul>
+                    <h3 style={{ marginTop: '60px' }}>Bài tập tự luyện</h3>
+                    <Practice isTeacher={role==='ROLE_TEACHER'?true:false} course={_course} />
                 </div>
             </div>
 
         </div>
 
+    )
+}
+
+
+const Practice = ({ isTeacher, course }) => {
+    const [practices, setPractices] = useState([]);
+    const [show, setShow] = useState(false);
+    const getAllPractice = async () => {
+        try {
+
+            const response = await axios.get(`${SERVER_GATEWAY_URL}/api/elasticSearch/practice/getAllCourseById?id=${course.id}`);
+            console.log(response.data);
+            setPractices(response.data)
+
+
+
+        } catch (error) {
+            console.error('Error fetching courses:', error);
+        }
+    }
+    useEffect(() => {
+        getAllPractice();
+    }, []);
+
+    const toPractice=async(practiceId,content)=>{ // đii đến trang thảo luận bài tập
+        window.open(`/course/practice/${practiceId}?content=${encodeURIComponent(content)}`, '_blank');
+
+    }
+
+
+    return (
+        <div className="practice-body">
+            <AddPracticePage show={show} setShow={setShow} course={course} />
+            <ul className="list-container-practice">
+                {practices && practices.map((prac,index)=>(
+                    <li onClick={()=>toPractice(prac.id,prac.content)}>
+                    <p style={{fontSize:'12px'}}>{prac.content}</p>
+                    <div> <p style={{fontWeight:'bolder',fontSize:'14px'}}>Độ khó</p>
+                     {Array.from({ length: prac.hardLevel }, (_, idx) => ( <span style={{color:'orange'}} key={idx}>&#9733;</span> // Hiển thị biểu tượng ngôi sao 
+                    ))} 
+                    </div>
+                </li>
+                ))}
+            </ul>
+
+            {isTeacher && (
+                <button style={{
+                    padding: '15px', border: 'none', background: 'rgb(98, 201, 233)',
+                    color: 'white', cursor: 'pointer'
+                }} onClick={() => setShow(true)}>Đăng một bài tập mới</button>
+            )}
+        </div>
     )
 }
 
@@ -130,7 +156,6 @@ function ContentCourse({ _course, desContent, setDesContent, setIsLoading }) {
         try {
 
             const response = await axios.get(`${SERVER_GATEWAY_URL}/api/elasticSearch/course/getInforCourse?id=${_course.id}`);
-            console.log(_course.id);
             await setInforCourse(response.data);
 
 
@@ -150,7 +175,6 @@ function ContentCourse({ _course, desContent, setDesContent, setIsLoading }) {
 
 
     useEffect(() => {
-        console.log('infor:', inforCourse);
         if (inforCourse != null) {
 
             setMethods(inforCourse.methods); // Use optional chaining in case inforCourse is null initially
@@ -181,7 +205,6 @@ function ContentCourse({ _course, desContent, setDesContent, setIsLoading }) {
             course: inforCourse.course,
             descripContent: desContent,
         }
-        console.log(newInfor);
 
         try {
             const userJSON = sessionStorage.getItem('user');
@@ -197,7 +220,6 @@ function ContentCourse({ _course, desContent, setDesContent, setIsLoading }) {
             const { code, message, result } = response.data;
 
             if (code === 1000) {
-                console.log('Modified Course:', result);
             } else {
                 alert("that bai!")
             }

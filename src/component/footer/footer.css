@@ -67,3 +67,42 @@
     font-size: 12px;
     width: 40%;
 }
+
+
+
+
+
+
+
+
+@media (max-width: 768px) {
+    * {
+        box-sizing: border-box;
+    }
+    .container-footer {
+        margin-top: 100px;
+        width: 100%;
+        height: auto;
+        display: flex;
+        border-top: 1px solid rgba(0, 0, 0, 0.514);
+    }
+    .container-footer .foot-top{
+        flex-direction: column;
+        align-items: start;
+        justify-content: start;
+    }
+    .container-footer .foot-top div {
+        margin-left: 20px ;
+        height: 100%;
+    }
+    .container-footer .foot-bottom {
+        flex-direction: column;
+        padding: 10px;
+    }
+    .container-footer .foot-bottom p {
+        font-size: 12px;
+        width: 100%;
+    }
+
+
+}

@@ -43,7 +43,7 @@ function Body(){
         const response = await axios.post(`${SERVER_GATEWAY_URL}/api/identity/auth/token`, {
           username,
           password
-        });
+        }); 
         const user = new LoginResponse(
           response.data.result.token,
           response.data.result.username,

@@ -170,7 +170,7 @@ function Homecomponent(){
                     <FaBookMedical style={{color:'white',fontSize:'30px',marginBottom:'10px'}}/>
             </div>
             <div className="board-registration board-statistic">
-                    <p style={{fontSize:'13px', color:'white'}}>Số lượng đã đăng ký</p>
+                    <p style={{fontSize:'13px', color:'white'}}>Số lượt đăng ký</p>
                     <p style={{fontSize:'20px',color:'white'}}>{`${infor.numOfRegister} khóa học`}</p>
                     <GiArchiveRegister style={{color:'white',fontSize:'30px',marginBottom:'10px'}}/>
             </div>

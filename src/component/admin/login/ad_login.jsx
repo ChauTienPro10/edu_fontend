@@ -9,6 +9,7 @@ export default function AdLogin(){
     const [password,setPassword]=useState('');
     const [login,setLogin]=useState(false);
     const [error,setError]=useState('');
+    const role = sessionStorage.getItem('role');
     // xử lý đăng nhâp cho admin
     const handleLogin=async(event) =>{
        
@@ -50,7 +51,7 @@ export default function AdLogin(){
 
       }
     return(
-        <div style={{display:login?'none':''}} className="ad-login-body">
+        <div style={{display:(login||role==="ROLE_ADMIN")?'none':''}} className="ad-login-body">
             <div className="main-board">
                 <input type="text" className="input input-username" placeholder="username" value={username} onChange={(e)=>setUsername(e.target.value)}/>
                 <input type="password" className="input input-password"  placeholder="password" value={password} onChange={(e)=>setPassword(e.target.value)}/>
