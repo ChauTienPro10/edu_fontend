@@ -142,38 +142,24 @@ function Thpt({ level }) {
                 <div ref={elementRef} className="slider-container ">
 
                     <div className="but-tran prevous" onClick={() => {
-                        if (position.x + 250 <= 0 && position.x + 250 >= (-250 * (countTHPT - 3))) {
+                        if (position.x  <0 ) {
                             setPosition({
                                 x: position.x + 250,
                                 y: position.y
                             });
                         }
-                        else {
-                            if (position.x + 250 > 0)
-                                setPosition({
-                                    x: 0,
-                                    y: position.y
-                                });
-
-                        }
+                       
                     }}>
                         <div className="circle"><FaChevronLeft style={{ color: 'gray' }} /></div>
                     </div>
                     <div className="but-tran next" onClick={() => {
-                        if (position.x - 250 <= 0 && position.x - 250 >= (-250 * (countTHPT - 3))) {
+                        if (position.x >-250*(countTHPT-4)) {
                             setPosition({
                                 x: position.x - 250,
                                 y: position.y
                             });
                         }
-                        else {
-
-                            if (position.x - 250 < (-250 * (countTHPT - 3)))
-                                setPosition({
-                                    x: (-250 * (countTHPT - 3)),
-                                    y: position.y
-                                });
-                        }
+                        
                     }}>
                         <div className="circle-right"><FaChevronRight style={{ color: 'gray' }} /></div>
                     </div>
@@ -205,37 +191,21 @@ function Thpt({ level }) {
             <div className="hot-content">
                 <div className="slider-container">
                     <div className="but-tran prevous" onClick={() => {
-                        if (positionHot.x + 250 <= 0 && positionHot.x + 250 >= (-250 * (countTHPTHot - 5))) {
+                        if (positionHot.x  <0 ) {
                             setPositionHot({
                                 x: positionHot.x + 250,
                                 y: positionHot.y
                             });
                         }
-                        else {
-                            if (position.x + 250 > 0)
-                                setPositionHot({
-                                    x: 0,
-                                    y: positionHot.y
-                                });
-
-                        }
                     }}>
                         <div className="circle"><FaChevronLeft style={{ color: 'gray' }} /></div>
                     </div>
                     <div className="but-tran next" onClick={() => {
-                        if (positionHot.x - 250 <= 0 && positionHot.x - 250 >= (-250 * (countTHPTHot - 5))) {
+                        if (positionHot.x >-250*(countTHPTHot-6)) {
                             setPositionHot({
                                 x: positionHot.x - 250,
                                 y: positionHot.y
                             });
-                        }
-                        else {
-
-                            if (positionHot.x - 250 < (-250 * (countTHPTHot - 5)))
-                                setPositionHot({
-                                    x: (-250 * (countTHPTHot - 5)),
-                                    y: positionHot.y
-                                });
                         }
                     }}>
                         <div className="circle-right"><FaChevronRight style={{ color: 'gray' }} /></div>
