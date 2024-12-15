@@ -69,6 +69,9 @@ function Body() {
     event.preventDefault();
 
     try {
+      if(password!==validpass){
+        return;
+      }
       const response = await axios.post(`${SERVER_GATEWAY_URL}/api/student/profile/new`, {
         fullname,
         email,
